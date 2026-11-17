@@ -9,9 +9,9 @@ public class DatabaseConnection {
     private static final String URL =
         "jdbc:mysql://localhost:3306/kosanku?serverTimezone=Asia/Jakarta";
     private static final String USER = "root";
-    private static final String PASSWORD = ""; // change to your MySQL password
+    private static final String PASSWORD = "";
 
-    private DatabaseConnection() {} // utility class, no instances
+    private DatabaseConnection() {}
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
