@@ -16,8 +16,9 @@ TRUNCATE TABLE expenses;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- 1. Seed Users (Admin / Staff)
+-- username: admin, pass: admin123
 INSERT INTO users (username, password, nama_lengkap) VALUES
-('admin', '$2a$10$X7vQj5wD2nB5n4K1qW0Xeu1Jq3g2v5P9W8L8T7K6v5m4n3p2q1s0W', 'Budi Santoso'),
+('admin', 'a735e89cc43f756daed5a66c21a9f0296f4b75834172eb8f0bf70eef2063f93a', 'Budi Santoso'),
 ('staff_front', '$2a$10$X7vQj5wD2nB5n4K1qW0Xeu1Jq3g2v5P9W8L8T7K6v5m4n3p2q1s0W', 'Siti Rahma');
 
 -- 2. Seed Rooms
