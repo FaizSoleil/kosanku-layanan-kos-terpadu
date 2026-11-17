@@ -1,8 +1,7 @@
 --jalankan manual untuk buat database
 
--- CREATE DATABASE kosanku;
--- USE kosanku;
--- -- sebenarnya bebas tapi good practice nya konsisten untuk kita semua
+CREATE DATABASE IF NOT EXISTS kosanku;
+USE kosanku;
 
 -- 1. Users Table
 CREATE TABLE users (
