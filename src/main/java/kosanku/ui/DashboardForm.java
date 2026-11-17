@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 
 /**
  *
@@ -29,16 +30,30 @@ public class DashboardForm extends javax.swing.JFrame {
     public DashboardForm(Users currentUser) {
         this.currentUser = currentUser;
         initComponents();
+        
+        //setup CardLayout
+        contentPanel.removeAll();
+        contentPanel.setLayout(new CardLayout());
+
+        contentPanel.add(new KamarPanel(), "Kamar");
+        contentPanel.add(new PenghuniPanel(), "Penghuni");
+        contentPanel.add(new KontrakPanel(), "Kontrak");
+        contentPanel.add(new MeteranPanel(), "Meteran");
+        contentPanel.add(new TagihanPanel(), "Tagihan");
+        contentPanel.add(new PembayaranPanel(), "Pembayaran");
+        contentPanel.add(new PengeluaranPanel(), "Pengeluaran");
+        contentPanel.add(new KeluhanPanel(), "Keluhan");
+        contentPanel.add(new LaporanPanel(), "Laporan");
+
+
         if (currentUser != null && currentUser.getNamaLengkap() != null) {
             lblAdmin.setText("Admin: " + currentUser.getNamaLengkap());
         }
     }
 
-    private void switchMenu(String menuName) {
-        contentPanel.removeAll();
-        contentPanel.add(new JLabel("Menu " + menuName, SwingConstants.CENTER), BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
+    private void  showPage(String panelName) {
+        CardLayout cl = (CardLayout) contentPanel.getLayout();
+        cl.show(contentPanel, panelName);
     }
 
     /**
@@ -161,9 +176,9 @@ public class DashboardForm extends javax.swing.JFrame {
                         .addComponent(btnKeluhan)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLaporan)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLogout))
-                    .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(contentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))
                 .addGap(20, 20, 20))
         );
 
@@ -172,39 +187,39 @@ public class DashboardForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKamarActionPerformed
-        switchMenu("Kamar");
+        showPage("Kamar");
     }//GEN-LAST:event_btnKamarActionPerformed
 
     private void btnPenghuniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPenghuniActionPerformed
-        switchMenu("Penghuni");
+        showPage("Penghuni");
     }//GEN-LAST:event_btnPenghuniActionPerformed
 
     private void btnKontrakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKontrakActionPerformed
-        switchMenu("Kontrak");
+        showPage("Kontrak");
     }//GEN-LAST:event_btnKontrakActionPerformed
 
     private void btnMeteranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeteranActionPerformed
-        switchMenu("Meteran");
+        showPage("Meteran");
     }//GEN-LAST:event_btnMeteranActionPerformed
 
     private void btnTagihanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTagihanActionPerformed
-        switchMenu("Tagihan");
+        showPage("Tagihan");
     }//GEN-LAST:event_btnTagihanActionPerformed
 
     private void btnPembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPembayaranActionPerformed
-        switchMenu("Pembayaran");
+        showPage("Pembayaran");
     }//GEN-LAST:event_btnPembayaranActionPerformed
 
     private void btnPengeluaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPengeluaranActionPerformed
-        switchMenu("Pengeluaran");
+        showPage("Pengeluaran");
     }//GEN-LAST:event_btnPengeluaranActionPerformed
 
     private void btnKeluhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluhanActionPerformed
-        switchMenu("Keluhan");
+        showPage("Keluhan");
     }//GEN-LAST:event_btnKeluhanActionPerformed
 
     private void btnLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaporanActionPerformed
-        switchMenu("Laporan");
+        showPage("Laporan");
     }//GEN-LAST:event_btnLaporanActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
