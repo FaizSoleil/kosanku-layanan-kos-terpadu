@@ -4,6 +4,9 @@
 
 package com.mycompany.mavenproject1;
 
+import com.mycompany.mavenproject1.util.DatabaseConnection;
+import java.sql.Connection;
+
 /**
  *
  *
@@ -11,6 +14,10 @@ package com.mycompany.mavenproject1;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            System.out.println("terhubung");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
