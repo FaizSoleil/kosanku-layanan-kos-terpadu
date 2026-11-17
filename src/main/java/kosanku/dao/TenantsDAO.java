@@ -31,12 +31,12 @@ public class TenantsDAO {
         return Optional.empty();
     }
 
-    public List<Tenants> findAll() {
+    public List<Tenants> findAll() throws SQLException {
         List<Tenants> list = new ArrayList<>();
-        String sql = "SELECT name, email, phone_number FROM tenants";
+        String sql = "SELECT * FROM tenants";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) list.add(mapRow(rs));
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { throw e; } //throw biar propagasi ke atas.
         return list;
     }
 
@@ -61,6 +61,6 @@ public class TenantsDAO {
     }
 
     private Tenants mapRow(ResultSet rs) throws SQLException {
-        return new Tenants(rs.getString("name"), rs.getString("email"), rs.getString("phone_number"));
+        return new Tenants(rs.getInt("id") ,rs.getString("name"), rs.getString("email"), rs.getString("phone_number"));
     }
 }
