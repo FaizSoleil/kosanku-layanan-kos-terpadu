@@ -4,6 +4,15 @@
  */
 package kosanku.ui;
 
+import kosanku.ui.panel.PengeluaranPanel;
+import kosanku.ui.panel.TagihanPanel;
+import kosanku.ui.panel.PembayaranPanel;
+import kosanku.ui.panel.MeteranPanel;
+import kosanku.ui.panel.KontrakPanel;
+import kosanku.ui.panel.KeluhanPanel;
+import kosanku.ui.panel.LaporanPanel;
+import kosanku.ui.panel.KamarPanel;
+import kosanku.ui.panel.PenghuniPanel;
 import kosanku.model.Users;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;

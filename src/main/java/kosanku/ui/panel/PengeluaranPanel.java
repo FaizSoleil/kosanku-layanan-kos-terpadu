@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package kosanku.ui;
+package kosanku.ui.panel;
 
 /**
  *
  * @author LENOVO
  */
-public class TagihanPanel extends javax.swing.JPanel {
+public class PengeluaranPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form KamarPanel
      */
-    public TagihanPanel() {
+    public PengeluaranPanel() {
         initComponents();
     }
 
@@ -28,23 +28,23 @@ public class TagihanPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
 
-        jLabel1.setText("Ini panel tagihan");
+        jLabel1.setText("Ini panel pengeluaran");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(228, Short.MAX_VALUE)
+                .addContainerGap(229, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(223, 223, 223))
+                .addGap(196, 196, 196))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(186, Short.MAX_VALUE)
+                .addContainerGap(184, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(178, 178, 178))
+                .addGap(180, 180, 180))
         );
     }// </editor-fold>//GEN-END:initComponents
 
