@@ -4,6 +4,10 @@
  */
 package kosanku.ui;
 
+import kosanku.controller.AuthController;
+import kosanku.dao.UsersDAO;
+import kosanku.service.AuthService;
+
 /**
  *
  * @author LENOVO
@@ -11,13 +15,26 @@ package kosanku.ui;
 public class LoginForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginForm.class.getName());
+    private final AuthController authController;
 
     /**
      * Creates new form LoginForm
      */
-    public LoginForm() {
+    public LoginForm(AuthController authController) {
+        this.authController = authController;
         initComponents();
         setLocationRelativeTo(null);
+        getRootPane().setDefaultButton(loginButton);
+    }
+
+    public LoginForm() {
+        this(new AuthController(new AuthService(new UsersDAO())));
+        this.authController.setLoginView(this);
+    }
+
+    public void resetPasswordField() {
+        passwordField.setText("");
+        passwordField.requestFocus();
     }
 
     /**
@@ -101,14 +118,19 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void userTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userTextFieldActionPerformed
         // TODO add your handling code here:
+        passwordField.requestFocus();
     }//GEN-LAST:event_userTextFieldActionPerformed
 
     private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
         // TODO add your handling code here:
+        loginButtonActionPerformed(evt);
     }//GEN-LAST:event_passwordFieldActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
+        String username = userTextField.getText();
+        String password = new String(passwordField.getPassword());
+        authController.handleLogin(username, password);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     /**
