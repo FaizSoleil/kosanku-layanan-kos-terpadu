@@ -1,0 +1,64 @@
+--jalankan manual untuk buat dummy data
+
+-- Disable foreign key checks temporarily for smooth seeding order
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Clear existing data if re-running seed
+TRUNCATE TABLE payments;
+TRUNCATE TABLE bills;
+TRUNCATE TABLE contracts;
+TRUNCATE TABLE rooms;
+TRUNCATE TABLE tenants;
+TRUNCATE TABLE users;
+TRUNCATE TABLE expenses;
+
+-- Enable foreign key checks back
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- 1. Seed Users (Admin / Staff)
+INSERT INTO users (username, password, nama_lengkap) VALUES
+('admin', '$2a$10$X7vQj5wD2nB5n4K1qW0Xeu1Jq3g2v5P9W8L8T7K6v5m4n3p2q1s0W', 'Budi Santoso'),
+('staff_front', '$2a$10$X7vQj5wD2nB5n4K1qW0Xeu1Jq3g2v5P9W8L8T7K6v5m4n3p2q1s0W', 'Siti Rahma');
+
+-- 2. Seed Rooms
+INSERT INTO rooms (room_number, type, price, facilities, status) VALUES
+('101', 'Standard AC', 1500000.00, 'AC, Single Bed, Wardrobe, Desk, Wi-Fi', 'Occupied'),
+('102', 'Standard AC', 1500000.00, 'AC, Single Bed, Wardrobe, Desk, Wi-Fi', 'Available'),
+('201', 'Deluxe', 2200000.00, 'AC, Queen Bed, Private Bathroom, Smart TV, Water Heater, Wi-Fi', 'Occupied'),
+('202', 'Deluxe', 2200000.00, 'AC, Queen Bed, Private Bathroom, Smart TV, Water Heater, Wi-Fi', 'Available'),
+('301', 'VIP Suite', 3000000.00, 'AC, King Bed, Private Kitchenette, Balcony, Smart TV, Wi-Fi', 'Occupied');
+
+-- 3. Seed Tenants
+INSERT INTO tenants (name, email, phone_number) VALUES
+('Andi Pratama', 'andi.pratama@gmail.com', '081234567890'),
+('Rina Melati', 'rina.melati@yahoo.com', '081987654321'),
+('Joko Widodo', 'joko.w@outlook.com', '081122334455');
+
+-- 4. Seed Contracts
+-- tenant_id 1 in Room 101, tenant_id 2 in Room 201, tenant_id 3 in Room 301
+INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo) VALUES
+(1, 1, '2026-01-01', '2026-12-31', 1500000.00, 10),
+(2, 3, '2026-02-01', '2027-01-31', 2200000.00, 15),
+(3, 5, '2026-03-01', '2027-02-28', 3000000.00, 5);
+
+-- 5. Seed Bills
+-- Monthly bills linked to the active contracts
+INSERT INTO bills (contract_id, bulan_tagihan, total_tagihan, status) VALUES
+(1, '2026-10-01', 1500000.00, 'Paid'),
+(1, '2026-11-01', 1500000.00, 'Unpaid'),
+(2, '2026-10-01', 2200000.00, 'Paid'),
+(2, '2026-11-01', 2200000.00, 'Paid'),
+(3, '2026-11-01', 3000000.00, 'Unpaid');
+
+-- 6. Seed Payments
+-- Matching payments for the paid bills
+INSERT INTO payments (bill_id, payment_date, jumlah, metode_pembayaran) VALUES
+(1, '2026-10-05', 1500000.00, 'Transfer Bank'),
+(3, '2026-10-12', 2200000.00, 'QRIS'),
+(4, '2026-11-10', 2200000.00, 'Transfer Bank');
+
+-- 7. Seed Expenses
+INSERT INTO expenses (expense_date, kategori, jumlah) VALUES
+('2026-11-02', 'Maintenance', 350000.00),
+('2026-11-05', 'Electricity & Water', 1250000.00),
+('2026-11-12', 'Cleaning Supplies', 150000.00);
