@@ -15,12 +15,12 @@ public class Expenses {
         this.jumlah = jumlah;
     }
 
-    Date getExpenseDate(){return this.expenseDate;}
-    String getKategori(){return this.kategori;}
-    double getJumlah(){return this.jumlah;}
+    public Date getExpenseDate(){return this.expenseDate;}
+    public String getKategori(){return this.kategori;}
+    public double getJumlah(){return this.jumlah;}
 
-    void setExpenseDate(Date expensDate){this.expenseDate = expensDate;}
-    void setKategori(String kategori){this.kategori = kategori;}
-    void setJumlah(double jumlah){this.jumlah = jumlah;}
+    public void setExpenseDate(Date expensDate){this.expenseDate = expensDate;}
+    public void setKategori(String kategori){this.kategori = kategori;}
+    public void setJumlah(double jumlah){this.jumlah = jumlah;}
 
 }
