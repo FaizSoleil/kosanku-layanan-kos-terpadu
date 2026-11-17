@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1.util;
+package kosanku.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

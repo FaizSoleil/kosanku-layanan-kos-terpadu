@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1.model;
+package kosanku.model;
 
 public class Users {
     private String username;

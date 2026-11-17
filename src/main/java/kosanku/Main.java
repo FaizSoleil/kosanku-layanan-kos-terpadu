@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package com.mycompany.mavenproject1;
+package kosanku;
 
-import com.mycompany.mavenproject1.util.DatabaseConnection;
+import kosanku.util.DatabaseConnection;
 import java.sql.Connection;
 
 /**
