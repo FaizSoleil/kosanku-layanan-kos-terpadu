@@ -9,7 +9,9 @@ public class Bills {
     private double totalTagihan;
     private BillStatus status;
 
-    public Bills(){}
+    public Bills(){
+        this.status = BillStatus.BELUM_DIBAYAR;
+    }
 
     public Bills(int id, int contractId, Date bulanTagihan, double totalTagihan, BillStatus status) {
         this.id = id;
