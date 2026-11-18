@@ -21,7 +21,7 @@ public class TenantsDAO {
     }
 
     public Optional<Tenants> findByEmail(String email) {
-        String sql = "SELECT name, email, phone_number FROM tenants WHERE email = ?";
+        String sql = "SELECT id, name, email, phone_number FROM tenants WHERE email = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, email);
             try (ResultSet rs = pstmt.executeQuery()) {

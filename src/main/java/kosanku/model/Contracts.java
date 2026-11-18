@@ -9,11 +9,11 @@ public class Contracts {
     private Date tanggalMasuk;
     private Date tanggalKeluar;
     private double deposit;
-    private int tanggalJatuhTempo;
+    private Date tanggalJatuhTempo;
 
     public Contracts(){}
 
-    public Contracts(int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, int tanggalJatuhTempo) {
+    public Contracts(int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, Date tanggalJatuhTempo) {
         this.tenantId = tenantId;
         this.roomId = roomId;
         this.tanggalMasuk = tanggalMasuk;
@@ -28,7 +28,7 @@ public class Contracts {
     public Date getTanggalMasuk() {return tanggalMasuk;}
     public Date getTanggalKeluar() {return tanggalKeluar;}
     public double getDeposit() {return deposit;}
-    public int getTanggalJatuhTempo() {return tanggalJatuhTempo;}
+    public Date getTanggalJatuhTempo() {return tanggalJatuhTempo;}
 
     public void setId(int id) {this.id = id;}
     public void setTenantId(int tenantId) {this.tenantId = tenantId;}
@@ -36,5 +36,5 @@ public class Contracts {
     public void setTanggalMasuk(Date tanggalMasuk) {this.tanggalMasuk = tanggalMasuk;}
     public void setTanggalKeluar(Date tanggalKeluar) {this.tanggalKeluar = tanggalKeluar;}
     public void setDeposit(double deposit) {this.deposit = deposit;}
-    public void setTanggalJatuhTempo(int tanggalJatuhTempo) {this.tanggalJatuhTempo = tanggalJatuhTempo;}
+    public void setTanggalJatuhTempo(Date tanggalJatuhTempo) {this.tanggalJatuhTempo = tanggalJatuhTempo;}
 }

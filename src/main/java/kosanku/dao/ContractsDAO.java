@@ -17,7 +17,7 @@ public class ContractsDAO {
             pstmt.setDate(3, new java.sql.Date(contract.getTanggalMasuk().getTime()));
             pstmt.setDate(4, contract.getTanggalKeluar() != null ? new java.sql.Date(contract.getTanggalKeluar().getTime()) : null);
             pstmt.setDouble(5, contract.getDeposit());
-            pstmt.setInt(6, contract.getTanggalJatuhTempo());
+            pstmt.setDate(6, new java.sql.Date(contract.getTanggalJatuhTempo().getTime()));
 
             int affected = pstmt.executeUpdate();
             if (affected > 0) {
@@ -58,7 +58,7 @@ public class ContractsDAO {
             pstmt.setDate(3, new java.sql.Date(contract.getTanggalMasuk().getTime()));
             pstmt.setDate(4, contract.getTanggalKeluar() != null ? new java.sql.Date(contract.getTanggalKeluar().getTime()) : null);
             pstmt.setDouble(5, contract.getDeposit());
-            pstmt.setInt(6, contract.getTanggalJatuhTempo());
+            pstmt.setDate(6, new java.sql.Date(contract.getTanggalJatuhTempo().getTime()));
             pstmt.setInt(7, contract.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); }
@@ -81,7 +81,7 @@ public class ContractsDAO {
             rs.getDate("tanggal_masuk"),
             rs.getDate("tanggal_keluar"),
             rs.getDouble("deposit"),
-            rs.getInt("tanggal_jatuh_tempo")
+            rs.getDate("tanggal_jatuh_tempo")
         );
         // Note: Remember to call setId using the setter if your constructor doesn't set it.
     }
