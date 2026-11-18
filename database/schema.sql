@@ -1,17 +1,15 @@
---jalankan manual untuk buat database
-
 CREATE DATABASE IF NOT EXISTS kosanku;
 USE kosanku;
 
 -- 1. Users Table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
     nama_lengkap VARCHAR(100) NOT NULL
 );
 
 -- 2. Rooms Table
-CREATE TABLE rooms (
+CREATE TABLE IF NOT EXISTS rooms (
     id INT AUTO_INCREMENT PRIMARY KEY,
     room_number VARCHAR(20) NOT NULL UNIQUE,
     type VARCHAR(50) NOT NULL,
@@ -21,7 +19,7 @@ CREATE TABLE rooms (
 );
 
 -- 3. Tenants Table
-CREATE TABLE tenants (
+CREATE TABLE IF NOT EXISTS tenants (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE,
@@ -29,7 +27,7 @@ CREATE TABLE tenants (
 );
 
 -- 4. Contracts Table
-CREATE TABLE contracts (
+CREATE TABLE IF NOT EXISTS contracts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tenant_id INT NOT NULL,
     room_id INT NOT NULL,
@@ -42,7 +40,7 @@ CREATE TABLE contracts (
 );
 
 -- 5. Bills Table
-CREATE TABLE bills (
+CREATE TABLE IF NOT EXISTS bills (
     id INT AUTO_INCREMENT PRIMARY KEY,
     contract_id INT NOT NULL,
     bulan_tagihan DATE NOT NULL,
@@ -52,7 +50,7 @@ CREATE TABLE bills (
 );
 
 -- 6. Payments Table (Added bill_id for proper relation tracking)
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     bill_id INT NOT NULL,
     payment_date DATE NOT NULL,
@@ -62,7 +60,7 @@ CREATE TABLE payments (
 );
 
 -- 7. Expenses Table
-CREATE TABLE expenses (
+CREATE TABLE IF NOT EXISTS expenses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     expense_date DATE NOT NULL,
     deskripsi TEXT NOT NULL,
