@@ -38,9 +38,9 @@ INSERT INTO tenants (name, email, phone_number) VALUES
 -- 4. Seed Contracts
 -- tenant_id 1 in Room 101, tenant_id 2 in Room 201, tenant_id 3 in Room 301
 INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo) VALUES
-(1, 1, '2026-01-01', '2026-12-31', 1500000.00, 10),
-(2, 3, '2026-02-01', '2027-01-31', 2200000.00, 15),
-(3, 5, '2026-03-01', '2027-02-28', 3000000.00, 5);
+(1, 1, '2026-01-01', '2026-12-31', 1500000.00, '2026-12-31'),
+(2, 3, '2026-02-01', '2027-01-31', 2200000.00, '2027-01-31'),
+(3, 5, '2026-03-01', '2027-02-28', 3000000.00, '2027-02-28');
 
 -- 5. Seed Bills
 -- Monthly bills linked to the active contracts

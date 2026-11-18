@@ -36,7 +36,7 @@ CREATE TABLE contracts (
     tanggal_masuk DATE NOT NULL,
     tanggal_keluar DATE NOT NULL,
     deposit DECIMAL(10, 2) NOT NULL,
-    tanggal_jatuh_tempo INT NOT NULL,
+    tanggal_jatuh_tempo DATE NOT NULL,
     FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE,
     FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE
 );
@@ -65,6 +65,6 @@ CREATE TABLE payments (
 CREATE TABLE expenses (
     id INT AUTO_INCREMENT PRIMARY KEY,
     expense_date DATE NOT NULL,
-    kategori VARCHAR(50) NOT NULL,
+    deskripsi TEXT NOT NULL,
     jumlah DECIMAL(10, 2) NOT NULL
 );
