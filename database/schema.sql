@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS rooms (
 -- 3. Tenants Table
 CREATE TABLE IF NOT EXISTS tenants (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    id_number           VARCHAR(20) UNIQUE NOT NULL,
+    gov_id_number           VARCHAR(20) UNIQUE NOT NULL,  -- nomor id kaya NIK
     name                VARCHAR(100) NOT NULL,
     email               VARCHAR(100) UNIQUE,          -- nullable; send NULL, not '', from Java
     phone_number        VARCHAR(20)  NOT NULL,

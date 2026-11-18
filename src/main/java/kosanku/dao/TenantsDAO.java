@@ -61,6 +61,6 @@ public class TenantsDAO {
     }
 
     private Tenants mapRow(ResultSet rs) throws SQLException {
-        return new Tenants(rs.getInt("id") ,rs.getString("name"), rs.getString("email"), rs.getString("phone_number"));
+        return new Tenants(rs.getInt("id"), rs.getString("gov_id_number") ,rs.getString("name"), rs.getString("email"), rs.getString("phone_number"));
     }
 }
