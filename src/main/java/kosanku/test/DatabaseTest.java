@@ -35,7 +35,7 @@ public class DatabaseTest {
         TenantsDAO tenantsDAO = new TenantsDAO();
         System.out.println("\nTesting TenantsDAO...");
         String testEmail = "budi@example.com";
-        Tenants testTenant = new Tenants("Budi Santoso", testEmail, "081234567890");
+        Tenants testTenant = new Tenants(1, "Budi Santoso", testEmail, "081234567890");
         
         tenantsDAO.delete(testEmail);
         
