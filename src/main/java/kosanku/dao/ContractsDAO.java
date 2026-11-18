@@ -1,5 +1,6 @@
 package kosanku.dao;
 
+import kosanku.model.ContractStatus;
 import kosanku.model.Contracts;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
@@ -76,12 +77,14 @@ public class ContractsDAO {
 
     private Contracts mapRow(ResultSet rs) throws SQLException {
         return new Contracts(
+            rs.getInt("id"),
             rs.getInt("tenant_id"),
             rs.getInt("room_id"),
             rs.getDate("tanggal_masuk"),
             rs.getDate("tanggal_keluar"),
             rs.getDouble("deposit"),
-            rs.getDate("tanggal_jatuh_tempo")
+            rs.getDate("tanggal_jatuh_tempo"),
+            ContractStatus.fromDbToJavaConstant(rs.getString("status"))
         );
         // Note: Remember to call setId using the setter if your constructor doesn't set it.
     }

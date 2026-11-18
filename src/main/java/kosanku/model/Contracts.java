@@ -10,16 +10,31 @@ public class Contracts {
     private Date tanggalKeluar;
     private double deposit;
     private Date tanggalJatuhTempo;
+    private ContractStatus status;
 
-    public Contracts(){}
+    public Contracts(){
+        this.status = ContractStatus.AKTIF;
+    }
 
-    public Contracts(int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, Date tanggalJatuhTempo) {
+    public Contracts(int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, Date tanggalJatuhTempo, ContractStatus status) {
         this.tenantId = tenantId;
         this.roomId = roomId;
         this.tanggalMasuk = tanggalMasuk;
         this.tanggalKeluar = tanggalKeluar;
         this.deposit = deposit;
         this.tanggalJatuhTempo = tanggalJatuhTempo;
+        this.status = status;
+    }
+
+    public Contracts(int id, int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, Date tanggalJatuhTempo, ContractStatus status) {
+        this.id = id;
+        this.tenantId = tenantId;
+        this.roomId = roomId;
+        this.tanggalMasuk = tanggalMasuk;
+        this.tanggalKeluar = tanggalKeluar;
+        this.deposit = deposit;
+        this.tanggalJatuhTempo = tanggalJatuhTempo;
+        this.status = status;
     }
 
     public int getId() {return id;}
@@ -29,6 +44,7 @@ public class Contracts {
     public Date getTanggalKeluar() {return tanggalKeluar;}
     public double getDeposit() {return deposit;}
     public Date getTanggalJatuhTempo() {return tanggalJatuhTempo;}
+    public ContractStatus getStatus() {return status;}
 
     public void setId(int id) {this.id = id;}
     public void setTenantId(int tenantId) {this.tenantId = tenantId;}
@@ -37,4 +53,5 @@ public class Contracts {
     public void setTanggalKeluar(Date tanggalKeluar) {this.tanggalKeluar = tanggalKeluar;}
     public void setDeposit(double deposit) {this.deposit = deposit;}
     public void setTanggalJatuhTempo(Date tanggalJatuhTempo) {this.tanggalJatuhTempo = tanggalJatuhTempo;}
+    public void setStatus(ContractStatus status) {this.status = status;}
 }
