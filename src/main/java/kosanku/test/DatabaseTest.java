@@ -32,6 +32,8 @@ public class DatabaseTest {
             System.out.println("-> Total Rooms in DB: " + allRooms.size());
         }
 
+        roomsDAO.delete(testRoom.getId());
+
         TenantsDAO tenantsDAO = new TenantsDAO();
         System.out.println("\nTesting TenantsDAO...");
         String testEmail = "budi@example.com";
