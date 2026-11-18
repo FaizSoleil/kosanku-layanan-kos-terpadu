@@ -19,18 +19,20 @@ public class PaymentsDAO {
         return false;
     }
 
-    public List<Payments> findAll() {
+    public List<Payments> findAll() throws SQLException {
         List<Payments> list = new ArrayList<>();
-        String sql = "SELECT payment_date, jumlah, metode_pembayaran FROM payments";
+        String sql = "SELECT * FROM payments";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(new Payments(
+                    rs.getInt("id"),
+                    rs.getInt("bill_id"),
                     rs.getDate("payment_date"),
                     rs.getDouble("jumlah"),
                     rs.getString("metode_pembayaran")
                 ));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { throw e; }
         return list;
     }
 }
