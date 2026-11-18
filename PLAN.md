@@ -1,5 +1,6 @@
 # Kosanku: Layanan Kos Terpadu
 ---
+
 ## 1. Deskripsi
 
 Kosanku adalah aplikasi desktop yang membantu pemilik kos mengelola propertinya dalam satu tempat: kamar, penghuni, pencatatan meteran utilitas, tagihan bulanan, dan pembayaran. Aplikasi ini menggantikan buku catatan kertas dengan sistem yang sederhana dan tertata.
@@ -14,11 +15,19 @@ Kosanku adalah aplikasi desktop yang membantu pemilik kos mengelola propertinya 
 
 **Fitur utama:**
 - Manajemen kamar
-- Data penghuni dan kontrak sewa
-- Pencatatan utilitas (listrik, air, dll.)
-- Tagihan bulanan otomatis
-- Pencatatan pembayaran dan pengeluaran
+  - tambah kurang kamar
+  - tampil data kamar
 
+- Data penghuni dan kontrak sewa
+  - tambah kurang penghuni
+  - tambah penghuni -> buat kontrak baru -> tambah bills baru
+  - hapus kontrak   -> penghuni dihapus
+  - tampil data penghuni
+
+- Pencatatan pembayaran dan pengeluaran
+  - pengeluaran manual, isi sendiri -> rekap di panel laporan
+  - ada panel bill, panel payment history
+  - payment baru -> ubah 'status' di bill
 
 ## 3. Database
 
