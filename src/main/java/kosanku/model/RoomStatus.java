@@ -38,7 +38,7 @@ Note for future me:
 Keep in mind:
 1. In Java code, use the enum (RoomStatus.TERISI). Never use raw strings like "Terisi".
 2. When talking to MySQL, convert: getDbEnumValue() going in, fromDbToJavaConstant() coming out.
-3. Keep #1 and #3 spelled exactly the same. This is the one rule you have to maintain by hand. If you ever add a status, you edit two places: the SQL ENUM and the Java enum, with matching text.
+3. Keep SQL ENUM and text label storen inside the constant spelled exactly the same. This is the one rule you have to maintain by hand. If you ever add a status, you edit two places: the SQL ENUM and the Java enum, with matching text.
 
 methods:
 getDbEnumValue() says “give me the text MySQL knows this by”, and fromDbToJavaConstant() says “given MySQL’s text, find the Java constant”.
