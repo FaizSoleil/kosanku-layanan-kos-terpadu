@@ -1,5 +1,6 @@
 package kosanku.dao;
 
+import kosanku.model.RoomStatus;
 import kosanku.model.Rooms;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
@@ -17,7 +18,7 @@ public class RoomsDAO {
             pstmt.setString(2, room.getType());
             pstmt.setDouble(3, room.getPrice());
             pstmt.setString(4, room.getFacilities());
-            pstmt.setString(5, room.getStatus());
+            pstmt.setString(5, room.getStatus().getDbValue());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -57,7 +58,7 @@ public class RoomsDAO {
             pstmt.setString(2, room.getType());
             pstmt.setDouble(3, room.getPrice());
             pstmt.setString(4, room.getFacilities());
-            pstmt.setString(5, room.getStatus());
+            pstmt.setString(5, room.getStatus().getDbValue());
             pstmt.setInt(6, room.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); }
@@ -80,7 +81,7 @@ public class RoomsDAO {
             rs.getString("type"),
             rs.getDouble("price"),
             rs.getString("facilities"),
-            rs.getString("status")
+            RoomStatus.fromDb(rs.getString("status"))
         );
     }
 }
