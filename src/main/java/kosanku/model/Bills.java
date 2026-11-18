@@ -7,11 +7,19 @@ public class Bills {
     private int contractId;
     private Date bulanTagihan;
     private double totalTagihan;
-    private String status;
+    private BillStatus status;
 
     public Bills(){}
 
-    public Bills(int contractId, Date bulanTagihan, double totalTagihan, String status) {
+    public Bills(int id, int contractId, Date bulanTagihan, double totalTagihan, BillStatus status) {
+        this.id = id;
+        this.contractId = contractId;
+        this.bulanTagihan = bulanTagihan;
+        this.totalTagihan = totalTagihan;
+        this.status = status;
+    }
+
+    public Bills(int contractId, Date bulanTagihan, double totalTagihan, BillStatus status) {
         this.contractId = contractId;
         this.bulanTagihan = bulanTagihan;
         this.totalTagihan = totalTagihan;
@@ -22,11 +30,11 @@ public class Bills {
     public int getContractId() {return contractId;}
     public Date getBulanTagihan() {return bulanTagihan;}
     public double getTotalTagihan() {return totalTagihan;}
-    public String getStatus() {return status;}
+    public BillStatus getStatus() {return status;}
 
     public void setId(int id) {this.id = id;}
     public void setContractId(int contractId) {this.contractId = contractId;}
     public void setBulanTagihan(Date bulanTagihan) {this.bulanTagihan = bulanTagihan;}
     public void setTotalTagihan(double totalTagihan) {this.totalTagihan = totalTagihan;}
-    public void setStatus(String status) {this.status = status;}
+    public void setStatus(BillStatus status) {this.status = status;}
 }

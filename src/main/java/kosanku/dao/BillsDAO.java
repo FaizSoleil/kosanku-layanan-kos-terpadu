@@ -1,5 +1,6 @@
 package kosanku.dao;
 
+import kosanku.model.BillStatus;
 import kosanku.model.Bills;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
@@ -15,7 +16,7 @@ public class BillsDAO {
             pstmt.setInt(1, bill.getContractId());
             pstmt.setDate(2, new java.sql.Date(bill.getBulanTagihan().getTime()));
             pstmt.setDouble(3, bill.getTotalTagihan());
-            pstmt.setString(4, bill.getStatus());
+            pstmt.setString(4, bill.getStatus().getDbEnumValue());
 
             int affected = pstmt.executeUpdate();
             if (affected > 0) {
@@ -54,7 +55,7 @@ public class BillsDAO {
             pstmt.setInt(1, bill.getContractId());
             pstmt.setDate(2, new java.sql.Date(bill.getBulanTagihan().getTime()));
             pstmt.setDouble(3, bill.getTotalTagihan());
-            pstmt.setString(4, bill.getStatus());
+            pstmt.setString(4, bill.getStatus().getDbEnumValue());
             pstmt.setInt(5, bill.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); }
@@ -72,12 +73,12 @@ public class BillsDAO {
 
     private Bills mapRow(ResultSet rs) throws SQLException {
         Bills bill = new Bills(
+            rs.getInt("id"),
             rs.getInt("contract_id"),
             rs.getDate("bulan_tagihan"),
             rs.getDouble("total_tagihan"),
-            rs.getString("status")
+            BillStatus.fromDbToJavaConstant(rs.getString("status"))
         );
-        bill.setId(rs.getInt("id"));
         return bill;
     }
 }
