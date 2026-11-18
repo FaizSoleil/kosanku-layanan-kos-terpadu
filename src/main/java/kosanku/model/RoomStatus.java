@@ -12,12 +12,12 @@ public enum RoomStatus {
     }
 
     /** The exact string stored in the MySQL ENUM column. */
-    public String getDbValue() {
+    public String getDbEnumValue() {
         return dbValue;
     }
 
     /** Converts a database string to the enum. Throws on unknown values so mistakes surface early. */
-    public static RoomStatus fromDb(String value) {
+    public static RoomStatus fromDbToJavaConstant(String value) {
         for (RoomStatus s : values()) {
             if (s.dbValue.equals(value)) {
                 return s;
@@ -37,11 +37,11 @@ public enum RoomStatus {
 Note for future me:
 Keep in mind:
 1. In Java code, use the enum (RoomStatus.TERISI). Never use raw strings like "Terisi".
-2. When talking to MySQL, convert: getDbValue() going in, fromDb() coming out.
+2. When talking to MySQL, convert: getDbEnumValue() going in, fromDbToJavaConstant() coming out.
 3. Keep #1 and #3 spelled exactly the same. This is the one rule you have to maintain by hand. If you ever add a status, you edit two places: the SQL ENUM and the Java enum, with matching text.
 
 methods:
-getDbValue() says “give me the text MySQL knows this by”, and fromDb() says “given MySQL’s text, find the Java constant”.
+getDbEnumValue() says “give me the text MySQL knows this by”, and fromDbToJavaConstant() says “given MySQL’s text, find the Java constant”.
 
 Contoh penggunaan:
 RoomDAO maprows():

@@ -18,7 +18,7 @@ public class RoomsDAO {
             pstmt.setString(2, room.getType());
             pstmt.setDouble(3, room.getPrice());
             pstmt.setString(4, room.getFacilities());
-            pstmt.setString(5, room.getStatus().getDbValue());
+            pstmt.setString(5, room.getStatus().getDbEnumValue());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -58,7 +58,7 @@ public class RoomsDAO {
             pstmt.setString(2, room.getType());
             pstmt.setDouble(3, room.getPrice());
             pstmt.setString(4, room.getFacilities());
-            pstmt.setString(5, room.getStatus().getDbValue());
+            pstmt.setString(5, room.getStatus().getDbEnumValue());
             pstmt.setInt(6, room.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); }
@@ -81,7 +81,7 @@ public class RoomsDAO {
             rs.getString("type"),
             rs.getDouble("price"),
             rs.getString("facilities"),
-            RoomStatus.fromDb(rs.getString("status"))
+            RoomStatus.fromDbToJavaConstant(rs.getString("status"))
         );
     }
 }
