@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS payments (
     bill_id             INT NOT NULL,
     payment_date        DATE NOT NULL,
     jumlah              DECIMAL(12, 2) NOT NULL,
-    metode_pembayaran   VARCHAR(50) NOT NULL,
     FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE RESTRICT,
     CONSTRAINT chk_payment_amount CHECK (jumlah > 0)
 );

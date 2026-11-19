@@ -54,10 +54,10 @@ INSERT INTO bills (contract_id, bulan_tagihan, total_tagihan, status) VALUES
 
 -- 6. Seed Payments
 -- Matching payments for the paid bills
-INSERT INTO payments (bill_id, payment_date, jumlah, metode_pembayaran) VALUES
-(1, '2026-10-05', 1500000.00, 'Transfer Bank'),
-(3, '2026-10-12', 2200000.00, 'QRIS'),
-(4, '2026-11-10', 2200000.00, 'Transfer Bank');
+INSERT INTO payments (bill_id, payment_date, jumlah) VALUES
+(1, '2026-10-05', 1500000.00),
+(3, '2026-10-12', 2200000.00),
+(4, '2026-11-10', 2200000.00);
 
 -- 7. Seed Expenses
 INSERT INTO expenses (expense_date, deskripsi, jumlah) VALUES
