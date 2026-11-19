@@ -1,4 +1,4 @@
-DROP DATABASE kosanku
+DROP DATABASE IF EXISTS kosanku
 
 CREATE DATABASE IF NOT EXISTS kosanku
     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -15,9 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS rooms (
     id INT AUTO_INCREMENT PRIMARY KEY,
     room_number         VARCHAR(20) NOT NULL UNIQUE,
-    type                VARCHAR(50) NOT NULL,
     price               DECIMAL(12, 2) NOT NULL,
-    facilities          TEXT,
     status              ENUM('Tersedia','Terisi','Perbaikan') NOT NULL DEFAULT 'Tersedia',
     CONSTRAINT chk_room_price   CHECK (price >= 0)
 );

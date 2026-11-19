@@ -32,16 +32,16 @@ INSERT INTO rooms (room_number, price, status) VALUES
 
 -- 3. Seed Tenants
 INSERT INTO tenants (id_number, name, email, phone_number, is_active) VALUES
-('Andi Pratama', 'andi.pratama@gmail.com', '081234567890', 'TRUE'),
-('Rina Melati', 'rina.melati@yahoo.com', '081987654321', 'FALSE'),
-('Joko Widodo', 'joko.w@outlook.com', '081122334455', '1');
+('1234567891234567', 'Andi Pratama', 'andi.pratama@gmail.com', '081234567890', TRUE),
+('0987654321098765', 'Rina Melati', 'rina.melati@yahoo.com', '081987654321', FALSE),
+('5678904321098543', 'Joko Widodo', 'joko.w@outlook.com', '081122334455', '1');
 
 -- 4. Seed Contracts
 -- tenant_id 1 in Room 101, tenant_id 2 in Room 201, tenant_id 3 in Room 301
 INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo, status) VALUES
-(1, 1, '2026-01-01', '2026-12-31', 1500000.00, '2026-12-31', 'Aktif'),
-(2, 3, '2026-02-01', '2027-01-31', 2200000.00, '2027-01-31, 'Selesai'),
-(3, 5, '2026-03-01', '2027-02-28', 3000000.00, '2027-02-28', 'Dibatalkan);
+(1, 1, '2026-01-01', '2026-12-31', 1500000.00, '2026-12-30', 'Aktif'),
+(2, 3, '2026-02-01', '2027-01-31', 2200000.00, '2027-01-30', 'Selesai'),
+(3, 5, '2026-03-01', '2027-02-28', 3000000.00, '2027-02-27', 'Dibatalkan');
 
 -- 5. Seed Bills
 -- Monthly bills linked to the active contracts
