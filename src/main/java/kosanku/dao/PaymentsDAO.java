@@ -1,8 +1,6 @@
 package kosanku.dao;
 
 import kosanku.model.Payments;
-import kosanku.model.RoomStatus;
-import kosanku.model.Rooms;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
