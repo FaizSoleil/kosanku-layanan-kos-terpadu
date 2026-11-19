@@ -1,5 +1,6 @@
 package kosanku.dao;
 
+import kosanku.model.ContractStatus;
 import kosanku.model.Contracts;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
@@ -10,7 +11,7 @@ import java.util.Optional;
 public class ContractsDAO {
 
     public boolean insert(Contracts contract) {
-        String sql = "INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, contract.getTenantId());
             pstmt.setInt(2, contract.getRoomId());
@@ -18,6 +19,7 @@ public class ContractsDAO {
             pstmt.setDate(4, contract.getTanggalKeluar() != null ? new java.sql.Date(contract.getTanggalKeluar().getTime()) : null);
             pstmt.setDouble(5, contract.getDeposit());
             pstmt.setDate(6, new java.sql.Date(contract.getTanggalJatuhTempo().getTime()));
+            pstmt.setString(6, contract.getStatus().getDbEnumValue());
 
             int affected = pstmt.executeUpdate();
             if (affected > 0) {
@@ -31,7 +33,7 @@ public class ContractsDAO {
     }
 
     public Optional<Contracts> findById(int id) {
-        String sql = "SELECT id, tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo FROM contracts WHERE id = ?";
+        String sql = "SELECT * FROM contracts WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -43,7 +45,7 @@ public class ContractsDAO {
 
     public List<Contracts> findAll() {
         List<Contracts> list = new ArrayList<>();
-        String sql = "SELECT id, tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo FROM contracts";
+        String sql = "SELECT * FROM contracts";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) { e.printStackTrace(); }
@@ -51,7 +53,7 @@ public class ContractsDAO {
     }
 
     public boolean update(Contracts contract) {
-        String sql = "UPDATE contracts SET tenant_id = ?, room_id = ?, tanggal_masuk = ?, tanggal_keluar = ?, deposit = ?, tanggal_jatuh_tempo = ? WHERE id = ?";
+        String sql = "UPDATE contracts SET tenant_id = ?, room_id = ?, tanggal_masuk = ?, tanggal_keluar = ?, deposit = ?, tanggal_jatuh_tempo = ?, status = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, contract.getTenantId());
             pstmt.setInt(2, contract.getRoomId());
@@ -59,7 +61,8 @@ public class ContractsDAO {
             pstmt.setDate(4, contract.getTanggalKeluar() != null ? new java.sql.Date(contract.getTanggalKeluar().getTime()) : null);
             pstmt.setDouble(5, contract.getDeposit());
             pstmt.setDate(6, new java.sql.Date(contract.getTanggalJatuhTempo().getTime()));
-            pstmt.setInt(7, contract.getId());
+            pstmt.setString(7, contract.getStatus().getDbEnumValue());
+            pstmt.setInt(8, contract.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); }
         return false;
@@ -76,12 +79,14 @@ public class ContractsDAO {
 
     private Contracts mapRow(ResultSet rs) throws SQLException {
         return new Contracts(
+            rs.getInt("id"),
             rs.getInt("tenant_id"),
             rs.getInt("room_id"),
             rs.getDate("tanggal_masuk"),
             rs.getDate("tanggal_keluar"),
             rs.getDouble("deposit"),
-            rs.getDate("tanggal_jatuh_tempo")
+            rs.getDate("tanggal_jatuh_tempo"),
+            ContractStatus.fromDbToJavaConstant(rs.getString("status"))
         );
         // Note: Remember to call setId using the setter if your constructor doesn't set it.
     }

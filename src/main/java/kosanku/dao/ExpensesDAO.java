@@ -12,7 +12,7 @@ public class ExpensesDAO {
         String sql = "INSERT INTO expenses (expense_date, kategori, jumlah) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDate(1, new java.sql.Date(expense.getExpenseDate().getTime()));
-            pstmt.setString(2, expense.getKategori());
+            pstmt.setString(2, expense.getDeskripsi());
             pstmt.setDouble(3, expense.getJumlah());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); }
@@ -24,13 +24,18 @@ public class ExpensesDAO {
         String sql = "SELECT expense_date, kategori, jumlah FROM expenses";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new Expenses(
-                    rs.getDate("expense_date"),
-                    rs.getString("kategori"),
-                    rs.getDouble("jumlah")
-                ));
+                list.add(mapRow(rs));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return list;
+    }
+
+    private Expenses mapRow(ResultSet rs) throws SQLException {
+        return new Expenses(
+            rs.getInt("id"),
+            rs.getDate("expense_date"),
+            rs.getString("deskripsi"),
+            rs.getDouble("jumlah")
+        );
     }
 }
