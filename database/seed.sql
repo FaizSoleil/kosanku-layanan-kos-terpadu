@@ -23,12 +23,12 @@ INSERT INTO users (username, password, nama_lengkap) VALUES
 ('staff_front', '$2a$10$X7vQj5wD2nB5n4K1qW0Xeu1Jq3g2v5P9W8L8T7K6v5m4n3p2q1s0W', 'Siti Rahma');
 
 -- 2. Seed Rooms
-INSERT INTO rooms (room_number, type, price, facilities, status) VALUES
-('101', 'Standard AC', 1500000.00, 'AC, Single Bed, Wardrobe, Desk, Wi-Fi', 'Tersedia'),
-('102', 'Standard AC', 1500000.00, 'AC, Single Bed, Wardrobe, Desk, Wi-Fi', 'Terisi'),
-('201', 'Deluxe', 2200000.00, 'AC, Queen Bed, Private Bathroom, Smart TV, Water Heater, Wi-Fi', 'Perbaikan'),
-('202', 'Deluxe', 2200000.00, 'AC, Queen Bed, Private Bathroom, Smart TV, Water Heater, Wi-Fi', 'Tersedia'),
-('301', 'VIP Suite', 3000000.00, 'AC, King Bed, Private Kitchenette, Balcony, Smart TV, Wi-Fi', 'Terisi');
+INSERT INTO rooms (room_number, price, status) VALUES
+('101', 1500000.00, 'Tersedia'),
+('102', 1500000.00, 'Terisi'),
+('201', 2200000.00, 'Perbaikan'),
+('202', 2200000.00, 'Tersedia'),
+('301', 3000000.00, 'Terisi');
 
 -- 3. Seed Tenants
 INSERT INTO tenants (name, email, phone_number) VALUES
