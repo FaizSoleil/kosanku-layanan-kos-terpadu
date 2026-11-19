@@ -9,8 +9,6 @@ package kosanku.test;
 
 import kosanku.dao.*;
 import kosanku.model.*;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +18,7 @@ public class DatabaseTest {
 
         RoomsDAO roomsDAO = new RoomsDAO();
         System.out.println("Testing RoomsDAO...");
-        Rooms testRoom = new Rooms("A101", "Deluxe", 1500000.0, "AC, WiFi, Hot Water", "Available");
+        Rooms testRoom = new Rooms("A101", 1500000.0, RoomStatus.TERSEDIA);
         boolean roomInserted = roomsDAO.insert(testRoom);
         System.out.println("-> Insert Room: " + (roomInserted ? "SUCCESS (ID: " + testRoom.getId() + ")" : "FAILED"));
 
@@ -37,9 +35,9 @@ public class DatabaseTest {
         TenantsDAO tenantsDAO = new TenantsDAO();
         System.out.println("\nTesting TenantsDAO...");
         String testEmail = "budi@example.com";
-        Tenants testTenant = new Tenants(1, "Budi Santoso", testEmail, "081234567890");
+        Tenants testTenant = new Tenants(1 ,"32731202938113435676", "Budi Santoso", testEmail, "081234567890", Boolean.TRUE);
         
-        tenantsDAO.delete(testEmail);
+        tenantsDAO.delete(1);
         
         boolean tenantInserted = tenantsDAO.insert(testTenant);
         System.out.println("-> Insert Tenant: " + (tenantInserted ? "SUCCESS" : "FAILED"));

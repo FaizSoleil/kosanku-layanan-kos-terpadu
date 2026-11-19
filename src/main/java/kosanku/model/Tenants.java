@@ -21,7 +21,7 @@ public class Tenants {
         this.phoneNumber = phoneNumber;
         this.active = true;
     }
-
+    
     // Full constructor (for reading from the database)
     public Tenants(int id, String idNumber, String name, String email, String phoneNumber, boolean active) {
         this.id = id;

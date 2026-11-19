@@ -83,7 +83,7 @@ public class PenghuniPanel extends javax.swing.JPanel {
                     tenant.getPhoneNumber()
                 });
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(
             this, e.getMessage(), "Terjadi kesalahan", JOptionPane.ERROR_MESSAGE
         );
