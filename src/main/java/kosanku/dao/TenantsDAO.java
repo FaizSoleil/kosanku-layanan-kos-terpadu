@@ -81,7 +81,7 @@ public class TenantsDAO {
     }
 
     /** Active tenants only (what the main list screen should show). */
-    public List<Tenants> findAll() throws SQLException {
+    public List<Tenants> findAll() {
         return findAll(false);
     }
 
@@ -200,12 +200,12 @@ public class TenantsDAO {
             rs.getBoolean("is_active")
         );
     }
- 
+
     /** The email column is UNIQUE and nullable: an empty string would collide, so store NULL instead. */
     private String emptyToNull(String s) {
         return (s == null || s.trim().isEmpty()) ? null : s.trim();
     }
- 
+
     /** Short message for the errors we expect, full stack trace for anything else. */
     private void logError(SQLException e) {
         switch (e.getErrorCode()) {
