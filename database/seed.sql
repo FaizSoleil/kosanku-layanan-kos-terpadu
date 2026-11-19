@@ -31,10 +31,10 @@ INSERT INTO rooms (room_number, price, status) VALUES
 ('301', 3000000.00, 'Terisi');
 
 -- 3. Seed Tenants
-INSERT INTO tenants (name, email, phone_number) VALUES
-('Andi Pratama', 'andi.pratama@gmail.com', '081234567890'),
-('Rina Melati', 'rina.melati@yahoo.com', '081987654321'),
-('Joko Widodo', 'joko.w@outlook.com', '081122334455');
+INSERT INTO tenants (id_number, name, email, phone_number, is_active) VALUES
+('Andi Pratama', 'andi.pratama@gmail.com', '081234567890', 'TRUE'),
+('Rina Melati', 'rina.melati@yahoo.com', '081987654321', 'FALSE'),
+('Joko Widodo', 'joko.w@outlook.com', '081122334455', '1');
 
 -- 4. Seed Contracts
 -- tenant_id 1 in Room 101, tenant_id 2 in Room 201, tenant_id 3 in Room 301

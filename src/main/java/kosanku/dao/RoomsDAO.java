@@ -9,17 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class RoomsDAO {
-    // MySQL error codes
-    private static final int ER_DUP_ENTRY = 1062;          // id_number or email already used
-    private static final int ER_ROW_IS_REFERENCED = 1451;  // RESTRICT: tenant still has contracts
-
     public boolean insert(Rooms room) {
         String sql = "INSERT INTO rooms (room_number, price, status) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, room.getRoomNumber());
-            pstmt.setDouble(3, room.getPrice());
-            pstmt.setString(5, room.getStatus().getDbEnumValue());
+            pstmt.setDouble(2, room.getPrice());
+            pstmt.setString(3, room.getStatus().getDbEnumValue());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -28,7 +24,7 @@ public class RoomsDAO {
                 }
                 return true;
             }
-        } catch (SQLException e) { logError(e);; }
+        } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
 
@@ -39,7 +35,7 @@ public class RoomsDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) return Optional.of(mapRow(rs));
             }
-        } catch (SQLException e) { logError(e);; }
+        } catch (SQLException e) { e.printStackTrace(); }
         return Optional.empty();
     }
 
@@ -60,7 +56,7 @@ public class RoomsDAO {
             pstmt.setString(3, room.getStatus().getDbEnumValue());
             pstmt.setInt(4, room.getId());
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { logError(e); }
+        } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
 
@@ -69,7 +65,7 @@ public class RoomsDAO {
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { logError(e); }
+        } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
 
@@ -80,19 +76,5 @@ public class RoomsDAO {
             rs.getDouble("price"),
             RoomStatus.fromDbToJavaConstant(rs.getString("status"))
         );
-    }
-
-    /** Short message for the errors we expect, full stack trace for anything else. */
-    private void logError(SQLException e) {
-        switch (e.getErrorCode()) {
-            case ER_DUP_ENTRY:
-                System.err.println("NIK atau email sudah terdaftar.");
-                break;
-            case ER_ROW_IS_REFERENCED:
-                System.err.println("Penyewa masih memiliki kontrak, tidak bisa dihapus. Nonaktifkan saja.");
-                break;
-            default:
-                e.printStackTrace();
-        }
     }
 }
