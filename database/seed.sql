@@ -1,7 +1,7 @@
 
 SET FOREIGN_KEY_CHECKS = 0;
 
---jalankan manual untuk buat dummy data
+-- jalankan manual untuk buat dummy data
 -- Disable foreign key checks temporarily for smooth seeding order
 
 -- Clear existing data if re-running seed
