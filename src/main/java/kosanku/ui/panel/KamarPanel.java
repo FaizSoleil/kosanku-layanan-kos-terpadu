@@ -4,17 +4,29 @@
  */
 package kosanku.ui.panel;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import kosanku.dao.RoomsDAO;
+import kosanku.model.Rooms;
+
 /**
  *
  * @author LENOVO
  */
 public class KamarPanel extends javax.swing.JPanel {
 
+    private final RoomsDAO roomsDAO = new RoomsDAO();
+
     /**
      * Creates new form KamarPanel
      */
     public KamarPanel() {
         initComponents();
+        renderTable();
     }
 
     /**
@@ -26,33 +38,66 @@ public class KamarPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        roomsTable = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(144, 144, 0));
         setPreferredSize(new java.awt.Dimension(540, 380));
 
-        jLabel1.setText("Ini panel kamar");
+        roomsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "No. Kamar", "Harga", "Status"
+            }
+        ));
+        jScrollPane1.setViewportView(roomsTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(226, 226, 226)
-                .addComponent(jLabel1)
-                .addContainerGap(232, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(44, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(178, 178, 178)
-                .addComponent(jLabel1)
-                .addContainerGap(186, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+   private void renderTable() {
+       try {
+           List<Rooms> rooms = roomsDAO.findAll();
+           DefaultTableModel tableModel = (DefaultTableModel) roomsTable.getModel();
+           tableModel.setRowCount(0);
+           for (var room : rooms) {
+                tableModel.addRow(new Object[]{
+                    room.getId(),
+                    room.getRoomNumber(),
+                    room.getPrice(),
+                    room.getStatus()
+                });
+           }
+       } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this, e.getMessage(), "Terjadi kesalahan!", JOptionPane.ERROR_MESSAGE
+            );
+       }
+   }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable roomsTable;
     // End of variables declaration//GEN-END:variables
 }
