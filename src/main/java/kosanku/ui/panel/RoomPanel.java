@@ -12,27 +12,36 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import kosanku.controller.KamarController;
-import kosanku.dao.RoomsDAO;
-import kosanku.model.Rooms;
-import kosanku.ui.KamarFormDialog;
+import kosanku.controller.AuthController;
+import kosanku.controller.RoomController;
+import kosanku.dao.RoomDAO;
+import kosanku.dao.UserDAO;
+import kosanku.model.Room;
+import kosanku.service.AuthService;
+import kosanku.service.RoomService;
+import kosanku.ui.dialog.RoomFormDialog;
 
 /**
  *
  * @author LENOVO
  */
-public class KamarPanel extends javax.swing.JPanel {
+public class RoomPanel extends javax.swing.JPanel {
 
-    private final RoomsDAO roomsDAO = new RoomsDAO();
-    private final KamarController kamarController;
+    private final RoomDAO roomsDAO = new RoomDAO();
+    private final RoomController roomController;
 
     /**
      * Creates new form KamarPanel
      */
-    public KamarPanel(KamarController kamarController) {
+    public RoomPanel() {
+        this(new RoomController(new RoomService(new RoomDAO())));
+        this.roomController.setRoomView(this);
+    }
+
+    public RoomPanel(RoomController roomController) {
         initComponents();
         renderTable();
-        this.kamarController = kamarController;
+        this.roomController = roomController;
     }
 
     /**
@@ -121,12 +130,15 @@ public class KamarPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
 
-        KamarFormDialog dialog = new KamarFormDialog(owner, true);
+        RoomFormDialog dialog = new RoomFormDialog(owner, true);
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
             try {
-                kamarController.create(id);
+                String retrievedRoomNumber = dialog.getSavedRoomNumber();
+                String retrievedPrice = dialog.getSavedPrice();
+                roomController.create(retrievedRoomNumber, retrievedPrice);
+                renderTable();
         } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
@@ -138,7 +150,7 @@ public class KamarPanel extends javax.swing.JPanel {
         int row = tableRooms.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Pilih kamar dulu.");
-            return;
+            return; 
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
@@ -154,7 +166,8 @@ public class KamarPanel extends javax.swing.JPanel {
         int choice = JOptionPane.showConfirmDialog(this, "Hapus kamar ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.NO_OPTION) { return; }
         try {
-            kamarController.delete(id);
+            roomController.delete(id);
+            renderTable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
@@ -162,7 +175,7 @@ public class KamarPanel extends javax.swing.JPanel {
 
    private void renderTable() {
        try {
-           List<Rooms> rooms = roomsDAO.findAll();
+           List<Room> rooms = roomsDAO.findAll();
            DefaultTableModel tableModel = (DefaultTableModel) tableRooms.getModel();
            tableModel.setRowCount(0);
            for (var room : rooms) {

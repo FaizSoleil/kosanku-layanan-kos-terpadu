@@ -2,30 +2,47 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package kosanku.ui;
+package kosanku.ui.dialog;
 
 /**
  *
  * @author Desktop
  */
-public class KamarFormDialog extends javax.swing.JDialog {
+public class RoomFormDialog extends javax.swing.JDialog {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(KamarFormDialog.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RoomFormDialog.class.getName());
+    private String savedRoomNumber;
+    private String savedPrice;
     private boolean saved = false;
-    
-    public boolean isSaved() { return saved; }
-
-    public void setData(String nomor, double price) {
-        fieldPrice.setText(nomor);
-        fieldPrice.setText(Double.toString(price));
-    }
 
     /**
      * Creates new form KamarFormDialog
      */
-    public KamarFormDialog(java.awt.Frame parent, boolean modal) {
+    public RoomFormDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
+    }
+    // if modal is set to true, it blocks the input to its parent's view
+    
+    public String getSavedRoomNumber() {
+        return savedRoomNumber;
+    }
+
+    public String getSavedPrice() {
+        return savedPrice;
+    }
+
+    public void save() {
+        saved = true;
+        saveData();
+    }
+
+    public boolean isSaved() { return saved; }
+
+    public void saveData() {
+        savedRoomNumber = fieldRoomNumber.getText();
+        savedPrice = fieldPrice.getText();
     }
     
     /**
@@ -36,6 +53,7 @@ public class KamarFormDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         labelTitle = new javax.swing.JLabel();
         labelRoomNumber = new javax.swing.JLabel();
         labelPrice = new javax.swing.JLabel();
@@ -45,6 +63,11 @@ public class KamarFormDialog extends javax.swing.JDialog {
         btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         labelTitle.setText("TAMBAH KAMAR");
@@ -110,7 +133,7 @@ public class KamarFormDialog extends javax.swing.JDialog {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        saved = true;
+        save();
         dispose();
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -118,6 +141,13 @@ public class KamarFormDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        saved = false;
+        fieldPrice.setText("");
+        fieldRoomNumber.setText("");
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -144,7 +174,7 @@ public class KamarFormDialog extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                KamarFormDialog dialog = new KamarFormDialog(new javax.swing.JFrame(), true);
+                RoomFormDialog dialog = new RoomFormDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

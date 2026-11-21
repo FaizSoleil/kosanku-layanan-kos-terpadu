@@ -1,19 +1,19 @@
 package kosanku.dao;
 
-import kosanku.model.Tenants;
+import kosanku.model.Tenant;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-public class TenantsDAO {
+public class TenantDAO {
     private static final String COLUMNS = "id, id_number, name, email, phone_number, is_visible";
 
     // MySQL error codes
     private static final int ER_DUP_ENTRY = 1062;          // id_number or email already used
     private static final int ER_ROW_IS_REFERENCED = 1451;  // RESTRICT: tenant still has contracts
 
-    public boolean insert(Tenants tenant) {
+    public boolean insert(Tenant tenant) {
         String sql = "INSERT INTO tenants (id_number, name, email, phone_number) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -37,7 +37,7 @@ public class TenantsDAO {
 
     // The find methods do NOT filter by is_visible, so you can still find a deactivated tenant
     // (for example to reactivate them, or to explain why a NIK/email is already taken).
-    public Optional<Tenants> findById(int id) {
+    public Optional<Tenant> findById(int id) {
         String sql = "SELECT " + COLUMNS + " FROM tenants WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -51,7 +51,7 @@ public class TenantsDAO {
         return Optional.empty();
     }
 
-    public Optional<Tenants> findByEmail(String email) {
+    public Optional<Tenant> findByEmail(String email) {
         if (email == null || email.trim().isEmpty()) return Optional.empty();
         String sql = "SELECT " + COLUMNS + " FROM tenants WHERE email = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -66,7 +66,7 @@ public class TenantsDAO {
         return Optional.empty();
     }
 
-    public Optional<Tenants> findByIdNumber(String idNumber) {
+    public Optional<Tenant> findByIdNumber(String idNumber) {
         String sql = "SELECT " + COLUMNS + " FROM tenants WHERE id_number = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -81,13 +81,13 @@ public class TenantsDAO {
     }
 
     /** visible tenants only (what the main list screen should show). */
-    public List<Tenants> findAll() {
+    public List<Tenant> findAll() {
         return findAll(false);
     }
 
     /** Pass true to also include deactivated tenants (for a "show invisible" checkbox). */
-    public List<Tenants> findAll(boolean includeInvisible) {
-        List<Tenants> list = new ArrayList<>();
+    public List<Tenant> findAll(boolean includeInvisible) {
+        List<Tenant> list = new ArrayList<>();
         String sql = "SELECT " + COLUMNS + " FROM tenants"
                    + (includeInvisible ? "" : " WHERE is_visible = TRUE")
                    + " ORDER BY name";
@@ -102,7 +102,7 @@ public class TenantsDAO {
     }
 
     /** Updates by id, because email is optional and cannot identify a row. */
-    public boolean update(Tenants tenant) {
+    public boolean update(Tenant tenant) {
         String sql = "UPDATE tenants SET id_number = ?, name = ?, email = ?, phone_number = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -190,8 +190,8 @@ public class TenantsDAO {
         return false;
     }
 
-    private Tenants mapRow(ResultSet rs) throws SQLException {
-        return new Tenants(
+    private Tenant mapRow(ResultSet rs) throws SQLException {
+        return new Tenant(
             rs.getInt("id"),
             rs.getString("id_number"),
             rs.getString("name"),

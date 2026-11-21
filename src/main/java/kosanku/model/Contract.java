@@ -2,7 +2,7 @@ package kosanku.model;
 
 import java.util.Date;
 
-public class Contracts {
+public class Contract {
     private int id;
     private int tenantId;
     private int roomId;
@@ -12,11 +12,11 @@ public class Contracts {
     private Date tanggalJatuhTempo;
     private ContractStatus status;
 
-    public Contracts(){
+    public Contract(){
         this.status = ContractStatus.AKTIF;
     }
 
-    public Contracts(int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, Date tanggalJatuhTempo, ContractStatus status) {
+    public Contract(int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, Date tanggalJatuhTempo, ContractStatus status) {
         this.tenantId = tenantId;
         this.roomId = roomId;
         this.tanggalMasuk = tanggalMasuk;
@@ -26,7 +26,7 @@ public class Contracts {
         this.status = status;
     }
 
-    public Contracts(int id, int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, Date tanggalJatuhTempo, ContractStatus status) {
+    public Contract(int id, int tenantId, int roomId, Date tanggalMasuk, Date tanggalKeluar, double deposit, Date tanggalJatuhTempo, ContractStatus status) {
         this.id = id;
         this.tenantId = tenantId;
         this.roomId = roomId;

@@ -1,6 +1,6 @@
 package kosanku.controller;
 
-import kosanku.model.Users;
+import kosanku.model.User;
 import kosanku.service.AuthService;
 import kosanku.ui.DashboardForm;
 import kosanku.ui.LoginForm;
@@ -21,7 +21,7 @@ public class AuthController {
 
     public void handleLogin(String username, String password) {
         try {
-            Users loggedInUser = authService.login(username, password);
+            User loggedInUser = authService.login(username, password);
 
             JOptionPane.showMessageDialog(loginView,
                 "Selamat datang, " + loggedInUser.getNamaLengkap() + "!",

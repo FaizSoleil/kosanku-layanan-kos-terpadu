@@ -1,16 +1,16 @@
 package kosanku.dao;
 
 import kosanku.model.ContractStatus;
-import kosanku.model.Contracts;
+import kosanku.model.Contract;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ContractsDAO {
+public class ContractDAO {
 
-    public boolean insert(Contracts contract) {
+    public boolean insert(Contract contract) {
         String sql = "INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, contract.getTenantId());
@@ -32,7 +32,7 @@ public class ContractsDAO {
         return false;
     }
 
-    public Optional<Contracts> findById(int id) {
+    public Optional<Contract> findById(int id) {
         String sql = "SELECT * FROM contracts WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
@@ -43,8 +43,8 @@ public class ContractsDAO {
         return Optional.empty();
     }
 
-    public List<Contracts> findAll() {
-        List<Contracts> list = new ArrayList<>();
+    public List<Contract> findAll() {
+        List<Contract> list = new ArrayList<>();
         String sql = "SELECT * FROM contracts";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) list.add(mapRow(rs));
@@ -52,7 +52,7 @@ public class ContractsDAO {
         return list;
     }
 
-    public boolean update(Contracts contract) {
+    public boolean update(Contract contract) {
         String sql = "UPDATE contracts SET tenant_id = ?, room_id = ?, tanggal_masuk = ?, tanggal_keluar = ?, deposit = ?, tanggal_jatuh_tempo = ?, status = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, contract.getTenantId());
@@ -77,8 +77,8 @@ public class ContractsDAO {
         return false;
     }
 
-    private Contracts mapRow(ResultSet rs) throws SQLException {
-        return new Contracts(
+    private Contract mapRow(ResultSet rs) throws SQLException {
+        return new Contract(
             rs.getInt("id"),
             rs.getInt("tenant_id"),
             rs.getInt("room_id"),

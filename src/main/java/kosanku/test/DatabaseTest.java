@@ -16,26 +16,26 @@ public class DatabaseTest {
     public static void main(String[] args) {
         System.out.println("=== STARTING KOSANKU DAO TESTS ===\n");
 
-        RoomsDAO roomsDAO = new RoomsDAO();
+        RoomDAO roomsDAO = new RoomDAO();
         System.out.println("Testing RoomsDAO...");
-        Rooms testRoom = new Rooms("A101", 1500000.0, RoomStatus.TERSEDIA);
+        Room testRoom = new Room("A101", 1500000.0, RoomStatus.TERSEDIA);
         boolean roomInserted = roomsDAO.insert(testRoom);
         System.out.println("-> Insert Room: " + (roomInserted ? "SUCCESS (ID: " + testRoom.getId() + ")" : "FAILED"));
 
         if (roomInserted) {
-            Optional<Rooms> foundRoom = roomsDAO.findById(testRoom.getId());
+            Optional<Room> foundRoom = roomsDAO.findById(testRoom.getId());
             System.out.println("-> Find Room by ID: " + (foundRoom.isPresent() ? "FOUND (" + foundRoom.get().getRoomNumber() + ")" : "NOT FOUND"));
 
-            List<Rooms> allRooms = roomsDAO.findAll();
+            List<Room> allRooms = roomsDAO.findAll();
             System.out.println("-> Total Rooms in DB: " + allRooms.size());
         }
 
         roomsDAO.delete(testRoom.getId());
 
-        TenantsDAO tenantsDAO = new TenantsDAO();
+        TenantDAO tenantsDAO = new TenantDAO();
         System.out.println("\nTesting TenantsDAO...");
         String testEmail = "budi@example.com";
-        Tenants testTenant = new Tenants(1 ,"32731202938113435676", "Budi Santoso", testEmail, "081234567890", Boolean.TRUE);
+        Tenant testTenant = new Tenant(1 ,"32731202938113435676", "Budi Santoso", testEmail, "081234567890", Boolean.TRUE);
         
         tenantsDAO.delete(1);
         
@@ -43,21 +43,21 @@ public class DatabaseTest {
         System.out.println("-> Insert Tenant: " + (tenantInserted ? "SUCCESS" : "FAILED"));
 
         if (tenantInserted) {
-            Optional<Tenants> foundTenant = tenantsDAO.findByEmail(testEmail);
+            Optional<Tenant> foundTenant = tenantsDAO.findByEmail(testEmail);
             System.out.println("-> Find Tenant by Email: " + (foundTenant.isPresent() ? "FOUND (" + foundTenant.get().getName() + ")" : "NOT FOUND"));
         }
 
-        UsersDAO usersDAO = new UsersDAO();
+        UserDAO usersDAO = new UserDAO();
         System.out.println("\nTesting UsersDAO...");
         String testUsername = "admin_test";
-        Users testUser = new Users(testUsername, "password123", "System Administrator");
+        User testUser = new User(testUsername, "password123", "System Administrator");
 
         usersDAO.delete(testUsername); // Clean up
         boolean userInserted = usersDAO.insert(testUser);
         System.out.println("-> Insert User: " + (userInserted ? "SUCCESS" : "FAILED"));
 
         if (userInserted) {
-            Optional<Users> foundUser = usersDAO.findByUsername(testUsername);
+            Optional<User> foundUser = usersDAO.findByUsername(testUsername);
             System.out.println("-> Find User by Username: " + (foundUser.isPresent() ? "FOUND" : "NOT FOUND"));
             
             usersDAO.delete(testUsername);

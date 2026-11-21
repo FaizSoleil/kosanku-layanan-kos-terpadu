@@ -1,15 +1,16 @@
 package kosanku.dao;
 
 import kosanku.model.RoomStatus;
-import kosanku.model.Rooms;
+import kosanku.model.Room;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RoomsDAO {
-    public boolean insert(Rooms room) {
+public class RoomDAO {
+    /* Insert creates its own id */
+    public boolean insert(Room room) {
         String sql = "INSERT INTO rooms (room_number, price, status) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -28,7 +29,24 @@ public class RoomsDAO {
         return false;
     }
 
-    public Optional<Rooms> findById(int id) {
+    public boolean insertWithId(Room room) {
+        String sql = "INSERT INTO rooms (id, room_number, price, status) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, room.getId());
+            pstmt.setString(2, room.getRoomNumber());
+            pstmt.setDouble(3, room.getPrice());
+            pstmt.setString(4, room.getStatus().getDbEnumValue());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                return true;
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
+    }
+
+    public Optional<Room> findById(int id) {
         String sql = "SELECT * FROM rooms WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
@@ -39,7 +57,7 @@ public class RoomsDAO {
         return Optional.empty();
     }
 
-    public Optional<Rooms> findByRoomNumber(String room_number) {
+    public Optional<Room> findByRoomNumber(String room_number) {
         String sql = "SELECT * FROM rooms WHERE room_number = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, room_number);
@@ -50,8 +68,8 @@ public class RoomsDAO {
         return Optional.empty();
     }
 
-    public List<Rooms> findAll() {
-        List<Rooms> list = new ArrayList<>();
+    public List<Room> findAll() {
+        List<Room> list = new ArrayList<>();
         String sql = "SELECT * FROM rooms";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) list.add(mapRow(rs));
@@ -59,7 +77,7 @@ public class RoomsDAO {
         return list;
     }
 
-    public boolean update(Rooms room) {
+    public boolean update(Room room) {
         String sql = "UPDATE rooms SET room_number = ?, price = ?, status = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, room.getRoomNumber());
@@ -80,8 +98,8 @@ public class RoomsDAO {
         return false;
     }
 
-    private Rooms mapRow(ResultSet rs) throws SQLException {
-        return new Rooms(
+    private Room mapRow(ResultSet rs) throws SQLException {
+        return new Room(
             rs.getInt("id"),
             rs.getString("room_number"),
             rs.getDouble("price"),

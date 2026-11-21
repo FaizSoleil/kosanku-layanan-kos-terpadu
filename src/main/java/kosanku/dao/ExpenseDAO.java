@@ -1,14 +1,14 @@
 package kosanku.dao;
 
-import kosanku.model.Expenses;
+import kosanku.model.Expense;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpensesDAO {
+public class ExpenseDAO {
 
-    public boolean insert(Expenses expense) {
+    public boolean insert(Expense expense) {
         String sql = "INSERT INTO expenses (expense_date, kategori, jumlah) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDate(1, new java.sql.Date(expense.getExpenseDate().getTime()));
@@ -19,8 +19,8 @@ public class ExpensesDAO {
         return false;
     }
 
-    public List<Expenses> findAll() {
-        List<Expenses> list = new ArrayList<>();
+    public List<Expense> findAll() {
+        List<Expense> list = new ArrayList<>();
         String sql = "SELECT expense_date, kategori, jumlah FROM expenses";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
@@ -30,8 +30,8 @@ public class ExpensesDAO {
         return list;
     }
 
-    private Expenses mapRow(ResultSet rs) throws SQLException {
-        return new Expenses(
+    private Expense mapRow(ResultSet rs) throws SQLException {
+        return new Expense(
             rs.getInt("id"),
             rs.getDate("expense_date"),
             rs.getString("deskripsi"),

@@ -5,7 +5,7 @@
 package kosanku.ui;
 
 import kosanku.controller.AuthController;
-import kosanku.dao.UsersDAO;
+import kosanku.dao.UserDAO;
 import kosanku.service.AuthService;
 
 /**
@@ -28,7 +28,7 @@ public class LoginForm extends javax.swing.JFrame {
     }
 
     public LoginForm() {
-        this(new AuthController(new AuthService(new UsersDAO())));
+        this(new AuthController(new AuthService(new UserDAO())));
         this.authController.setLoginView(this);
     }
 

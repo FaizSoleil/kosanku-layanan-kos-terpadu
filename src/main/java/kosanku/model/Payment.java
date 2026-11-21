@@ -2,14 +2,14 @@ package kosanku.model;
 
 import java.util.Date;
 
-public class Payments {
+public class Payment {
     private int id;
     private int billId;
     private Date paymentDate;
     private double jumlah;
-    public Payments(){}
+    public Payment(){}
 
-    public Payments(int id, int billId, Date paymentDate, double jumlah) {
+    public Payment(int id, int billId, Date paymentDate, double jumlah) {
         this.id = id;
         this.billId = billId;
         this.paymentDate = paymentDate;

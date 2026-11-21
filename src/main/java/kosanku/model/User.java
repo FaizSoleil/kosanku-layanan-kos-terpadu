@@ -1,13 +1,13 @@
 package kosanku.model;
 
-public class Users {
+public class User {
     private String username;
     private String password;
     private String namaLengkap;
 
-    public Users(){}
+    public User(){}
 
-    public Users(String username, String password, String namaLengkap) {
+    public User(String username, String password, String namaLengkap) {
         this.username = username;
         this.password = password;
         this.namaLengkap = namaLengkap;

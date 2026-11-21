@@ -2,18 +2,18 @@ package kosanku.model;
 
 import java.util.Date;
 
-public class Bills {
+public class Bill {
     private int id;
     private int contractId;
     private Date bulanTagihan;
     private double totalTagihan;
     private BillStatus status;
 
-    public Bills(){
+    public Bill(){
         this.status = BillStatus.BELUM_DIBAYAR;
     }
 
-    public Bills(int id, int contractId, Date bulanTagihan, double totalTagihan, BillStatus status) {
+    public Bill(int id, int contractId, Date bulanTagihan, double totalTagihan, BillStatus status) {
         this.id = id;
         this.contractId = contractId;
         this.bulanTagihan = bulanTagihan;
@@ -21,7 +21,7 @@ public class Bills {
         this.status = status;
     }
 
-    public Bills(int contractId, Date bulanTagihan, double totalTagihan, BillStatus status) {
+    public Bill(int contractId, Date bulanTagihan, double totalTagihan, BillStatus status) {
         this.contractId = contractId;
         this.bulanTagihan = bulanTagihan;
         this.totalTagihan = totalTagihan;

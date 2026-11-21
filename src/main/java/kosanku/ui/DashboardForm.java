@@ -8,9 +8,9 @@ import kosanku.ui.panel.PengeluaranPanel;
 import kosanku.ui.panel.TagihanPanel;
 import kosanku.ui.panel.PembayaranPanel;
 import kosanku.ui.panel.KontrakPanel;
-import kosanku.ui.panel.KamarPanel;
+import kosanku.ui.panel.RoomPanel;
 import kosanku.ui.panel.PenghuniPanel;
-import kosanku.model.Users;
+import kosanku.model.User;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -24,7 +24,7 @@ import java.awt.CardLayout;
 public class DashboardForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DashboardForm.class.getName());
-    private final Users currentUser;
+    private final User currentUser;
 
     /**
      * Creates new form Dashboard
@@ -33,7 +33,7 @@ public class DashboardForm extends javax.swing.JFrame {
         this(null);
     }
 
-    public DashboardForm(Users currentUser) {
+    public DashboardForm(User currentUser) {
         this.currentUser = currentUser;
         initComponents();
         
@@ -41,7 +41,7 @@ public class DashboardForm extends javax.swing.JFrame {
         contentPanel.removeAll();
         contentPanel.setLayout(new CardLayout());
 
-        contentPanel.add(new KamarPanel(), "Kamar");
+        contentPanel.add(new RoomPanel(), "Kamar");
         contentPanel.add(new PenghuniPanel(), "Penghuni");
         contentPanel.add(new KontrakPanel(), "Kontrak");
         contentPanel.add(new TagihanPanel(), "Tagihan");
