@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS tenants (
     name                VARCHAR(100) NOT NULL,
     email               VARCHAR(100) UNIQUE,          -- nullable; send NULL, not '', from Java
     phone_number        VARCHAR(20)  NOT NULL,
-    is_active           BOOLEAN NOT NULL DEFAULT TRUE -- soft delete: hide instead of DELETE
-    CHECK (is_active IN (0,1))
+    is_visible          BOOLEAN NOT NULL DEFAULT TRUE -- soft delete: hide instead of DELETE
+    CHECK (is_visible IN (0,1))
 );
 
 -- 4. Contracts Table

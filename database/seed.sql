@@ -31,7 +31,7 @@ INSERT INTO rooms (room_number, price, status) VALUES
 ('301', 3000000.00, 'Terisi');
 
 -- 3. Seed Tenants
-INSERT INTO tenants (id_number, name, email, phone_number, is_active) VALUES
+INSERT INTO tenants (id_number, name, email, phone_number, is_visible) VALUES
 ('1234567891234567', 'Andi Pratama', 'andi.pratama@gmail.com', '081234567890', TRUE),
 ('0987654321098765', 'Rina Melati', 'rina.melati@yahoo.com', '081987654321', FALSE),
 ('5678904321098543', 'Joko Widodo', 'joko.w@outlook.com', '081122334455', '1');
