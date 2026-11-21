@@ -21,7 +21,7 @@ public class ExpensesDAO {
 
     public List<Expenses> findAll() {
         List<Expenses> list = new ArrayList<>();
-        String sql = "SELECT expense_date, kategori, jumlah FROM expenses";
+        String sql = "SELECT id, expense_date, deskripsi, jumlah FROM expenses";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(mapRow(rs));
