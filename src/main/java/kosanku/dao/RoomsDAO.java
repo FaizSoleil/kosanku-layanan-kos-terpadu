@@ -39,6 +39,17 @@ public class RoomsDAO {
         return Optional.empty();
     }
 
+    public Optional<Rooms> findByRoomNumber(String room_number) {
+        String sql = "SELECT * FROM rooms WHERE room_number = ?";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, room_number);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) return Optional.of(mapRow(rs));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return Optional.empty();
+    }
+
     public List<Rooms> findAll() {
         List<Rooms> list = new ArrayList<>();
         String sql = "SELECT * FROM rooms";

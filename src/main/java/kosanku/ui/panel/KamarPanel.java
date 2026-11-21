@@ -4,14 +4,18 @@
  */
 package kosanku.ui.panel;
 
+import java.awt.Frame;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
+import kosanku.controller.KamarController;
 import kosanku.dao.RoomsDAO;
 import kosanku.model.Rooms;
+import kosanku.ui.KamarFormDialog;
 
 /**
  *
@@ -20,13 +24,15 @@ import kosanku.model.Rooms;
 public class KamarPanel extends javax.swing.JPanel {
 
     private final RoomsDAO roomsDAO = new RoomsDAO();
+    private final KamarController kamarController;
 
     /**
      * Creates new form KamarPanel
      */
-    public KamarPanel() {
+    public KamarPanel(KamarController kamarController) {
         initComponents();
         renderTable();
+        this.kamarController = kamarController;
     }
 
     /**
@@ -39,12 +45,16 @@ public class KamarPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        roomsTable = new javax.swing.JTable();
+        tableRooms = new javax.swing.JTable();
+        labelTitle = new javax.swing.JLabel();
+        btnTambah = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(144, 144, 0));
+        setBackground(new java.awt.Color(153, 153, 153));
         setPreferredSize(new java.awt.Dimension(540, 380));
 
-        roomsTable.setModel(new javax.swing.table.DefaultTableModel(
+        tableRooms.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -55,30 +65,105 @@ public class KamarPanel extends javax.swing.JPanel {
                 "ID", "No. Kamar", "Harga", "Status"
             }
         ));
-        jScrollPane1.setViewportView(roomsTable);
+        jScrollPane1.setViewportView(tableRooms);
+
+        labelTitle.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        labelTitle.setText("KAMAR");
+
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
+
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+
+        btnHapus.setBackground(new java.awt.Color(210, 0, 0));
+        btnHapus.setForeground(new java.awt.Color(220, 220, 220));
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(231, 231, 231)
+                .addComponent(labelTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnTambah)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEdit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnHapus))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(74, 74, 74))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(labelTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambah)
+                    .addComponent(btnEdit)
+                    .addComponent(btnHapus))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        // TODO add your handling code here:
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+
+        KamarFormDialog dialog = new KamarFormDialog(owner, true);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            try {
+                kamarController.create(id);
+        } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        int row = tableRooms.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih kamar dulu.");
+            return;
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:]
+        int row = tableRooms.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih kamar dulu.");
+            return;
+        }
+
+        int id = (int) tableRooms.getValueAt(row, 0);
+        int choice = JOptionPane.showConfirmDialog(this, "Hapus kamar ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.NO_OPTION) { return; }
+        try {
+            kamarController.delete(id);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
 
    private void renderTable() {
        try {
            List<Rooms> rooms = roomsDAO.findAll();
-           DefaultTableModel tableModel = (DefaultTableModel) roomsTable.getModel();
+           DefaultTableModel tableModel = (DefaultTableModel) tableRooms.getModel();
            tableModel.setRowCount(0);
            for (var room : rooms) {
                 tableModel.addRow(new Object[]{
@@ -97,7 +182,11 @@ public class KamarPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnTambah;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable roomsTable;
+    private javax.swing.JLabel labelTitle;
+    private javax.swing.JTable tableRooms;
     // End of variables declaration//GEN-END:variables
 }
