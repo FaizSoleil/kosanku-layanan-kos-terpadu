@@ -41,7 +41,7 @@ public class KamarPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         roomsTable = new javax.swing.JTable();
 
-        setBackground(new java.awt.Color(144, 144, 0));
+        setBackground(new java.awt.Color(153, 153, 153));
         setPreferredSize(new java.awt.Dimension(540, 380));
 
         roomsTable.setModel(new javax.swing.table.DefaultTableModel(
