@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 public class TenantsDAO {
-    private static final String COLUMNS = "id, id_number, name, email, phone_number, is_active";
+    private static final String COLUMNS = "id, id_number, name, email, phone_number, is_visible";
 
     // MySQL error codes
     private static final int ER_DUP_ENTRY = 1062;          // id_number or email already used
@@ -35,7 +35,7 @@ public class TenantsDAO {
         return false;
     }
 
-    // The find methods do NOT filter by is_active, so you can still find a deactivated tenant
+    // The find methods do NOT filter by is_visible, so you can still find a deactivated tenant
     // (for example to reactivate them, or to explain why a NIK/email is already taken).
     public Optional<Tenants> findById(int id) {
         String sql = "SELECT " + COLUMNS + " FROM tenants WHERE id = ?";
@@ -80,16 +80,16 @@ public class TenantsDAO {
         return Optional.empty();
     }
 
-    /** Active tenants only (what the main list screen should show). */
+    /** visible tenants only (what the main list screen should show). */
     public List<Tenants> findAll() {
         return findAll(false);
     }
 
-    /** Pass true to also include deactivated tenants (for a "show inactive" checkbox). */
-    public List<Tenants> findAll(boolean includeInactive) {
+    /** Pass true to also include deactivated tenants (for a "show invisible" checkbox). */
+    public List<Tenants> findAll(boolean includeInvisible) {
         List<Tenants> list = new ArrayList<>();
         String sql = "SELECT " + COLUMNS + " FROM tenants"
-                   + (includeInactive ? "" : " WHERE is_active = TRUE")
+                   + (includeInvisible ? "" : " WHERE is_visible = TRUE")
                    + " ORDER BY name";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -118,7 +118,7 @@ public class TenantsDAO {
         return false;
     }
 
-    /** True if the tenant has any contract at all (active or finished). */
+    /** True if the tenant has any contract at all (visible or finished). */
     public boolean hasContracts(int tenantId) {
         String sql = "SELECT 1 FROM contracts WHERE tenant_id = ? LIMIT 1";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -134,7 +134,7 @@ public class TenantsDAO {
     }
 
     /** True if the tenant has a contract with status 'Aktif'. */
-    public boolean hasActiveContract(int tenantId) {
+    public boolean hasVisibleContract(int tenantId) {
         String sql = "SELECT 1 FROM contracts WHERE tenant_id = ? AND status = 'Aktif' LIMIT 1";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -164,24 +164,24 @@ public class TenantsDAO {
         return false;
     }
 
-    /** Soft delete: hides the tenant but keeps their history. Refused while they have an active contract. */
+    /** Soft delete: hides the tenant but keeps their history. Refused while they have an visible contract. */
     public boolean deactivate(int id) {
-        if (hasActiveContract(id)) {
+        if (hasVisibleContract(id)) {
             System.err.println("Penyewa masih memiliki kontrak aktif. Akhiri kontrak terlebih dahulu.");
             return false;
         }
-        return setActive(id, false);
+        return setvisible(id, false);
     }
 
     public boolean reactivate(int id) {
-        return setActive(id, true);
+        return setvisible(id, true);
     }
 
-    private boolean setActive(int id, boolean active) {
-        String sql = "UPDATE tenants SET is_active = ? WHERE id = ?";
+    private boolean setvisible(int id, boolean visible) {
+        String sql = "UPDATE tenants SET is_visible = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setBoolean(1, active);
+            pstmt.setBoolean(1, visible);
             pstmt.setInt(2, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -197,7 +197,7 @@ public class TenantsDAO {
             rs.getString("name"),
             rs.getString("email"),
             rs.getString("phone_number"),
-            rs.getBoolean("is_active")
+            rs.getBoolean("is_visible")
         );
     }
 
