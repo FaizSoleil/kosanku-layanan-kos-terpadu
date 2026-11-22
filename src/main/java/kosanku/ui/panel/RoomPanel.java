@@ -5,21 +5,18 @@
 package kosanku.ui.panel;
 
 import java.awt.Frame;
-import java.sql.SQLException;
 import java.util.List;
-
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-
-import kosanku.controller.AuthController;
 import kosanku.controller.RoomController;
 import kosanku.dao.RoomDAO;
-import kosanku.dao.UserDAO;
 import kosanku.model.Room;
-import kosanku.service.AuthService;
+import kosanku.model.RoomStatus;
 import kosanku.service.RoomService;
 import kosanku.ui.dialog.RoomFormDialog;
+import kosanku.ui.dialog.RoomFormDialog.RoomDialogMode;
 
 /**
  *
@@ -40,8 +37,48 @@ public class RoomPanel extends javax.swing.JPanel {
 
     public RoomPanel(RoomController roomController) {
         initComponents();
+        tableRooms.setModel(new DefaultTableModel(
+            new Object[]{"ID", "No. Kamar", "Harga", "Status"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;   // no cell is ever editable
+            }
+        });
         renderTable();
         this.roomController = roomController;
+    }
+
+    private Room selectedRowToRoom(int selectedRow, JTable selectedTable) {
+        if (selectedRow == -1) return null;
+        
+        Room selectedRoom = new Room();
+        int modelRow = selectedTable.convertRowIndexToModel(selectedRow);
+        for (int col = 0; col < selectedTable.getColumnCount(); col++) {
+            Object cellValue = selectedTable.getValueAt(modelRow, col);
+
+            switch (col) {
+                case 0:
+                    selectedRoom.setId((Integer) cellValue);
+                    break;
+                
+                case 1:
+                    selectedRoom.setRoomNumber((String) cellValue);
+                    break;
+
+                case 2:
+                    selectedRoom.setPrice((double) cellValue);
+                    break;
+
+                case 3:
+                    selectedRoom.setStatus((RoomStatus) cellValue);
+                    break;
+            
+                default:
+                    System.err.print("Unexpected column with object value: " + cellValue);
+                    break;
+            }
+        }
+        return selectedRoom;
     }
 
     /**
@@ -74,6 +111,7 @@ public class RoomPanel extends javax.swing.JPanel {
                 "ID", "No. Kamar", "Harga", "Status"
             }
         ));
+        tableRooms.setColumnSelectionAllowed(false);
         jScrollPane1.setViewportView(tableRooms);
 
         labelTitle.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
@@ -130,14 +168,14 @@ public class RoomPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
 
-        RoomFormDialog dialog = new RoomFormDialog(owner, true);
+        RoomFormDialog dialog = new RoomFormDialog(owner, true, RoomDialogMode.ADD);
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
             try {
-                String retrievedRoomNumber = dialog.getSavedRoomNumber();
-                String retrievedPrice = dialog.getSavedPrice();
-                roomController.create(retrievedRoomNumber, retrievedPrice);
+                String newRoomNumber = dialog.getSavedRoomNumber();
+                String newPrice = dialog.getSavedPrice();
+                roomController.create(newRoomNumber, newPrice);
                 renderTable();
         } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
@@ -151,6 +189,23 @@ public class RoomPanel extends javax.swing.JPanel {
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Pilih kamar dulu.");
             return; 
+        }
+        Room selectedRoom = selectedRowToRoom(row, tableRooms);
+
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+        RoomFormDialog dialog = new RoomFormDialog(owner, true, RoomDialogMode.EDIT, selectedRoom);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            try {
+                String updatedRoomNumber = dialog.getSavedRoomNumber();
+                String updatedPrice = dialog.getSavedPrice();
+                RoomStatus updatedStatus = dialog.getSavedStatus();
+                roomController.edit(selectedRoom.getId(), updatedRoomNumber, updatedPrice, updatedStatus);
+                renderTable();
+        } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
         }
     }//GEN-LAST:event_btnEditActionPerformed
 

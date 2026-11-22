@@ -3,7 +3,6 @@ package kosanku.service;
 import java.util.List;
 import java.util.Optional;
 import kosanku.dao.RoomDAO;
-import kosanku.dao.UserDAO;
 import kosanku.model.Room;
 
 public class RoomService {
@@ -35,8 +34,10 @@ public class RoomService {
         // Another room may already use this number, the same room keeping it is fine.
         // If there's an existing room with the same room number but different id, then that roomNumber is already taken.
         Optional<Room> existing = roomDAO.findByRoomNumber(updatedRoom.getRoomNumber());
-        if (!isDifferent(existing, updatedRoom)) {
-            throw new IllegalArgumentException("Nomor kamar " + updatedRoom.getRoomNumber() + " sudah dipakai kamar lain.");
+        if (existing.isPresent()) {
+            if (isDifferent(existing, updatedRoom)) {
+                throw new IllegalArgumentException("Nomor kamar " + updatedRoom.getRoomNumber() + " sudah dipakai kamar lain.");
+            }
         }
         if (!roomDAO.update(updatedRoom)) {
             throw new IllegalStateException("Gagal mengubah kamar.");
