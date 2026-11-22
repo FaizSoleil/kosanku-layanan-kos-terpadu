@@ -92,10 +92,6 @@ public class RoomPanel extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tableRooms = new javax.swing.JTable();
-        labelTitle = new javax.swing.JLabel();
-        btnTambah = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
-        btnHapus = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(153, 153, 153));
         setPreferredSize(new java.awt.Dimension(540, 380));
@@ -249,11 +245,11 @@ public class RoomPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tableRooms;
+    private javax.swing.JLabel labelTitle;
+    private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
-    private javax.swing.JButton btnTambah;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelTitle;
-    private javax.swing.JTable tableRooms;
     // End of variables declaration//GEN-END:variables
 }
