@@ -2,15 +2,15 @@ package kosanku.model;
 
 import java.util.Date;
 
-public class Expenses {
+public class Expense {
     private int id;
     private Date expenseDate;
     private String deskripsi;
     private double jumlah;
 
-    public Expenses(){}
+    public Expense(){}
 
-    public Expenses(int id, Date expensDate, String deskripsi, double jumlah){
+    public Expense(int id, Date expensDate, String deskripsi, double jumlah){
         this.id = id;
         this.expenseDate = expensDate;
         this.deskripsi = deskripsi;

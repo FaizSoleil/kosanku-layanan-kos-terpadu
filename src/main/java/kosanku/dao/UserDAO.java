@@ -1,15 +1,15 @@
 package kosanku.dao;
 
-import kosanku.model.Users;
+import kosanku.model.User;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UsersDAO {
+public class UserDAO {
 
-    public boolean insert(Users user) {
+    public boolean insert(User user) {
         String sql = "INSERT INTO users (username, password, nama_lengkap) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getUsername());
@@ -20,13 +20,13 @@ public class UsersDAO {
         return false;
     }
 
-    public Optional<Users> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         String sql = "SELECT username, password, nama_lengkap FROM users WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return Optional.of(new Users(
+                    return Optional.of(new User(
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("nama_lengkap")
@@ -37,12 +37,12 @@ public class UsersDAO {
         return Optional.empty();
     }
 
-    public List<Users> findAll() {
-        List<Users> list = new ArrayList<>();
+    public List<User> findAll() {
+        List<User> list = new ArrayList<>();
         String sql = "SELECT username, password, nama_lengkap FROM users";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new Users(
+                list.add(new User(
                     rs.getString("username"),
                     rs.getString("password"),
                     rs.getString("nama_lengkap")
@@ -52,7 +52,7 @@ public class UsersDAO {
         return list;
     }
 
-    public boolean update(Users user) {
+    public boolean update(User user) {
         String sql = "UPDATE users SET password = ?, nama_lengkap = ? WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, user.getPassword());

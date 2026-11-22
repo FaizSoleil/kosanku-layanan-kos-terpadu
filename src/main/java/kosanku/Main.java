@@ -5,7 +5,7 @@
 package kosanku;
 
 import kosanku.controller.AuthController;
-import kosanku.dao.UsersDAO;
+import kosanku.dao.UserDAO;
 import kosanku.service.AuthService;
 import kosanku.ui.LoginForm;
 import kosanku.util.PasswordUtil;
@@ -18,7 +18,7 @@ public class Main {
         System.out.println("Hash admin123: " + PasswordUtil.hashSHA256("admin123"));
 
         SwingUtilities.invokeLater(() -> {
-            UsersDAO usersDAO = new UsersDAO();
+            UserDAO usersDAO = new UserDAO();
             AuthService authService = new AuthService(usersDAO);
             AuthController authController = new AuthController(authService);
 

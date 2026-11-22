@@ -1,14 +1,14 @@
 package kosanku.dao;
 
 import kosanku.model.BillStatus;
-import kosanku.model.Bills;
+import kosanku.model.Bill;
 import kosanku.util.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BillsDAO {
+public class BillDAO {
 
     private static final String COLUMNS = "id, contract_id, bulan_tagihan, total_tagihan, status";
 
@@ -17,7 +17,7 @@ public class BillsDAO {
     private static final int ER_ROW_IS_REFERENCED = 1451;   // RESTRICT: bill still has contracts
     private static final int ER_NO_REFERENCED_ROW = 1452;   // contract_id does not exist
 
-    public boolean insert(Bills bill) {
+    public boolean insert(Bill bill) {
         String sql = "INSERT INTO bills (contract_id, bulan_tagihan, total_tagihan, status) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -39,7 +39,7 @@ public class BillsDAO {
         return false;
     }
 
-    public Optional<Bills> findById(int id) {
+    public Optional<Bill> findById(int id) {
         String sql = "SELECT " + COLUMNS + " FROM bills WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -53,8 +53,8 @@ public class BillsDAO {
         return Optional.empty();
     }
 
-    public List<Bills> findAll() {
-        List<Bills> list = new ArrayList<>();
+    public List<Bill> findAll() {
+        List<Bill> list = new ArrayList<>();
         String sql = "SELECT " + COLUMNS + " FROM bills ORDER BY bulan_tagihan DESC, id DESC";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -67,8 +67,8 @@ public class BillsDAO {
     }
 
     /** All bills of one contract, oldest month first. */
-    public List<Bills> findByContractId(int contractId) {
-        List<Bills> list = new ArrayList<>();
+    public List<Bill> findByContractId(int contractId) {
+        List<Bill> list = new ArrayList<>();
         String sql = "SELECT " + COLUMNS + " FROM bills WHERE contract_id = ? ORDER BY bulan_tagihan";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -83,8 +83,8 @@ public class BillsDAO {
     }
 
     /** All bills with a given status, e.g. every unpaid bill. */
-    public List<Bills> findByStatus(BillStatus status) {
-        List<Bills> list = new ArrayList<>();
+    public List<Bill> findByStatus(BillStatus status) {
+        List<Bill> list = new ArrayList<>();
         String sql = "SELECT " + COLUMNS + " FROM bills WHERE status = ? ORDER BY bulan_tagihan";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -114,7 +114,7 @@ public class BillsDAO {
         return false;
     }
 
-    public boolean update(Bills bill) {
+    public boolean update(Bill bill) {
         String sql = "UPDATE bills SET contract_id = ?, bulan_tagihan = ?, total_tagihan = ?, status = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -165,8 +165,8 @@ public class BillsDAO {
         return false;
     }
 
-    private Bills mapRow(ResultSet rs) throws SQLException {
-        return new Bills(
+    private Bill mapRow(ResultSet rs) throws SQLException {
+        return new Bill(
             rs.getInt("id"),
             rs.getInt("contract_id"),
             rs.getDate("bulan_tagihan"),

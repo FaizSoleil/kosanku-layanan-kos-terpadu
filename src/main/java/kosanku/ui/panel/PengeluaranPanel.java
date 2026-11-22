@@ -9,8 +9,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import kosanku.dao.ExpensesDAO;
-import kosanku.model.Expenses;
+import kosanku.dao.ExpenseDAO;
+import kosanku.model.Expense;
 
 /**
  *
@@ -18,7 +18,7 @@ import kosanku.model.Expenses;
  */
 public class PengeluaranPanel extends javax.swing.JPanel {
 
-    private final ExpensesDAO expensesDAO = new ExpensesDAO();
+    private final ExpenseDAO expenseDAO = new ExpenseDAO();
 
     /**
      * Creates new form KamarPanel
@@ -96,7 +96,7 @@ public class PengeluaranPanel extends javax.swing.JPanel {
 
     private void renderTable() {
         try {
-            List<Expenses> expenses = expensesDAO.findAll();
+            List<Expense> expenses = expenseDAO.findAll();
             DefaultTableModel tableModel = (DefaultTableModel) expensesTable.getModel();
             tableModel.setRowCount(0);
             for (var expense : expenses) {

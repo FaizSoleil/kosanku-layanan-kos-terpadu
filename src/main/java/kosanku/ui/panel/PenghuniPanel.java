@@ -9,8 +9,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import kosanku.dao.TenantsDAO;
-import kosanku.model.Tenants;
+import kosanku.dao.TenantDAO;
+import kosanku.model.Tenant;
 
 /**
  *
@@ -18,7 +18,7 @@ import kosanku.model.Tenants;
  */
 public class PenghuniPanel extends javax.swing.JPanel {
 
-    private final TenantsDAO tenantsDAO = new TenantsDAO();
+    private final TenantDAO tenantsDAO = new TenantDAO();
     
     /**
      * Creates new form PenghuniPanel
@@ -72,7 +72,7 @@ public class PenghuniPanel extends javax.swing.JPanel {
 
     private void renderTable() {
         try {
-            List<Tenants> tenants = tenantsDAO.findAll();
+            List<Tenant> tenants = tenantsDAO.findAll();
             DefaultTableModel tableModel = (DefaultTableModel) tenantsTable.getModel();
             tableModel.setRowCount(0);
             for (var tenant : tenants) {
