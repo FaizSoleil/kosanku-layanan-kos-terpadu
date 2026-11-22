@@ -4,18 +4,15 @@
  */
 package kosanku.ui;
 
-import kosanku.ui.panel.PengeluaranPanel;
+import kosanku.ui.panel.ExpensePanel;
+import kosanku.ui.panel.TenantPanel;
 import kosanku.ui.panel.TagihanPanel;
 import kosanku.ui.panel.PembayaranPanel;
 import kosanku.ui.panel.MeteranPanel;
 import kosanku.ui.panel.KontrakPanel;
 import kosanku.ui.panel.RoomPanel;
-import kosanku.ui.panel.PenghuniPanel;
 import kosanku.model.User;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
 /**
@@ -43,12 +40,12 @@ public class DashboardForm extends javax.swing.JFrame {
         contentPanel.setLayout(new CardLayout());
 
         contentPanel.add(new RoomPanel(), "Kamar");
-        contentPanel.add(new PenghuniPanel(), "Penghuni");
+        contentPanel.add(new TenantPanel(), "Penghuni");
         contentPanel.add(new KontrakPanel(), "Kontrak");
         contentPanel.add(new MeteranPanel(), "Meteran");
         contentPanel.add(new TagihanPanel(), "Tagihan");
         contentPanel.add(new PembayaranPanel(), "Pembayaran");
-        contentPanel.add(new PengeluaranPanel(), "Pengeluaran");
+        contentPanel.add(new ExpensePanel(), "Pengeluaran");
 
 
         if (currentUser != null && currentUser.getNamaLengkap() != null) {

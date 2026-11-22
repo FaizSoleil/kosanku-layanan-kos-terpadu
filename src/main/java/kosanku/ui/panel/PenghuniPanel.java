@@ -47,7 +47,7 @@ public class PenghuniPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "NAMA", "EMAIL", "NO. TELEPON"
+                "ID", "NIK", "NAMA", "EMAIL", "NO. TELEPON"
             }
         ));
         jScrollPane1.setViewportView(tenantsTable);
