@@ -8,3 +8,5 @@ Sebelum mulai nulis kode, jangan lupa untuk run kedua sql file yang ada di `/dat
 Jangan lupa kalau untuk login:
 username: admin
 password: admin123
+
+**PLIS PLIS JANGAN GANTI UI KALO LAGI DALAM BRANCH, FIX MERGE CONFLICT-nya RIBET** 
