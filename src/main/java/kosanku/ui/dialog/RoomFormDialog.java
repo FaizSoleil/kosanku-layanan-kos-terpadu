@@ -14,24 +14,35 @@ public class RoomFormDialog extends javax.swing.JDialog {
     private String savedRoomNumber;
     private String savedPrice;
     private boolean saved = false;
+    private RoomDialogMode mode;
+
+    public enum RoomDialogMode {
+        ADD, EDIT
+    }
 
     /**
      * Creates new form KamarFormDialog
      */
     public RoomFormDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.mode = RoomDialogMode.ADD; //default to add, this shouldn't matter tho.
+        initComponents();
+        setLocationRelativeTo(null);
+    }
+
+    public RoomFormDialog(java.awt.Frame parent, boolean modal, RoomDialogMode mode) {
+        super(parent, modal);
+        this.mode = mode;
         initComponents();
         setLocationRelativeTo(null);
     }
     // if modal is set to true, it blocks the input to its parent's view
     
-    public String getSavedRoomNumber() {
-        return savedRoomNumber;
-    }
+    public String getSavedRoomNumber() { return savedRoomNumber; }
+    public String getSavedPrice() { return savedPrice; }
+    public RoomDialogMode getMode() { return mode; }
 
-    public String getSavedPrice() {
-        return savedPrice;
-    }
+    public void setMode(RoomDialogMode mode) { this.mode = mode; }
 
     public void save() {
         saved = true;
@@ -77,8 +88,6 @@ public class RoomFormDialog extends javax.swing.JDialog {
 
         labelPrice.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelPrice.setText("Harga");
-
-        fieldPrice.addActionListener(this::fieldPriceActionPerformed);
 
         btnAdd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnAdd.setText("Tambah");
@@ -127,10 +136,6 @@ public class RoomFormDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fieldPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPriceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldPriceActionPerformed
-
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         save();
@@ -147,6 +152,7 @@ public class RoomFormDialog extends javax.swing.JDialog {
         saved = false;
         fieldPrice.setText("");
         fieldRoomNumber.setText("");
+        labelTitle.setText((mode == RoomDialogMode.ADD) ? "TAMBAH KAMAR" : "EDIT KAMAR");
     }//GEN-LAST:event_formWindowOpened
 
     /**
