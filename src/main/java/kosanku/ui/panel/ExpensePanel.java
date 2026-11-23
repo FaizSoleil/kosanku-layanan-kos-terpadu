@@ -7,12 +7,16 @@ package kosanku.ui.panel;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Frame;
+
 import kosanku.controller.ExpenseController;
 import kosanku.dao.ExpenseDAO;
 import kosanku.model.Expense;
 import kosanku.service.ExpenseService;
 import kosanku.ui.dialog.ExpenseFormDialog;
+import kosanku.ui.dialog.ExpenseFormDialog.ExpenseDialogMode;
 
 /**
  *
@@ -159,8 +163,8 @@ public class ExpensePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-        ExpenseFormDialog dialog = new ExpenseFormDialog();
-        dialog.setLocationRelativeTo(this);
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+        ExpenseFormDialog dialog = new ExpenseFormDialog(owner, true, ExpenseDialogMode.ADD);
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
@@ -184,9 +188,9 @@ public class ExpensePanel extends javax.swing.JPanel {
             return;
         }
         Expense selectedExpense = selectedRowToExpense(row, tableExpense);
-        ExpenseFormDialog dialog = new ExpenseFormDialog();
-        dialog.setLocationRelativeTo(this);
-        dialog.setExpense(selectedExpense);
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+
+        ExpenseFormDialog dialog = new ExpenseFormDialog(owner, true, ExpenseDialogMode.EDIT, selectedExpense);
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {

@@ -4,7 +4,13 @@
  */
 package kosanku.ui.dialog;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+
+import kosanku.model.Expense;
+import kosanku.model.Room;
+import kosanku.model.RoomStatus;
+import kosanku.ui.dialog.RoomFormDialog.RoomDialogMode;
 
 /**
  *
@@ -13,47 +19,67 @@ import javax.swing.JOptionPane;
 public class ExpenseFormDialog extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ExpenseFormDialog.class.getName());
-    private boolean saved;
+    private boolean saved = false;
     private String savedDate;
     private String savedCategory;
     private String savedTotal;
+    private Expense sentFromParentExpense;
+    private ExpenseDialogMode mode;
 
     /**
      * Creates new form ExpenseFormDialog
      */
-    public ExpenseFormDialog() {
-        super((java.awt.Frame) null, true);
+    public enum ExpenseDialogMode {
+        ADD("Tambah"), EDIT("Edit");
+
+        private final String userFriendlyText;
+
+        ExpenseDialogMode(String userFriendlyText) {
+            this.userFriendlyText = userFriendlyText;
+        }
+
+        @Override
+        public String toString() {
+            return userFriendlyText;
+        }
+    }
+
+    public ExpenseFormDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        this.mode = ExpenseDialogMode.ADD; //default to add, this shouldn't matter tho.
+        this.sentFromParentExpense = null;
         initComponents();
+        setLocationRelativeTo(null);
     }
 
-    public boolean isSaved() {
-        return saved;
+    public ExpenseFormDialog(java.awt.Frame parent, boolean modal, ExpenseDialogMode mode) {
+        super(parent, modal);
+        this.mode = mode;
+        this.sentFromParentExpense = null;
+        initComponents();
+        setLocationRelativeTo(null);
     }
 
-    public String getSavedDate() {
-        return savedDate;
+    public ExpenseFormDialog(java.awt.Frame parent, boolean modal, ExpenseDialogMode mode, Expense sentFromParentExpense) {
+        super(parent, modal);
+        this.mode = mode;
+        this.sentFromParentExpense = sentFromParentExpense;
+        initComponents();
+        setLocationRelativeTo(null);
     }
 
-    public String getSavedCategory() {
-        return savedCategory;
-    }
-
-    public String getSavedTotal() {
-        return savedTotal;
-    }
-
-    public void setExpense(kosanku.model.Expense expense) {
-        if (expense == null) return;
-        java.time.LocalDate localDate = new java.sql.Date(expense.getExpenseDate().getTime()).toLocalDate();
-        datePicker.setDate(localDate);
-        fieldDesc.setText(expense.getDeskripsi());
-        fieldTotal.setText(String.valueOf(expense.getJumlah()));
-        labelTitle.setText("EDIT PENGELUARAN");
-        btnMain.setText("Simpan");
-    }
+    public boolean isSaved() { return saved; }
+    public String getSavedDate() { return savedDate; }
+    public String getSavedCategory() { return savedCategory; }
+    public String getSavedTotal() { return savedTotal; }
+    public void setMode(ExpenseDialogMode mode) { this.mode = mode; }
 
     public void save() {
         saved = true;
+        saveData();
+    }
+
+    public void saveData() {
         java.time.LocalDate pickedDate = datePicker.getDate();
         savedDate = (pickedDate != null) ? pickedDate.toString() : "";
         savedCategory = fieldDesc.getText();
@@ -85,8 +111,6 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        fieldTotal.addActionListener(this::fieldTotalActionPerformed);
-
         btnMain.setText("Tambah");
         btnMain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnMain.addActionListener(this::btnMainActionPerformed);
@@ -111,8 +135,8 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(94, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(92, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(labelDate)
                     .addComponent(labelDesc)
@@ -123,12 +147,12 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
                     .addComponent(fieldDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMain)
                     .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(84, 84, 84))
+                .addGap(86, 86, 86))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(39, 39, 39)
                 .addComponent(labelTitle)
                 .addGap(18, 18, 18)
                 .addComponent(labelDate)
@@ -146,7 +170,7 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
                 .addComponent(btnMain)
                 .addGap(18, 18, 18)
                 .addComponent(btnBack)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         pack();
@@ -165,10 +189,6 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         dispose();
     }//GEN-LAST:event_btnBackActionPerformed
-
-    private void fieldTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldTotalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldTotalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -192,7 +212,19 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ExpenseFormDialog().setVisible(true));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ExpenseFormDialog dialog = new ExpenseFormDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
