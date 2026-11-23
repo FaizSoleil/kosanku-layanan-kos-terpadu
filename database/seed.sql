@@ -60,7 +60,7 @@ INSERT INTO payments (bill_id, payment_date, jumlah) VALUES
 (4, '2026-11-10', 2200000.00);
 
 -- 7. Seed Expenses
-INSERT INTO expenses (expense_date, deskripsi, jumlah) VALUES
+INSERT INTO expenses (expense_date, kategori, jumlah) VALUES
 ('2026-11-02', 'Maintenance', 350000.00),
 ('2026-11-05', 'Electricity & Water', 1250000.00),
 ('2026-11-12', 'Cleaning Supplies', 150000.00);

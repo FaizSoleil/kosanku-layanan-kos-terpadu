@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS payments (
 CREATE TABLE IF NOT EXISTS expenses (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     expense_date        DATE NOT NULL,
-    deskripsi           TEXT NOT NULL,
+    kategori            VARCHAR(50) NOT NULL,
     jumlah              DECIMAL(12, 2) NOT NULL,
     CONSTRAINT chk_expense_amount CHECK (jumlah > 0)
 );
