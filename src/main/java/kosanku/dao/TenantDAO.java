@@ -30,7 +30,7 @@ public class TenantDAO {
                 return true;
             }
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
         return false;
     }
@@ -46,7 +46,7 @@ public class TenantDAO {
                 if (rs.next()) return Optional.of(mapRow(rs));
             }
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
         return Optional.empty();
     }
@@ -61,7 +61,7 @@ public class TenantDAO {
                 if (rs.next()) return Optional.of(mapRow(rs));
             }
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
         return Optional.empty();
     }
@@ -75,7 +75,7 @@ public class TenantDAO {
                 if (rs.next()) return Optional.of(mapRow(rs));
             }
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
         return Optional.empty();
     }
@@ -96,7 +96,7 @@ public class TenantDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
         return list;
     }
@@ -113,9 +113,8 @@ public class TenantDAO {
             pstmt.setInt(5, tenant.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
-        return false;
     }
 
     /** True if the tenant has any contract at all (visible or finished). */
@@ -128,9 +127,8 @@ public class TenantDAO {
                 return rs.next(); //returns true if the new current row is valid.
             }
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
-        return false;
     }
 
     /** True if the tenant has a contract with status 'Aktif'. */
@@ -143,9 +141,8 @@ public class TenantDAO {
                 return rs.next();
             }
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
-        return false;
     }
 
     /**
@@ -159,16 +156,16 @@ public class TenantDAO {
             pstmt.setInt(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
-        return false;
     }
 
     /** Soft delete: hides the tenant but keeps their history. Refused while they have an visible contract. */
     public boolean deactivate(int id) {
         if (hasVisibleContract(id)) {
-            System.err.println("Penyewa masih memiliki kontrak aktif. Akhiri kontrak terlebih dahulu.");
-            return false;
+            throw new IllegalStateException(
+                "Penyewa masih memiliki kontrak aktif. Akhiri kontrak terlebih dahulu."
+            );
         }
         return setvisible(id, false);
     }
@@ -185,9 +182,8 @@ public class TenantDAO {
             pstmt.setInt(2, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            logError(e);
+            throw databaseError(e);
         }
-        return false;
     }
 
     private Tenant mapRow(ResultSet rs) throws SQLException {
@@ -206,17 +202,15 @@ public class TenantDAO {
         return (s == null || s.trim().isEmpty()) ? null : s.trim();
     }
 
-    /** Short message for the errors we expect, full stack trace for anything else. */
-    private void logError(SQLException e) {
-        switch (e.getErrorCode()) {
-            case ER_DUP_ENTRY:
-                System.err.println("NIK atau email sudah terdaftar.");
-                break;
-            case ER_ROW_IS_REFERENCED:
-                System.err.println("Penyewa masih memiliki kontrak, tidak bisa dihapus. Nonaktifkan saja.");
-                break;
-            default:
-                e.printStackTrace();
+    private IllegalStateException databaseError(SQLException e) {
+        if (e.getErrorCode() == ER_DUP_ENTRY) {
+            return new IllegalStateException("NIK atau email sudah terdaftar.", e);
         }
+        if (e.getErrorCode() == ER_ROW_IS_REFERENCED) {
+            return new IllegalStateException(
+                "Penghuni masih memiliki kontrak sehingga tidak dapat dihapus permanen.", e
+            );
+        }
+        return new IllegalStateException("Terjadi kesalahan saat mengakses data penghuni.", e);
     }
 }
