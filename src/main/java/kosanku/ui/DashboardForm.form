@@ -32,9 +32,8 @@
                   <Component id="btnKamar" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnPenghuni" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnKontrak" alignment="0" max="32767" attributes="0"/>
-                  <Component id="btnMeteran" alignment="0" pref="145" max="32767" attributes="0"/>
                   <Component id="btnTagihan" alignment="0" max="32767" attributes="0"/>
-                  <Component id="btnPembayaran" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnPembayaran" alignment="0" pref="145" max="32767" attributes="0"/>
                   <Component id="btnPengeluaran" alignment="0" max="32767" attributes="0"/>
                   <Component id="btnLogout" alignment="0" max="32767" attributes="0"/>
               </Group>
@@ -59,8 +58,6 @@
                       <Component id="btnPenghuni" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnKontrak" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnMeteran" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnTagihan" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -116,14 +113,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnKontrakActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnMeteran">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Meteran"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMeteranActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnTagihan">

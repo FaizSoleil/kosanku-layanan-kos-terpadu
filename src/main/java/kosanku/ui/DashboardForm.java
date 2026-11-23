@@ -72,7 +72,6 @@ public class DashboardForm extends javax.swing.JFrame {
         btnKamar = new javax.swing.JButton();
         btnPenghuni = new javax.swing.JButton();
         btnKontrak = new javax.swing.JButton();
-        btnMeteran = new javax.swing.JButton();
         btnTagihan = new javax.swing.JButton();
         btnPembayaran = new javax.swing.JButton();
         btnPengeluaran = new javax.swing.JButton();
@@ -97,9 +96,6 @@ public class DashboardForm extends javax.swing.JFrame {
 
         btnKontrak.setText("Kontrak");
         btnKontrak.addActionListener(this::btnKontrakActionPerformed);
-
-        btnMeteran.setText("Meteran");
-        btnMeteran.addActionListener(this::btnMeteranActionPerformed);
 
         btnTagihan.setText("Tagihan");
         btnTagihan.addActionListener(this::btnTagihanActionPerformed);
@@ -132,9 +128,8 @@ public class DashboardForm extends javax.swing.JFrame {
                     .addComponent(btnKamar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPenghuni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnKontrak, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnMeteran, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                     .addComponent(btnTagihan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnPembayaran, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPembayaran, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                     .addComponent(btnPengeluaran, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
@@ -156,8 +151,6 @@ public class DashboardForm extends javax.swing.JFrame {
                         .addComponent(btnPenghuni)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnKontrak)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnMeteran)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnTagihan)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -185,10 +178,6 @@ public class DashboardForm extends javax.swing.JFrame {
     private void btnKontrakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKontrakActionPerformed
         showPage("Kontrak");
     }//GEN-LAST:event_btnKontrakActionPerformed
-
-    private void btnMeteranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeteranActionPerformed
-        showPage("Meteran");
-    }//GEN-LAST:event_btnMeteranActionPerformed
 
     private void btnTagihanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTagihanActionPerformed
         showPage("Tagihan");
@@ -243,7 +232,6 @@ public class DashboardForm extends javax.swing.JFrame {
     private javax.swing.JButton btnKamar;
     private javax.swing.JButton btnKontrak;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnMeteran;
     private javax.swing.JButton btnPembayaran;
     private javax.swing.JButton btnPengeluaran;
     private javax.swing.JButton btnPenghuni;
