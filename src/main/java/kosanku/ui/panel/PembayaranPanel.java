@@ -4,17 +4,61 @@
  */
 package kosanku.ui.panel;
 
+import java.awt.Frame;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import kosanku.controller.PaymentController;
+import kosanku.dao.PaymentDAO;
+import kosanku.model.Payment;
+import kosanku.service.PaymentService;
+import kosanku.ui.dialog.PaymentFormDialog;
+import kosanku.ui.dialog.PaymentFormDialog.PaymentDialogMode;
+
 /**
  *
  * @author LENOVO
  */
 public class PembayaranPanel extends javax.swing.JPanel {
 
+    private final PaymentDAO paymentDAO = new PaymentDAO();
+    private final PaymentController paymentController;
+
     /**
-     * Creates new form KamarPanel
+     * Creates new form PembayaranPanel
      */
     public PembayaranPanel() {
+        this(new PaymentController(new PaymentService(new PaymentDAO())));
+    }
+
+    public PembayaranPanel(PaymentController paymentController) {
+        this.paymentController = paymentController;
         initComponents();
+        tablePayments.setModel(new DefaultTableModel(
+            new Object[]{"ID", "ID Tagihan", "Tanggal Bayar", "Jumlah"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;   // no cell is ever editable
+            }
+        });
+        renderTable();
+    }
+
+    private Payment selectedRowToPayment(int selectedRow) {
+        if (selectedRow == -1) return null;
+
+        // The view row must be converted to a model row, and the value read from the model
+        int modelRow = tablePayments.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tablePayments.getModel();
+
+        Payment selectedPayment = new Payment();
+        selectedPayment.setId((Integer) model.getValueAt(modelRow, 0));
+        selectedPayment.setBillId((Integer) model.getValueAt(modelRow, 1));
+        selectedPayment.setPaymentDate((Date) model.getValueAt(modelRow, 2));
+        selectedPayment.setJumlah((Double) model.getValueAt(modelRow, 3));
+        return selectedPayment;
     }
 
     /**
@@ -26,30 +70,169 @@ public class PembayaranPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablePayments = new javax.swing.JTable();
+        btnTambah = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        labelTitle = new javax.swing.JLabel();
 
-        jLabel1.setText("Ini panel pembayaran");
+        setBackground(new java.awt.Color(153, 153, 153));
+        setPreferredSize(new java.awt.Dimension(540, 380));
+
+        tablePayments.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "ID Tagihan", "Tanggal Bayar", "Jumlah"
+            }
+        ));
+        jScrollPane1.setViewportView(tablePayments);
+
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
+
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+
+        btnHapus.setBackground(new java.awt.Color(210, 0, 0));
+        btnHapus.setForeground(new java.awt.Color(220, 220, 220));
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
+
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        labelTitle.setText("PEMBAYARAN");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(246, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(179, 179, 179))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(190, 190, 190)
+                .addComponent(labelTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(31, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(208, 208, 208)
+                        .addComponent(btnHapus)))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(186, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(178, 178, 178))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(labelTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambah)
+                    .addComponent(btnEdit)
+                    .addComponent(btnHapus))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+
+        PaymentFormDialog dialog = new PaymentFormDialog(owner, true, PaymentDialogMode.ADD);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            try {
+                String newBillId = dialog.getSavedBillId();
+                String newPaymentDate = dialog.getSavedPaymentDate();
+                String newJumlah = dialog.getSavedJumlah();
+                paymentController.create(newBillId, newPaymentDate, newJumlah);
+                renderTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        int row = tablePayments.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih pembayaran dulu.");
+            return;
+        }
+        Payment selectedPayment = selectedRowToPayment(row);
+
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+        PaymentFormDialog dialog = new PaymentFormDialog(owner, true, PaymentDialogMode.EDIT, selectedPayment);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            try {
+                String updatedBillId = dialog.getSavedBillId();
+                String updatedPaymentDate = dialog.getSavedPaymentDate();
+                String updatedJumlah = dialog.getSavedJumlah();
+                paymentController.edit(selectedPayment.getId(), updatedBillId, updatedPaymentDate, updatedJumlah);
+                renderTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        int row = tablePayments.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih pembayaran dulu.");
+            return;
+        }
+
+        int modelRow = tablePayments.convertRowIndexToModel(row);
+        int id = (int) tablePayments.getModel().getValueAt(modelRow, 0);
+        int choice = JOptionPane.showConfirmDialog(this, "Hapus pembayaran ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (choice != JOptionPane.YES_OPTION) { return; }
+        try {
+            paymentController.delete(id);
+            renderTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void renderTable() {
+        try {
+            List<Payment> payments = paymentDAO.findAll();
+            DefaultTableModel tableModel = (DefaultTableModel) tablePayments.getModel();
+            tableModel.setRowCount(0);
+            for (var payment : payments) {
+                tableModel.addRow(new Object[]{
+                    payment.getId(),
+                    payment.getBillId(),
+                    payment.getPaymentDate(),
+                    payment.getJumlah()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this, e.getMessage(), "Terjadi kesalahan!", JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelTitle;
+    private javax.swing.JTable tablePayments;
     // End of variables declaration//GEN-END:variables
 }

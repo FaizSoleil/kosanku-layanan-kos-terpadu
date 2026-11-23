@@ -186,10 +186,6 @@ public class DashboardForm extends javax.swing.JFrame {
         showPage("Kontrak");
     }//GEN-LAST:event_btnKontrakActionPerformed
 
-    private void btnMeteranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeteranActionPerformed
-        showPage("Meteran");
-    }//GEN-LAST:event_btnMeteranActionPerformed
-
     private void btnTagihanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTagihanActionPerformed
         showPage("Tagihan");
     }//GEN-LAST:event_btnTagihanActionPerformed
@@ -213,6 +209,10 @@ public class DashboardForm extends javax.swing.JFrame {
             new LoginForm().setVisible(true);
         }
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnMeteranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMeteranActionPerformed
+        showPage("Meteran");
+    }//GEN-LAST:event_btnMeteranActionPerformed
 
     /**
      * @param args the command line arguments

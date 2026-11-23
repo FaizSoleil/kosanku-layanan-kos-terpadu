@@ -4,17 +4,75 @@
  */
 package kosanku.ui.panel;
 
+import java.awt.Frame;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import kosanku.controller.BillController;
+import kosanku.dao.BillDAO;
+import kosanku.model.Bill;
+import kosanku.model.BillStatus;
+import kosanku.service.BillService;
+import kosanku.ui.dialog.BillFormDialog;
+import kosanku.ui.dialog.BillFormDialog.BillDialogMode;
+
 /**
  *
  * @author LENOVO
  */
 public class TagihanPanel extends javax.swing.JPanel {
 
+    private final BillDAO billDAO = new BillDAO();
+    private final BillController billController;
+
     /**
-     * Creates new form KamarPanel
+     * Creates new form TagihanPanel
      */
     public TagihanPanel() {
+        this(new BillController(new BillService(new BillDAO())));
+    }
+
+    public TagihanPanel(BillController billController) {
+        this.billController = billController;
         initComponents();
+        tableBills.setModel(new DefaultTableModel(
+            new Object[]{"ID", "ID Kontrak", "Bulan Tagihan", "Total Tagihan", "Status"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;   // no cell is ever editable
+            }
+        });
+        // Show the month as yyyy-MM (the stored value is always the 1st of the month).
+        // Set after setModel, because setModel recreates the columns.
+        tableBills.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
+            private final SimpleDateFormat monthFormat = new SimpleDateFormat("yyyy-MM");
+
+            @Override
+            protected void setValue(Object value) {
+                setText(value instanceof Date ? monthFormat.format((Date) value) : "");
+            }
+        });
+        renderTable();
+    }
+
+    private Bill selectedRowToBill(int selectedRow) {
+        if (selectedRow == -1) return null;
+
+        // The view row must be converted to a model row, and the value read from the model
+        int modelRow = tableBills.convertRowIndexToModel(selectedRow);
+        DefaultTableModel model = (DefaultTableModel) tableBills.getModel();
+
+        Bill selectedBill = new Bill();
+        selectedBill.setId((Integer) model.getValueAt(modelRow, 0));
+        selectedBill.setContractId((Integer) model.getValueAt(modelRow, 1));
+        selectedBill.setBulanTagihan((Date) model.getValueAt(modelRow, 2));
+        selectedBill.setTotalTagihan((Double) model.getValueAt(modelRow, 3));
+        selectedBill.setStatus((BillStatus) model.getValueAt(modelRow, 4));
+        return selectedBill;
     }
 
     /**
@@ -26,30 +84,170 @@ public class TagihanPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableBills = new javax.swing.JTable();
+        btnTambah = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        labelTitle = new javax.swing.JLabel();
 
-        jLabel1.setText("Ini panel tagihan");
+        setBackground(new java.awt.Color(153, 153, 153));
+        setPreferredSize(new java.awt.Dimension(540, 380));
+
+        tableBills.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "ID Kontrak", "Bulan Tagihan", "Total Tagihan", "Status"
+            }
+        ));
+        jScrollPane1.setViewportView(tableBills);
+
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
+
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(this::btnEditActionPerformed);
+
+        btnHapus.setBackground(new java.awt.Color(210, 0, 0));
+        btnHapus.setForeground(new java.awt.Color(220, 220, 220));
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
+
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        labelTitle.setText("TAGIHAN");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(228, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(223, 223, 223))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(210, 210, 210)
+                .addComponent(labelTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(31, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(208, 208, 208)
+                        .addComponent(btnHapus)))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(186, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(178, 178, 178))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(labelTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambah)
+                    .addComponent(btnEdit)
+                    .addComponent(btnHapus))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+
+        BillFormDialog dialog = new BillFormDialog(owner, true, BillDialogMode.ADD);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            try {
+                String newContractId = dialog.getSavedContractId();
+                String newBulanTagihan = dialog.getSavedBulanTagihan();
+                String newTotalTagihan = dialog.getSavedTotalTagihan();
+                billController.create(newContractId, newBulanTagihan, newTotalTagihan);
+                renderTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        int row = tableBills.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih tagihan dulu.");
+            return;
+        }
+        Bill selectedBill = selectedRowToBill(row);
+
+        Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+        BillFormDialog dialog = new BillFormDialog(owner, true, BillDialogMode.EDIT, selectedBill);
+        dialog.setVisible(true);
+
+        if (dialog.isSaved()) {
+            try {
+                String updatedContractId = dialog.getSavedContractId();
+                String updatedBulanTagihan = dialog.getSavedBulanTagihan();
+                String updatedTotalTagihan = dialog.getSavedTotalTagihan();
+                billController.edit(selectedBill.getId(), updatedContractId, updatedBulanTagihan, updatedTotalTagihan);
+                renderTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        int row = tableBills.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih tagihan dulu.");
+            return;
+        }
+
+        int modelRow = tableBills.convertRowIndexToModel(row);
+        int id = (int) tableBills.getModel().getValueAt(modelRow, 0);
+        int choice = JOptionPane.showConfirmDialog(this, "Hapus tagihan ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (choice != JOptionPane.YES_OPTION) { return; }
+        try {
+            billController.delete(id);
+            renderTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void renderTable() {
+        try {
+            List<Bill> bills = billDAO.findAll();
+            DefaultTableModel tableModel = (DefaultTableModel) tableBills.getModel();
+            tableModel.setRowCount(0);
+            for (var bill : bills) {
+                tableModel.addRow(new Object[]{
+                    bill.getId(),
+                    bill.getContractId(),
+                    bill.getBulanTagihan(),
+                    bill.getTotalTagihan(),
+                    bill.getStatus()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this, e.getMessage(), "Terjadi kesalahan!", JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelTitle;
+    private javax.swing.JTable tableBills;
     // End of variables declaration//GEN-END:variables
 }
