@@ -103,7 +103,7 @@ public class ExpensePanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "Tanggal", "Deskripsi", "Jumlah"
+                "ID", "Tanggal", "Deskripsi", "Jumlah (Rp)"
             }
         ));
         jScrollPane1.setViewportView(tableExpense);

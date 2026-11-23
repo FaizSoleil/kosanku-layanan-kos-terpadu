@@ -108,7 +108,7 @@ public class RoomPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "Nomor Kamar", "Harga", "Status"
+                "ID", "Nomor Kamar", "Harga (Rp)", "Status"
             }
         ));
         jScrollPane1.setViewportView(tableRooms);

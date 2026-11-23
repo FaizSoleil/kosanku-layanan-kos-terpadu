@@ -174,7 +174,7 @@ public class RoomFormDialog extends javax.swing.JDialog {
                 .addComponent(btnMain)
                 .addGap(18, 18, 18)
                 .addComponent(btnBack)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
 
         pack();

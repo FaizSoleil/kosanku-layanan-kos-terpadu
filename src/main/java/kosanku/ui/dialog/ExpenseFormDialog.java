@@ -4,6 +4,8 @@
  */
 package kosanku.ui.dialog;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author GIBRALDI
@@ -42,10 +44,9 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
 
     public void setExpense(kosanku.model.Expense expense) {
         if (expense == null) return;
-        java.text.SimpleDateFormat formatter =
-            new java.text.SimpleDateFormat("yyyy-MM-dd");
-        fieldDate.setText(formatter.format(expense.getExpenseDate()));
-        fieldCategory.setText(expense.getDeskripsi());
+        java.time.LocalDate localDate = new java.sql.Date(expense.getExpenseDate().getTime()).toLocalDate();
+        datePicker.setDate(localDate);
+        fieldDesc.setText(expense.getDeskripsi());
         fieldTotal.setText(String.valueOf(expense.getJumlah()));
         labelTitle.setText("EDIT PENGELUARAN");
         btnMain.setText("Simpan");
@@ -53,13 +54,9 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
 
     public void save() {
         saved = true;
-        Object dateValue = fieldDate.getValue();
-        if (dateValue instanceof java.util.Date date) {
-            savedDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(date);
-        } else {
-            savedDate = fieldDate.getText();
-        }
-        savedCategory = fieldCategory.getText();
+        java.time.LocalDate pickedDate = datePicker.getDate();
+        savedDate = (pickedDate != null) ? pickedDate.toString() : "";
+        savedCategory = fieldDesc.getText();
         savedTotal = fieldTotal.getText();
     }
 
@@ -72,63 +69,60 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         fieldTotal = new javax.swing.JTextField();
         btnMain = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
-        labelStatus = new javax.swing.JLabel();
+        labelTotal = new javax.swing.JLabel();
         labelTitle = new javax.swing.JLabel();
-        labelRoomNumber = new javax.swing.JLabel();
-        labelPrice = new javax.swing.JLabel();
-        fieldCategory = new javax.swing.JTextField();
-        fieldDate = new javax.swing.JFormattedTextField();
+        labelDate = new javax.swing.JLabel();
+        labelDesc = new javax.swing.JLabel();
+        fieldDesc = new javax.swing.JTextField();
+        datePicker = new com.github.lgooddatepicker.components.DatePicker();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
-        btnMain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        fieldTotal.addActionListener(this::fieldTotalActionPerformed);
+
         btnMain.setText("Tambah");
+        btnMain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnMain.addActionListener(this::btnMainActionPerformed);
 
-        btnBack.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnBack.setText("Kembali");
+        btnBack.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnBack.addActionListener(this::btnBackActionPerformed);
 
-        labelStatus.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        labelStatus.setText("Jumlah");
+        labelTotal.setText("Jumlah");
+        labelTotal.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
-        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         labelTitle.setText("TAMBAH PENGELUARAN");
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
 
-        labelRoomNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        labelRoomNumber.setText("Tanggal");
+        labelDate.setText("Tanggal");
+        labelDate.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
-        labelPrice.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        labelPrice.setText("Kategori");
-
-        java.text.SimpleDateFormat dateFormat =
-            new java.text.SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        fieldDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(
-            new javax.swing.text.DateFormatter(dateFormat)
-        ));
-        fieldDate.setValue(new java.util.Date());
-        fieldDate.addActionListener(this::fieldDateActionPerformed);
+        labelDesc.setText("Deskripsi");
+        labelDesc.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(93, Short.MAX_VALUE)
+                .addContainerGap(94, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(labelRoomNumber)
-                    .addComponent(labelPrice)
-                    .addComponent(btnMain)
+                    .addComponent(labelDate)
+                    .addComponent(labelDesc)
                     .addComponent(btnBack)
-                    .addComponent(labelStatus)
+                    .addComponent(labelTotal)
                     .addComponent(labelTitle)
-                    .addComponent(fieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMain)
+                    .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(84, 84, 84))
         );
         layout.setVerticalGroup(
@@ -137,28 +131,33 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
                 .addGap(29, 29, 29)
                 .addComponent(labelTitle)
                 .addGap(18, 18, 18)
-                .addComponent(labelRoomNumber)
-                .addGap(8, 8, 8)
-                .addComponent(fieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelDate)
+                .addGap(9, 9, 9)
+                .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelPrice)
+                .addComponent(labelDesc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fieldCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(labelStatus)
-                .addGap(4, 4, 4)
+                .addComponent(fieldDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelTotal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
                 .addComponent(btnMain)
                 .addGap(18, 18, 18)
                 .addComponent(btnBack)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMainActionPerformed
+        java.time.LocalDate pickedDate = datePicker.getDate();
+        if (pickedDate == null) {
+            JOptionPane.showMessageDialog(this, "Pilih tanggal terlebih dahulu.");
+            return;
+        }
         save();
         dispose();
     }//GEN-LAST:event_btnMainActionPerformed
@@ -167,9 +166,9 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void fieldDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldDateActionPerformed
+    private void fieldTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldTotalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldDateActionPerformed
+    }//GEN-LAST:event_fieldTotalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -199,12 +198,14 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnMain;
-    private javax.swing.JTextField fieldCategory;
-    private javax.swing.JFormattedTextField fieldDate;
+    private com.github.lgooddatepicker.components.DatePicker datePicker;
+    private javax.swing.JTextField fieldDesc;
     private javax.swing.JTextField fieldTotal;
-    private javax.swing.JLabel labelPrice;
-    private javax.swing.JLabel labelRoomNumber;
-    private javax.swing.JLabel labelStatus;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel labelDate;
+    private javax.swing.JLabel labelDesc;
     private javax.swing.JLabel labelTitle;
+    private javax.swing.JLabel labelTotal;
     // End of variables declaration//GEN-END:variables
 }
