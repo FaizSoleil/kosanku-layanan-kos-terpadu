@@ -19,7 +19,7 @@ public class RoomFormDialog extends javax.swing.JDialog {
     private String savedRoomNumber;
     private String savedPrice;
     private RoomStatus savedStatus;
-    private Room sentFromParentRoom;
+    private Room beingEditedRoom;
     private boolean saved = false;
     private RoomDialogMode mode;
 
@@ -42,32 +42,20 @@ public class RoomFormDialog extends javax.swing.JDialog {
      * Creates new form KamarFormDialog
      */
     public RoomFormDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        this.mode = RoomDialogMode.ADD; //default to add, this shouldn't matter tho.
-        this.sentFromParentRoom = null;
-        initComponents();
-        resetDialog();
-        cmbStatus.setModel(new DefaultComboBoxModel<>(RoomStatus.values()));
-        setLocationRelativeTo(null);
+        this(parent, modal, RoomDialogMode.ADD, null);
     }
 
     public RoomFormDialog(java.awt.Frame parent, boolean modal, RoomDialogMode mode) {
-        super(parent, modal);
-        this.mode = mode;
-        this.sentFromParentRoom = null;
-        initComponents();
-        resetDialog();
-        cmbStatus.setModel(new DefaultComboBoxModel<>(RoomStatus.values()));
-        setLocationRelativeTo(null);
+        this(parent, modal, mode, null);
     }
 
-    public RoomFormDialog(java.awt.Frame parent, boolean modal, RoomDialogMode mode, Room sentFromParentRoom) {
+    public RoomFormDialog(java.awt.Frame parent, boolean modal, RoomDialogMode mode, Room beingEditedRoom) {
         super(parent, modal);
         this.mode = mode;
-        this.sentFromParentRoom = sentFromParentRoom;
+        this.beingEditedRoom = beingEditedRoom;
         initComponents();
-        resetDialog();
         cmbStatus.setModel(new DefaultComboBoxModel<>(RoomStatus.values()));
+        resetDialog();
         setLocationRelativeTo(null);
     }
     // if modal is set to true, it blocks the input to its parent's view
@@ -77,14 +65,19 @@ public class RoomFormDialog extends javax.swing.JDialog {
         fieldPrice.setText("");
         fieldRoomNumber.setText("");
         labelTitle.setText((mode == RoomDialogMode.ADD) ? "TAMBAH KAMAR" : "EDIT KAMAR  ");
-        if (this.mode == RoomDialogMode.EDIT) { 
-            cmbStatus.setSelectedItem(sentFromParentRoom.getStatus());
-            btnMain.setText("Edit");
+        if (this.mode == RoomDialogMode.EDIT) {
+            editSetup(beingEditedRoom.getRoomNumber(), beingEditedRoom.getPrice(), beingEditedRoom.getStatus());
+            btnMain.setText("Simpan");
         } else {
-            cmbStatus.setSelectedItem(RoomStatus.TERSEDIA);
             btnMain.setText("Tambah");
         }
     }
+    private void editSetup(String RoomNum, Double price, RoomStatus status) {
+        fieldRoomNumber.setText(RoomNum);
+        fieldPrice.setText(price.toString());
+        cmbStatus.setSelectedItem(status);
+    }
+
     public String getSavedRoomNumber() { return savedRoomNumber; }
     public String getSavedPrice() { return savedPrice; }
     public RoomStatus getSavedStatus() { return savedStatus; }
@@ -127,6 +120,7 @@ public class RoomFormDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitle.setText("TAMBAH KAMAR");
 
         labelRoomNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -143,6 +137,8 @@ public class RoomFormDialog extends javax.swing.JDialog {
         btnBack.setText("Kembali");
         btnBack.addActionListener(this::btnBackActionPerformed);
 
+        cmbStatus.addActionListener(this::cmbStatusActionPerformed);
+
         labelStatus.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelStatus.setText("Status");
 
@@ -151,10 +147,9 @@ public class RoomFormDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(130, Short.MAX_VALUE)
+                .addContainerGap(139, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(labelRoomNumber)
-                    .addComponent(labelTitle)
                     .addComponent(labelPrice)
                     .addComponent(fieldRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,7 +157,8 @@ public class RoomFormDialog extends javax.swing.JDialog {
                     .addComponent(btnBack)
                     .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelStatus))
-                .addGap(120, 120, 120))
+                .addGap(129, 129, 129))
+            .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,6 +195,10 @@ public class RoomFormDialog extends javax.swing.JDialog {
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbStatusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,3 +249,4 @@ public class RoomFormDialog extends javax.swing.JDialog {
     private javax.swing.JLabel labelTitle;
     // End of variables declaration//GEN-END:variables
 }
+

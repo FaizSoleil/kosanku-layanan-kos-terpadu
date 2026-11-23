@@ -87,27 +87,28 @@ public class TenantFormDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitle.setText("TAMBAH PENGHUNI");
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
 
-        labelIdNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelIdNumber.setText("NIK");
+        labelIdNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
-        labelName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelName.setText("Nama");
+        labelName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
-        labelEmail.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelEmail.setText("Email");
+        labelEmail.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
-        labelPhoneNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelPhoneNumber.setText("No. Telepon");
+        labelPhoneNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
-        btnMain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnMain.setText("Tambah");
+        btnMain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnMain.addActionListener(this::btnMainActionPerformed);
 
-        btnBack.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnBack.setText("Kembali");
+        btnBack.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnBack.addActionListener(this::btnBackActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -129,11 +130,8 @@ public class TenantFormDialog extends javax.swing.JDialog {
                     .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelPhoneNumber)
                     .addComponent(fieldPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelTitle)
-                .addGap(65, 65, 65))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(labelTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

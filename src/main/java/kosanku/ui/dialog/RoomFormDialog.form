@@ -24,10 +24,9 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="130" max="32767" attributes="0"/>
+              <EmptySpace pref="139" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="2" attributes="0">
                   <Component id="labelRoomNumber" alignment="2" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelTitle" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="labelPrice" alignment="2" min="-2" max="-2" attributes="0"/>
                   <Component id="fieldRoomNumber" alignment="2" min="-2" pref="132" max="-2" attributes="0"/>
                   <Component id="fieldPrice" alignment="2" min="-2" pref="132" max="-2" attributes="0"/>
@@ -36,8 +35,9 @@
                   <Component id="cmbStatus" alignment="2" min="-2" pref="96" max="-2" attributes="0"/>
                   <Component id="labelStatus" alignment="2" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="129" max="-2" attributes="0"/>
           </Group>
+          <Component id="labelTitle" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -69,26 +69,27 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="labelTitle">
       <Properties>
-        <Property name="text" type="java.lang.String" value="TAMBAH KAMAR"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="18" style="1"/>
         </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="TAMBAH KAMAR"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelRoomNumber">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nomor Kamar"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
+        <Property name="text" type="java.lang.String" value="Nomor Kamar"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelPrice">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Harga"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
+        <Property name="text" type="java.lang.String" value="Harga"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldRoomNumber">
@@ -97,10 +98,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnMain">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tambah"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
+        <Property name="text" type="java.lang.String" value="Tambah"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMainActionPerformed"/>
@@ -108,10 +109,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnBack">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Kembali"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
+        <Property name="text" type="java.lang.String" value="Kembali"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBackActionPerformed"/>
@@ -123,16 +124,19 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbStatusActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;RoomStatus&gt;"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="labelStatus">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Status"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
+        <Property name="text" type="java.lang.String" value="Status"/>
       </Properties>
     </Component>
   </SubComponents>

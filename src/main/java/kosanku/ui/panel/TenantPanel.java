@@ -202,12 +202,14 @@ public class TenantPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnHapusActionPerformed
 
-   private void renderTable() {
-       try {
-           List<Tenant> tenants = tenantController.loadAll();
-           DefaultTableModel tableModel = (DefaultTableModel) tableTenant.getModel();
-           tableModel.setRowCount(0);
-           for (Tenant tenant : tenants) {
+    private void renderTable() {
+        try {
+            List<Tenant> tenants = tenantController.loadAll();
+            DefaultTableModel tableModel = (DefaultTableModel) tableTenant.getModel();
+            tableModel.setRowCount(0);
+            for (Tenant tenant : tenants) {
+                String tenantEmail = tenant.getEmail();
+                if (tenantEmail == null || tenantEmail.equals("")) {tenant.setEmail("null");}
                 tableModel.addRow(new Object[]{
                     tenant.getId(),
                     tenant.getIdNumber(),
@@ -215,13 +217,13 @@ public class TenantPanel extends javax.swing.JPanel {
                     tenant.getEmail(),
                     tenant.getPhoneNumber()
                 });
-           }
-       } catch (Exception e) {
+            }
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(
                 this, e.getMessage(), "Terjadi kesalahan!", JOptionPane.ERROR_MESSAGE
             );
-       }
-   }
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

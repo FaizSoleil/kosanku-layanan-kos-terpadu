@@ -3,10 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package kosanku.ui.dialog;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import kosanku.model.Expense;
-import kosanku.model.RoomStatus;
-import kosanku.ui.dialog.RoomFormDialog.RoomDialogMode;
 
 /**
  *
@@ -19,7 +21,7 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
     private String savedDate;
     private String savedCategory;
     private String savedTotal;
-    private Expense sentFromParentExpense;
+    private Expense beingEditedExpense;
     private ExpenseDialogMode mode;
 
     /**
@@ -41,27 +43,17 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
     }
 
     public ExpenseFormDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        this.mode = ExpenseDialogMode.ADD; //default to add, this shouldn't matter tho.
-        this.sentFromParentExpense = null;
-        initComponents();
-        resetDialog();
-        setLocationRelativeTo(null);
+        this(parent, modal, ExpenseDialogMode.ADD, null);
     }
 
     public ExpenseFormDialog(java.awt.Frame parent, boolean modal, ExpenseDialogMode mode) {
-        super(parent, modal);
-        this.mode = mode;
-        this.sentFromParentExpense = null;
-        initComponents();
-        resetDialog();
-        setLocationRelativeTo(null);
+        this(parent, modal, mode, null);
     }
 
-    public ExpenseFormDialog(java.awt.Frame parent, boolean modal, ExpenseDialogMode mode, Expense sentFromParentExpense) {
+    public ExpenseFormDialog(java.awt.Frame parent, boolean modal, ExpenseDialogMode mode, Expense beingEditedExpense) {
         super(parent, modal);
         this.mode = mode;
-        this.sentFromParentExpense = sentFromParentExpense;
+        this.beingEditedExpense = beingEditedExpense;
         initComponents();
         resetDialog();
         setLocationRelativeTo(null);
@@ -72,11 +64,19 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         fieldDesc.setText("");
         fieldTotal.setText("");
         labelTitle.setText((mode == ExpenseDialogMode.ADD) ? "TAMBAH PENGELUARAN" : "EDIT PENGELUARAN  ");
-        if (this.mode == ExpenseDialogMode.EDIT) { 
-            btnMain.setText("Edit");
+        if (this.mode == ExpenseDialogMode.EDIT) {
+            editSetup(beingEditedExpense.getExpenseDate(), beingEditedExpense.getDeskripsi(), beingEditedExpense.getJumlah()); 
+            btnMain.setText("Simpan");
         } else {
             btnMain.setText("Tambah");
         }
+    }
+
+    private void editSetup(Date date, String desc, Double total) {
+        LocalDate localDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+        datePicker.setDate(localDate);
+        fieldDesc.setText(desc);
+        fieldTotal.setText(total.toString());
     }
 
     public boolean isSaved() { return saved; }
@@ -133,6 +133,7 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         labelTotal.setText("Jumlah");
         labelTotal.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
+        labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitle.setText("TAMBAH PENGELUARAN");
         labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
 
@@ -147,18 +148,18 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(92, Short.MAX_VALUE)
+                .addContainerGap(133, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(labelDate)
                     .addComponent(labelDesc)
                     .addComponent(btnBack)
                     .addComponent(labelTotal)
-                    .addComponent(labelTitle)
                     .addComponent(fieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fieldDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMain)
                     .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(86, 86, 86))
+                .addGap(127, 127, 127))
+            .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
