@@ -88,7 +88,7 @@ public class PembayaranPanel extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "ID Tagihan", "Tanggal Bayar", "Jumlah"
+                "ID", "ID Tagihan", "Tanggal Bayar", "Jumlah (Rp)"
             }
         ));
         jScrollPane1.setViewportView(tablePayments);
@@ -112,10 +112,6 @@ public class PembayaranPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(190, 190, 190)
-                .addComponent(labelTitle)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -126,6 +122,10 @@ public class PembayaranPanel extends javax.swing.JPanel {
                         .addGap(208, 208, 208)
                         .addComponent(btnHapus)))
                 .addContainerGap(31, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(190, 190, 190)
+                .addComponent(labelTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

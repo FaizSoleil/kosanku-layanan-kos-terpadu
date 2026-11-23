@@ -87,37 +87,40 @@ public class TenantFormDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        labelTitle.setFont(new java.awt.Font("Arial", 1, 18));
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         labelTitle.setText("TAMBAH PENGHUNI");
 
-        labelIdNumber.setFont(new java.awt.Font("Arial", 0, 14));
+        labelIdNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelIdNumber.setText("NIK");
 
-        labelName.setFont(new java.awt.Font("Arial", 0, 14));
+        labelName.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelName.setText("Nama");
 
-        labelEmail.setFont(new java.awt.Font("Arial", 0, 14));
+        labelEmail.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelEmail.setText("Email");
 
-        labelPhoneNumber.setFont(new java.awt.Font("Arial", 0, 14));
+        labelPhoneNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelPhoneNumber.setText("No. Telepon");
 
-        btnMain.setFont(new java.awt.Font("Arial", 0, 14));
+        btnMain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnMain.setText("Tambah");
         btnMain.addActionListener(this::btnMainActionPerformed);
 
-        btnBack.setFont(new java.awt.Font("Arial", 0, 14));
+        btnBack.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnBack.setText("Kembali");
         btnBack.addActionListener(this::btnBackActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-            .addComponent(labelTitle)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnMain)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBack))
                     .addComponent(labelIdNumber)
                     .addComponent(fieldIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelName)
@@ -126,37 +129,38 @@ public class TenantFormDialog extends javax.swing.JDialog {
                     .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelPhoneNumber)
                     .addComponent(fieldPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(btnMain)
-                .addGap(18)
-                .addComponent(btnBack))
+                .addGap(30, 30, 30))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelTitle)
+                .addGap(65, 65, 65))
         );
         layout.setVerticalGroup(
-            layout.createSequentialGroup()
-            .addGap(24)
-            .addComponent(labelTitle)
-            .addGap(18)
-            .addComponent(labelIdNumber)
-            .addGap(4)
-            .addComponent(fieldIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(8)
-            .addComponent(labelName)
-            .addGap(4)
-            .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(8)
-            .addComponent(labelEmail)
-            .addGap(4)
-            .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(8)
-            .addComponent(labelPhoneNumber)
-            .addGap(4)
-            .addComponent(fieldPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(18)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(btnMain)
-                .addComponent(btnBack))
-            .addGap(24)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(labelTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelIdNumber)
+                .addGap(4, 4, 4)
+                .addComponent(fieldIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelName)
+                .addGap(4, 4, 4)
+                .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelEmail)
+                .addGap(4, 4, 4)
+                .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelPhoneNumber)
+                .addGap(4, 4, 4)
+                .addComponent(fieldPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMain)
+                    .addComponent(btnBack))
+                .addGap(24, 24, 24))
         );
 
         pack();

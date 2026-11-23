@@ -106,6 +106,10 @@ public class TagihanPanel extends javax.swing.JPanel {
             }
         ));
         jScrollPane1.setViewportView(tableBills);
+        if (tableBills.getColumnModel().getColumnCount() > 0) {
+            tableBills.getColumnModel().getColumn(0).setMinWidth(30);
+            tableBills.getColumnModel().getColumn(0).setMaxWidth(30);
+        }
 
         btnTambah.setText("Tambah");
         btnTambah.addActionListener(this::btnTambahActionPerformed);
@@ -126,10 +130,6 @@ public class TagihanPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(210, 210, 210)
-                .addComponent(labelTitle)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -140,6 +140,10 @@ public class TagihanPanel extends javax.swing.JPanel {
                         .addGap(208, 208, 208)
                         .addComponent(btnHapus)))
                 .addContainerGap(31, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(210, 210, 210)
+                .addComponent(labelTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
