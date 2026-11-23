@@ -8,7 +8,6 @@ import kosanku.ui.panel.ExpensePanel;
 import kosanku.ui.panel.TenantPanel;
 import kosanku.ui.panel.TagihanPanel;
 import kosanku.ui.panel.PembayaranPanel;
-import kosanku.ui.panel.MeteranPanel;
 import kosanku.ui.panel.KontrakPanel;
 import kosanku.ui.panel.RoomPanel;
 import kosanku.model.User;
@@ -42,7 +41,6 @@ public class DashboardForm extends javax.swing.JFrame {
         contentPanel.add(new RoomPanel(), "Kamar");
         contentPanel.add(new TenantPanel(), "Penghuni");
         contentPanel.add(new KontrakPanel(), "Kontrak");
-        contentPanel.add(new MeteranPanel(), "Meteran");
         contentPanel.add(new TagihanPanel(), "Tagihan");
         contentPanel.add(new PembayaranPanel(), "Pembayaran");
         contentPanel.add(new ExpensePanel(), "Pengeluaran");
