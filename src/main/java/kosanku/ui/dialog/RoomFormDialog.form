@@ -8,9 +8,6 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
-  <Events>
-    <EventHandler event="windowOpened" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowOpened"/>
-  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -72,26 +69,26 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="labelTitle">
       <Properties>
+        <Property name="text" type="java.lang.String" value="TAMBAH KAMAR"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="18" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="TAMBAH KAMAR"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelRoomNumber">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Nomor Kamar"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Nomor Kamar"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelPrice">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Harga"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Harga"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldRoomNumber">
@@ -100,10 +97,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnMain">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Tambah"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Tambah"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMainActionPerformed"/>
@@ -111,10 +108,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnBack">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Kembali"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Kembali"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBackActionPerformed"/>
@@ -132,10 +129,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="labelStatus">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Status"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Status"/>
       </Properties>
     </Component>
   </SubComponents>

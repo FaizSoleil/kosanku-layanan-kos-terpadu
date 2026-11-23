@@ -77,6 +77,10 @@ public class TenantPanel extends javax.swing.JPanel {
             }
         ));
         jScrollPane1.setViewportView(tableTenant);
+        if (tableTenant.getColumnModel().getColumnCount() > 0) {
+            tableTenant.getColumnModel().getColumn(0).setMinWidth(30);
+            tableTenant.getColumnModel().getColumn(0).setMaxWidth(30);
+        }
 
         btnTambah.setText("Tambah");
         btnTambah.addActionListener(this::btnTambahActionPerformed);

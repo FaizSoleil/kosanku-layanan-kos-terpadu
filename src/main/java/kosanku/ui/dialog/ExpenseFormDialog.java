@@ -3,12 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package kosanku.ui.dialog;
-
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-
 import kosanku.model.Expense;
-import kosanku.model.Room;
 import kosanku.model.RoomStatus;
 import kosanku.ui.dialog.RoomFormDialog.RoomDialogMode;
 
@@ -49,6 +45,7 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         this.mode = ExpenseDialogMode.ADD; //default to add, this shouldn't matter tho.
         this.sentFromParentExpense = null;
         initComponents();
+        resetDialog();
         setLocationRelativeTo(null);
     }
 
@@ -57,6 +54,7 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         this.mode = mode;
         this.sentFromParentExpense = null;
         initComponents();
+        resetDialog();
         setLocationRelativeTo(null);
     }
 
@@ -65,7 +63,20 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         this.mode = mode;
         this.sentFromParentExpense = sentFromParentExpense;
         initComponents();
+        resetDialog();
         setLocationRelativeTo(null);
+    }
+
+    private void resetDialog() {
+        saved = false;
+        fieldDesc.setText("");
+        fieldTotal.setText("");
+        labelTitle.setText((mode == ExpenseDialogMode.ADD) ? "TAMBAH PENGELUARAN" : "EDIT PENGELUARAN  ");
+        if (this.mode == ExpenseDialogMode.EDIT) { 
+            btnMain.setText("Edit");
+        } else {
+            btnMain.setText("Tambah");
+        }
     }
 
     public boolean isSaved() { return saved; }
