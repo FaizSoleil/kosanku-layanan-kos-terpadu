@@ -4,19 +4,16 @@
  */
 package kosanku.ui.panel;
 
-import java.awt.Frame;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import kosanku.controller.RoomController;
-import kosanku.dao.RoomDAO;
-import kosanku.model.Room;
-import kosanku.model.RoomStatus;
-import kosanku.service.RoomService;
-import kosanku.ui.dialog.RoomFormDialog;
-import kosanku.ui.dialog.RoomFormDialog.RoomDialogMode;
+import kosanku.controller.TenantController;
+import kosanku.dao.TenantDAO;
+import kosanku.model.Tenant;
+import kosanku.service.TenantService;
+import kosanku.ui.dialog.TenantFormDialog;
 
 /**
  *
@@ -24,62 +21,29 @@ import kosanku.ui.dialog.RoomFormDialog.RoomDialogMode;
  */
 public class TenantPanel extends javax.swing.JPanel {
 
-    private final RoomDAO roomsDAO = new RoomDAO();
-    // private final ExpenseController expenseController;
+    private final TenantController tenantController =
+        new TenantController(new TenantService(new TenantDAO()));
 
     /**
      * Creates new form KamarPanel
      */
     public TenantPanel() {
-        //TODO: ADD implementation
         initComponents();
-        return;
+        tableTenant.setModel(new DefaultTableModel(
+            new Object[]{"ID", "NIK", "Nama", "Email", "No. Telp."}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+        renderTable();
     }
 
-    // public ExpensePanel(RoomController roomController) {
-    //     initComponents();
-    //     tableExpense.setModel(new DefaultTableModel(
-    //         new Object[]{"ID", "Nomor Kamar", "Harga", "Status"}, 0) {
-    //         @Override
-    //         public boolean isCellEditable(int row, int col) {
-    //             return false;   // no cell is ever editable
-    //         }
-    //     });
-    //     renderTable();
-    //     this.roomController = roomController;
-    // }
-
-    private Room selectedRowToRoom(int selectedRow, JTable selectedTable) {
+    private Tenant getSelectedTenant(int selectedRow) {
         if (selectedRow == -1) return null;
-        
-        Room selectedRoom = new Room();
-        int modelRow = selectedTable.convertRowIndexToModel(selectedRow);
-        for (int col = 0; col < selectedTable.getColumnCount(); col++) {
-            Object cellValue = selectedTable.getValueAt(modelRow, col);
-
-            switch (col) {
-                case 0:
-                    selectedRoom.setId((Integer) cellValue);
-                    break;
-                
-                case 1:
-                    selectedRoom.setRoomNumber((String) cellValue);
-                    break;
-
-                case 2:
-                    selectedRoom.setPrice((double) cellValue);
-                    break;
-
-                case 3:
-                    selectedRoom.setStatus((RoomStatus) cellValue);
-                    break;
-            
-                default:
-                    System.err.print("Unexpected column with object value: " + cellValue);
-                    break;
-            }
-        }
-        return selectedRoom;
+        int modelRow = tableTenant.convertRowIndexToModel(selectedRow);
+        int id = ((Number) tableTenant.getValueAt(modelRow, 0)).intValue();
+        return tenantController.findById(id).orElse(null);
     }
 
     /**
@@ -165,80 +129,87 @@ public class TenantPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
-        // TODO add your handling code here:
-        // Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
+        TenantFormDialog dialog = new TenantFormDialog(
+            (java.awt.Frame) SwingUtilities.getWindowAncestor(this), true
+        );
+        dialog.setVisible(true);
+        if (!dialog.isSaved()) return;
 
-        // RoomFormDialog dialog = new RoomFormDialog(owner, true, RoomDialogMode.ADD);
-        // dialog.setVisible(true);
-
-        // if (dialog.isSaved()) {
-        //     try {
-        //         String newRoomNumber = dialog.getSavedRoomNumber();
-        //         String newPrice = dialog.getSavedPrice();
-        //         expenseController.create(newRoomNumber, newPrice);
-        //         renderTable();
-        // } catch (Exception e) {
-        //         JOptionPane.showMessageDialog(this, e.getMessage());
-        //     }
-        // }
+        Tenant tenant = dialog.getTenant();
+        try {
+            tenantController.create(
+                tenant.getIdNumber(),
+                tenant.getName(),
+                tenant.getEmail(),
+                tenant.getPhoneNumber()
+            );
+            renderTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
-        // int row = tableRooms.getSelectedRow();
-        // if (row == -1) {
-        //     JOptionPane.showMessageDialog(this, "Pilih kamar dulu.");
-        //     return; 
-        // }
-        // Room selectedRoom = selectedRowToRoom(row, tableRooms);
+        Tenant selected = getSelectedTenant(tableTenant.getSelectedRow());
+        if (selected == null) {
+            JOptionPane.showMessageDialog(this, "Pilih penghuni dulu.");
+            return;
+        }
+        TenantFormDialog dialog = new TenantFormDialog(
+            (java.awt.Frame) SwingUtilities.getWindowAncestor(this), true, selected
+        );
+        dialog.setVisible(true);
+        if (!dialog.isSaved()) return;
 
-        // Frame owner = (Frame) SwingUtilities.getWindowAncestor(this);
-        // RoomFormDialog dialog = new RoomFormDialog(owner, true, RoomDialogMode.EDIT, selectedRoom);
-        // dialog.setVisible(true);
-
-        // if (dialog.isSaved()) {
-        //     try {
-        //         String updatedRoomNumber = dialog.getSavedRoomNumber();
-        //         String updatedPrice = dialog.getSavedPrice();
-        //         RoomStatus updatedStatus = dialog.getSavedStatus();
-        //         expenseController.edit(selectedRoom.getId(), updatedRoomNumber, updatedPrice, updatedStatus);
-        //         renderTable();
-        // } catch (Exception e) {
-        //         JOptionPane.showMessageDialog(this, e.getMessage());
-        //     }
-        // }
+        Tenant updated = dialog.getTenant();
+        try {
+            tenantController.edit(
+                selected.getId(),
+                updated.getIdNumber(),
+                updated.getName(),
+                updated.getEmail(),
+                updated.getPhoneNumber()
+            );
+            renderTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        // TODO add your handling code here:]
-        // int row = tableRooms.getSelectedRow();
-        // if (row == -1) {
-        //     JOptionPane.showMessageDialog(this, "Pilih kamar dulu.");
-        //     return;
-        // }
+        Tenant selected = getSelectedTenant(tableTenant.getSelectedRow());
+        if (selected == null) {
+            JOptionPane.showMessageDialog(this, "Pilih penghuni dulu.");
+            return;
+        }
+        int choice = JOptionPane.showConfirmDialog(
+            this,
+            "Hapus/nonaktifkan penghuni " + selected.getName() + "?",
+            "Konfirmasi",
+            JOptionPane.YES_NO_OPTION
+        );
+        if (choice != JOptionPane.YES_OPTION) return;
 
-        // int id = (int) tableRooms.getValueAt(row, 0);
-        // int choice = JOptionPane.showConfirmDialog(this, "Hapus kamar ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        // if (choice == JOptionPane.NO_OPTION) { return; }
-        // try {
-        //     expenseController.delete(id);
-        //     renderTable();
-        // } catch (Exception e) {
-        //     JOptionPane.showMessageDialog(this, e.getMessage());
-        // }
+        try {
+            tenantController.delete(selected.getId());
+            renderTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnHapusActionPerformed
 
    private void renderTable() {
        try {
-           List<Room> rooms = roomsDAO.findAll();
+           List<Tenant> tenants = tenantController.loadAll();
            DefaultTableModel tableModel = (DefaultTableModel) tableTenant.getModel();
            tableModel.setRowCount(0);
-           for (var room : rooms) {
+           for (Tenant tenant : tenants) {
                 tableModel.addRow(new Object[]{
-                    room.getId(),
-                    room.getRoomNumber(),
-                    room.getPrice(),
-                    room.getStatus()
+                    tenant.getId(),
+                    tenant.getIdNumber(),
+                    tenant.getName(),
+                    tenant.getEmail(),
+                    tenant.getPhoneNumber()
                 });
            }
        } catch (Exception e) {
