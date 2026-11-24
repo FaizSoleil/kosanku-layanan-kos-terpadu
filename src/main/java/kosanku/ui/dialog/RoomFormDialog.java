@@ -8,6 +8,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import kosanku.model.Room;
 import kosanku.model.RoomStatus;
+import kosanku.ui.dialog.PaymentFormDialog.PaymentDialogMode;
 
 /**
  *
@@ -54,8 +55,10 @@ public class RoomFormDialog extends javax.swing.JDialog {
         this.mode = mode;
         this.beingEditedRoom = beingEditedRoom;
         initComponents();
+        setTitle(mode == RoomDialogMode.ADD ? "Tambah Kamar" : "Edit Kamar");
         cmbStatus.setModel(new DefaultComboBoxModel<>(RoomStatus.values()));
         resetDialog();
+        pack();
         setLocationRelativeTo(null);
     }
     // if modal is set to true, it blocks the input to its parent's view
@@ -119,9 +122,9 @@ public class RoomFormDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitle.setText("TAMBAH KAMAR");
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
 
         labelRoomNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         labelRoomNumber.setText("Nomor Kamar");
@@ -146,31 +149,37 @@ public class RoomFormDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(labelRoomNumber)
-                    .addComponent(labelPrice)
-                    .addComponent(fieldRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMain)
-                    .addComponent(btnBack)
-                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelStatus))
-                .addGap(129, 129, 129))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelRoomNumber)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labelStatus)
+                            .addComponent(fieldPrice)
+                            .addComponent(labelPrice)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btnMain)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                                .addComponent(btnBack))
+                            .addComponent(cmbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fieldRoomNumber))
+                        .addContainerGap(30, Short.MAX_VALUE))))
             .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(30, 30, 30)
                 .addComponent(labelTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(labelRoomNumber)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
-                .addComponent(labelPrice)
+                .addComponent(labelPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -178,10 +187,10 @@ public class RoomFormDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnMain)
-                .addGap(12, 12, 12)
-                .addComponent(btnBack)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBack)
+                    .addComponent(btnMain))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();

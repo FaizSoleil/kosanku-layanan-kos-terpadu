@@ -33,18 +33,15 @@ public class KontrakFormDialog extends javax.swing.JDialog {
         this(owner, modal, mode, null);
     }
 
-    public KontrakFormDialog(Frame owner, boolean modal,
-                             KontrakDialogMode mode,
-                             Contract contract) {
+    public KontrakFormDialog(Frame owner, boolean modal, KontrakDialogMode mode, Contract contract) {
         super(owner, modal);
         this.mode = mode;
         this.contractBeingEdited = contract;
         initComponents();
         loadComboBoxes();
-
-        labelTitle.setText(mode == KontrakDialogMode.ADD
-            ? "TAMBAH KONTRAK"
-            : "EDIT KONTRAK");
+        setTitle(mode == KontrakDialogMode.ADD ? "Tambah Kontrak" : "Edit Kontrak");
+        btnMain.setText(mode == KontrakDialogMode.ADD ? "Tambah" : "Simpan");
+        labelTitle.setText(mode == KontrakDialogMode.ADD ? "TAMBAH KONTRAK" : "EDIT KONTRAK");
         btnMain.setText(mode == KontrakDialogMode.ADD ? "Tambah" : "Simpan");
 
         if (mode == KontrakDialogMode.EDIT && contract != null) {
@@ -185,160 +182,122 @@ public class KontrakFormDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
         labelTitle = new javax.swing.JLabel();
         labelTenant = new javax.swing.JLabel();
-        labelRoom = new javax.swing.JLabel();
-        labelTanggalMasuk = new javax.swing.JLabel();
-        labelTanggalKeluar = new javax.swing.JLabel();
-        labelDeposit = new javax.swing.JLabel();
-        labelTanggalJatuhTempo = new javax.swing.JLabel();
-        labelStatus = new javax.swing.JLabel();
         cmbTenant = new javax.swing.JComboBox<>();
+        labelRoom = new javax.swing.JLabel();
         cmbRoom = new javax.swing.JComboBox<>();
-        cmbStatus = new javax.swing.JComboBox<>();
-        dateTanggalMasuk = new DatePicker();
+        labelTanggalMasuk = new javax.swing.JLabel();
+        dateTanggalMasuk = new com.github.lgooddatepicker.components.DatePicker();
+        labelTanggalKeluar = new javax.swing.JLabel();
+        dateTanggalKeluar = new com.github.lgooddatepicker.components.DatePicker();
+        labelDeposit = new javax.swing.JLabel();
         fieldDeposit = new javax.swing.JTextField();
-        dateTanggalKeluar = new DatePicker();
-        dateTanggalJatuhTempo = new DatePicker();
+        labelTanggalJatuhTempo = new javax.swing.JLabel();
+        dateTanggalJatuhTempo = new com.github.lgooddatepicker.components.DatePicker();
+        labelStatus = new javax.swing.JLabel();
+        cmbStatus = new javax.swing.JComboBox<>();
         btnMain = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        labelTitle.setFont(new java.awt.Font("Arial", 1, 18));
         labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelTitle.setText("TAMBAH KONTRAK");
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
 
-        labelTenant.setFont(new java.awt.Font("Arial", 0, 14));
         labelTenant.setText("Penyewa");
-        labelRoom.setFont(new java.awt.Font("Arial", 0, 14));
+
         labelRoom.setText("Kamar");
-        labelTanggalMasuk.setFont(new java.awt.Font("Arial", 0, 14));
+
         labelTanggalMasuk.setText("Tanggal Masuk");
-        labelTanggalKeluar.setFont(new java.awt.Font("Arial", 0, 14));
+
         labelTanggalKeluar.setText("Tanggal Keluar");
-        labelDeposit.setFont(new java.awt.Font("Arial", 0, 14));
+
         labelDeposit.setText("Deposit");
-        labelTanggalJatuhTempo.setFont(new java.awt.Font("Arial", 0, 14));
+
         labelTanggalJatuhTempo.setText("Jatuh Tempo");
-        labelStatus.setFont(new java.awt.Font("Arial", 0, 14));
+
         labelStatus.setText("Status");
 
-        btnMain.setFont(new java.awt.Font("Arial", 0, 14));
         btnMain.setText("Tambah");
+        btnMain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnMain.addActionListener(this::btnMainActionPerformed);
 
-        btnBack.setFont(new java.awt.Font("Arial", 0, 14));
         btnBack.setText("Kembali");
+        btnBack.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnBack.addActionListener(this::btnBackActionPerformed);
 
-        javax.swing.GroupLayout layout =
-            new javax.swing.GroupLayout(getContentPane());
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE,
-                              javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(30, 30, 30)
-                    .addGroup(layout.createParallelGroup(
-                        javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnMain)
-                            .addPreferredGap(
-                                javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                Short.MAX_VALUE)
-                            .addComponent(btnBack))
-                        .addComponent(labelTenant)
-                        .addComponent(cmbTenant,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE, 250,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(labelRoom)
-                        .addComponent(cmbRoom,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE, 250,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(labelTanggalMasuk)
-                        .addComponent(dateTanggalMasuk,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE, 250,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(labelTanggalKeluar)
-                        .addComponent(dateTanggalKeluar,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE, 250,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(labelDeposit)
-                        .addComponent(fieldDeposit,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE, 250,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(labelTanggalJatuhTempo)
-                        .addComponent(dateTanggalJatuhTempo,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE, 250,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(labelStatus)
-                        .addComponent(cmbStatus,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE, 250,
-                                      javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(30, Short.MAX_VALUE))
+            .addComponent(labelTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbRoom, 0, 250, Short.MAX_VALUE)
+                    .addComponent(dateTanggalMasuk, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(dateTanggalKeluar, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(fieldDeposit, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(dateTanggalJatuhTempo, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                    .addComponent(cmbStatus, 0, 250, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelTenant)
+                            .addComponent(labelRoom)
+                            .addComponent(labelTanggalMasuk)
+                            .addComponent(labelTanggalKeluar)
+                            .addComponent(labelDeposit)
+                            .addComponent(labelTanggalJatuhTempo)
+                            .addComponent(labelStatus))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnMain)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBack))
+                    .addComponent(cmbTenant, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(30, 30, 30)
-                    .addComponent(labelTitle)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(labelTenant)
-                    .addGap(4, 4, 4)
-                    .addComponent(cmbTenant, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                  javax.swing.GroupLayout.DEFAULT_SIZE,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(8, 8, 8)
-                    .addComponent(labelRoom)
-                    .addGap(4, 4, 4)
-                    .addComponent(cmbRoom, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                  javax.swing.GroupLayout.DEFAULT_SIZE,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(8, 8, 8)
-                    .addComponent(labelTanggalMasuk)
-                    .addGap(4, 4, 4)
-                    .addComponent(dateTanggalMasuk,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE,
-                                  javax.swing.GroupLayout.DEFAULT_SIZE,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(8, 8, 8)
-                    .addComponent(labelTanggalKeluar)
-                    .addGap(4, 4, 4)
-                    .addComponent(dateTanggalKeluar,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE,
-                                  javax.swing.GroupLayout.DEFAULT_SIZE,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(8, 8, 8)
-                    .addComponent(labelDeposit)
-                    .addGap(4, 4, 4)
-                    .addComponent(fieldDeposit,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE,
-                                  javax.swing.GroupLayout.DEFAULT_SIZE,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(8, 8, 8)
-                    .addComponent(labelTanggalJatuhTempo)
-                    .addGap(4, 4, 4)
-                    .addComponent(dateTanggalJatuhTempo,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE,
-                                  javax.swing.GroupLayout.DEFAULT_SIZE,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(8, 8, 8)
-                    .addComponent(labelStatus)
-                    .addGap(4, 4, 4)
-                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                  javax.swing.GroupLayout.DEFAULT_SIZE,
-                                  javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addGroup(layout.createParallelGroup(
-                        javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnMain)
-                        .addComponent(btnBack))
-                    .addGap(24, 24, 24))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(labelTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelTenant)
+                .addGap(4, 4, 4)
+                .addComponent(cmbTenant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelRoom)
+                .addGap(4, 4, 4)
+                .addComponent(cmbRoom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelTanggalMasuk)
+                .addGap(4, 4, 4)
+                .addComponent(dateTanggalMasuk, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelTanggalKeluar)
+                .addGap(4, 4, 4)
+                .addComponent(dateTanggalKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelDeposit)
+                .addGap(4, 4, 4)
+                .addComponent(fieldDeposit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelTanggalJatuhTempo)
+                .addGap(4, 4, 4)
+                .addComponent(dateTanggalJatuhTempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8)
+                .addComponent(labelStatus)
+                .addGap(4, 4, 4)
+                .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMain)
+                    .addComponent(btnBack))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -355,20 +314,20 @@ public class KontrakFormDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnMain;
-    private javax.swing.JComboBox<Tenant> cmbTenant;
     private javax.swing.JComboBox<Room> cmbRoom;
     private javax.swing.JComboBox<ContractStatus> cmbStatus;
+    private javax.swing.JComboBox<Tenant> cmbTenant;
+    private com.github.lgooddatepicker.components.DatePicker dateTanggalJatuhTempo;
+    private com.github.lgooddatepicker.components.DatePicker dateTanggalKeluar;
+    private com.github.lgooddatepicker.components.DatePicker dateTanggalMasuk;
     private javax.swing.JTextField fieldDeposit;
-    private DatePicker dateTanggalMasuk;
-    private DatePicker dateTanggalKeluar;
-    private DatePicker dateTanggalJatuhTempo;
-    private javax.swing.JLabel labelTitle;
-    private javax.swing.JLabel labelTenant;
-    private javax.swing.JLabel labelRoom;
-    private javax.swing.JLabel labelTanggalMasuk;
-    private javax.swing.JLabel labelTanggalKeluar;
     private javax.swing.JLabel labelDeposit;
-    private javax.swing.JLabel labelTanggalJatuhTempo;
+    private javax.swing.JLabel labelRoom;
     private javax.swing.JLabel labelStatus;
+    private javax.swing.JLabel labelTanggalJatuhTempo;
+    private javax.swing.JLabel labelTanggalKeluar;
+    private javax.swing.JLabel labelTanggalMasuk;
+    private javax.swing.JLabel labelTenant;
+    private javax.swing.JLabel labelTitle;
     // End of variables declaration//GEN-END:variables
 }

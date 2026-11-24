@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import kosanku.model.Tenant;
 
 public class TenantFormDialog extends javax.swing.JDialog {
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RoomFormDialog.class.getName());
     private boolean saved;
     private final Tenant tenantBeingEdited;
 
@@ -16,6 +17,8 @@ public class TenantFormDialog extends javax.swing.JDialog {
         super(parent, modal);
         tenantBeingEdited = tenant;
         initComponents();
+        setTitle("Tambah Penghuni");
+        labelTitle.setText("TAMBAH PENGHUNI");
         if (tenant != null) {
             fieldIdNumber.setText(tenant.getIdNumber());
             fieldName.setText(tenant.getName());
@@ -23,9 +26,11 @@ public class TenantFormDialog extends javax.swing.JDialog {
             fieldPhoneNumber.setText(tenant.getPhoneNumber());
             labelTitle.setText("EDIT PENGHUNI");
             btnMain.setText("Simpan");
+            setTitle("Edit Penghuni");
         }
         getRootPane().setDefaultButton(btnMain);
         setLocationRelativeTo(parent);
+        pack();    
     }
 
     public boolean isSaved() {
@@ -73,7 +78,6 @@ public class TenantFormDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelTitle = new javax.swing.JLabel();
         labelIdNumber = new javax.swing.JLabel();
         labelName = new javax.swing.JLabel();
         labelEmail = new javax.swing.JLabel();
@@ -84,12 +88,9 @@ public class TenantFormDialog extends javax.swing.JDialog {
         fieldPhoneNumber = new javax.swing.JTextField();
         btnMain = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
+        labelTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelTitle.setText("TAMBAH PENGHUNI");
-        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
 
         labelIdNumber.setText("NIK");
         labelIdNumber.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -111,36 +112,44 @@ public class TenantFormDialog extends javax.swing.JDialog {
         btnBack.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnBack.addActionListener(this::btnBackActionPerformed);
 
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTitle.setText("TAMBAH KAMAR");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnMain)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnBack))
-                    .addComponent(labelIdNumber)
-                    .addComponent(fieldIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelName)
-                    .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelEmail)
-                    .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelPhoneNumber)
-                    .addComponent(fieldPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(labelTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnMain)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnBack))
+                            .addComponent(labelIdNumber)
+                            .addComponent(fieldIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelName)
+                            .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelEmail)
+                            .addComponent(fieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelPhoneNumber)
+                            .addComponent(fieldPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(labelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(labelTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(labelIdNumber)
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldIdNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
                 .addComponent(labelName)
@@ -158,7 +167,7 @@ public class TenantFormDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMain)
                     .addComponent(btnBack))
-                .addGap(24, 24, 24))
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -171,6 +180,40 @@ public class TenantFormDialog extends javax.swing.JDialog {
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                TenantFormDialog dialog = new TenantFormDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
