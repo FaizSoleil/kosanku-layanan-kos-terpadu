@@ -19,7 +19,7 @@ public class ContractDAO {
             pstmt.setDate(4, contract.getTanggalKeluar() != null ? new java.sql.Date(contract.getTanggalKeluar().getTime()) : null);
             pstmt.setDouble(5, contract.getDeposit());
             pstmt.setDate(6, new java.sql.Date(contract.getTanggalJatuhTempo().getTime()));
-            pstmt.setString(6, contract.getStatus().getDbEnumValue());
+            pstmt.setString(7, contract.getStatus().getDbEnumValue());
 
             int affected = pstmt.executeUpdate();
             if (affected > 0) {
@@ -74,6 +74,22 @@ public class ContractDAO {
             pstmt.setInt(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); }
+        return false;
+    }
+
+    public boolean hasActiveContractForRoom(int roomId, int excludedContractId) {
+        String sql = "SELECT 1 FROM contracts "
+                   + "WHERE room_id = ? AND status = 'Aktif' AND id <> ? LIMIT 1";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, roomId);
+            pstmt.setInt(2, excludedContractId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
