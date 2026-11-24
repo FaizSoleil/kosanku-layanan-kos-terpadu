@@ -24,6 +24,7 @@ public class LoginForm extends javax.swing.JFrame {
         this.authController = authController;
         initComponents();
         setLocationRelativeTo(null);
+        setTitle("Kosanku - Login");
         getRootPane().setDefaultButton(loginButton);
     }
 

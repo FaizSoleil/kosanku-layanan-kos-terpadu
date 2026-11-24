@@ -2,7 +2,14 @@ package kosanku.ui.dialog;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+
 import kosanku.model.Bill;
 
 /**
@@ -11,9 +18,31 @@ import kosanku.model.Bill;
  */
 public class BillFormDialog extends javax.swing.JDialog {
 
-    public enum BillDialogMode { ADD, EDIT }
+    public enum BillDialogMode {
+        ADD("Tambah"), EDIT("Edit");
+
+        private final String userFriendlyText;
+
+        BillDialogMode(String userFriendlyText) {
+            this.userFriendlyText = userFriendlyText;
+        }
+
+        @Override
+        public String toString() {
+            return userFriendlyText;
+        }
+    }
 
     private boolean saved = false;
+    private String savedContractId;
+    private String savedBulanTagihan;
+    private String savedTotalTagihan;
+    private Bill beingEditedBill;
+    private BillDialogMode mode;
+
+    public BillFormDialog(java.awt.Frame parent, boolean modal) {
+        this(parent, modal, BillDialogMode.ADD, null);
+    }
 
     public BillFormDialog(java.awt.Frame parent, boolean modal, BillDialogMode mode) {
         this(parent, modal, mode, null);
@@ -21,20 +50,45 @@ public class BillFormDialog extends javax.swing.JDialog {
 
     public BillFormDialog(java.awt.Frame parent, boolean modal, BillDialogMode mode, Bill bill) {
         super(parent, modal);
+        this.mode = mode;
+        this.beingEditedBill = bill;
         initComponents();
         setTitle(mode == BillDialogMode.ADD ? "Tambah Tagihan" : "Edit Tagihan");
-
-        if (mode == BillDialogMode.EDIT && bill != null) {
-            txtContractId.setText(String.valueOf(bill.getContractId()));
-            txtBulanTagihan.setText(new SimpleDateFormat("yyyy-MM").format(bill.getBulanTagihan()));
-            txtTotalTagihan.setText(BigDecimal.valueOf(bill.getTotalTagihan()).toPlainString());
-        } else {
-            txtBulanTagihan.setText(YearMonth.now().toString());
-        }
-
+        resetDialog();
         getRootPane().setDefaultButton(btnSimpan);
         setResizable(false);
+        pack();
         setLocationRelativeTo(parent);
+    }
+
+    private void resetDialog() {
+        saved = false;
+        txtContractId.setText("");
+        txtTotalTagihan.setText("");
+        labelTitle.setText(mode == BillDialogMode.ADD ? "TAMBAH TAGIHAN" : "EDIT TAGIHAN");
+
+        if (this.mode == BillDialogMode.EDIT && beingEditedBill != null) {
+            editSetup(
+                beingEditedBill.getContractId(),
+                beingEditedBill.getBulanTagihan(),
+                beingEditedBill.getTotalTagihan()
+            );
+            btnSimpan.setText("Simpan");
+        } else {
+            datePicker1.setDate(LocalDate.now());
+            btnSimpan.setText("Tambah");
+        }
+    }
+
+    private void editSetup(int contractId, Date bulanTagihan, double totalTagihan) {
+        txtContractId.setText(String.valueOf(contractId));
+        if (bulanTagihan != null) {
+            LocalDate localDate = Instant.ofEpochMilli(bulanTagihan.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            datePicker1.setDate(localDate);
+        }
+        txtTotalTagihan.setText(BigDecimal.valueOf(totalTagihan).toPlainString());
     }
 
     public boolean isSaved() {
@@ -42,15 +96,35 @@ public class BillFormDialog extends javax.swing.JDialog {
     }
 
     public String getSavedContractId() {
-        return txtContractId.getText().trim();
+        return savedContractId;
     }
 
     public String getSavedBulanTagihan() {
-        return txtBulanTagihan.getText().trim();
+        return savedBulanTagihan;
     }
 
     public String getSavedTotalTagihan() {
-        return txtTotalTagihan.getText().trim();
+        return savedTotalTagihan;
+    }
+
+    public BillDialogMode getMode() {
+        return mode;
+    }
+
+    public void setMode(BillDialogMode mode) {
+        this.mode = mode;
+    }
+
+    public void save() {
+        saved = true;
+        saveData();
+    }
+
+    public void saveData() {
+        savedContractId = txtContractId.getText().trim();
+        LocalDate pickedDate = datePicker1.getDate();
+        savedBulanTagihan = (pickedDate != null) ? YearMonth.from(pickedDate).toString() : "";
+        savedTotalTagihan = txtTotalTagihan.getText().trim();
     }
 
     /**
@@ -66,16 +140,17 @@ public class BillFormDialog extends javax.swing.JDialog {
         labelBulanTagihan = new javax.swing.JLabel();
         labelTotalTagihan = new javax.swing.JLabel();
         txtContractId = new javax.swing.JTextField();
-        txtBulanTagihan = new javax.swing.JTextField();
         txtTotalTagihan = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
+        labelTitle = new javax.swing.JLabel();
+        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         labelContractId.setText("ID Kontrak");
 
-        labelBulanTagihan.setText("Bulan Tagihan (yyyy-MM)");
+        labelBulanTagihan.setText("Bulan Tagihan");
 
         labelTotalTagihan.setText("Total Tagihan");
 
@@ -85,54 +160,63 @@ public class BillFormDialog extends javax.swing.JDialog {
         btnBatal.setText("Batal");
         btnBatal.addActionListener(this::btnBatalActionPerformed);
 
+        labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTitle.setText("TAMBAH TAGIHAN");
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(labelTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(labelContractId)
                     .addComponent(labelBulanTagihan)
-                    .addComponent(labelTotalTagihan))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtContractId, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtBulanTagihan, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTotalTagihan, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(labelTotalTagihan)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                        .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtContractId)
+                    .addComponent(txtTotalTagihan)
+                    .addComponent(datePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelContractId)
-                    .addComponent(txtContractId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelBulanTagihan)
-                    .addComponent(txtBulanTagihan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelTotalTagihan)
-                    .addComponent(txtTotalTagihan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
+                .addGap(30, 30, 30)
+                .addComponent(labelTitle)
+                .addGap(18, 18, 18)
+                .addComponent(labelContractId)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtContractId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelBulanTagihan)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(labelTotalTagihan)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTotalTagihan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSimpan)
                     .addComponent(btnBatal))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        saved = true;
+        if (datePicker1.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Pilih bulan tagihan terlebih dahulu.");
+            return;
+        }
+        save();
         dispose();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
@@ -145,10 +229,11 @@ public class BillFormDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnSimpan;
+    private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private javax.swing.JLabel labelBulanTagihan;
     private javax.swing.JLabel labelContractId;
+    private javax.swing.JLabel labelTitle;
     private javax.swing.JLabel labelTotalTagihan;
-    private javax.swing.JTextField txtBulanTagihan;
     private javax.swing.JTextField txtContractId;
     private javax.swing.JTextField txtTotalTagihan;
     // End of variables declaration//GEN-END:variables

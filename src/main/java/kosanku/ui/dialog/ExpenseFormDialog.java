@@ -9,6 +9,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import kosanku.model.Expense;
+import kosanku.ui.dialog.RoomFormDialog.RoomDialogMode;
 
 /**
  *
@@ -55,6 +56,7 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         this.mode = mode;
         this.beingEditedExpense = beingEditedExpense;
         initComponents();
+        setTitle(mode == ExpenseDialogMode.ADD ? "Tambah Pengeluaran" : "Edit Pengeluaran");
         resetDialog();
         setLocationRelativeTo(null);
     }
@@ -122,6 +124,8 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
+        setResizable(false);
+
         btnMain.setText("Tambah");
         btnMain.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btnMain.addActionListener(this::btnMainActionPerformed);
@@ -147,28 +151,35 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(133, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(labelDate)
-                    .addComponent(labelDesc)
-                    .addComponent(btnBack)
-                    .addComponent(labelTotal)
-                    .addComponent(fieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMain)
-                    .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(127, 127, 127))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelDate)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnMain)
+                                .addGap(88, 88, 88)
+                                .addComponent(btnBack))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(labelTotal)
+                                .addComponent(labelDesc)
+                                .addComponent(datePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                                .addComponent(fieldDesc)
+                                .addComponent(fieldTotal)))
+                        .addGap(0, 30, Short.MAX_VALUE))))
             .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(30, 30, 30)
                 .addComponent(labelTitle)
                 .addGap(18, 18, 18)
                 .addComponent(labelDate)
-                .addGap(9, 9, 9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelDesc)
@@ -179,10 +190,10 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnMain)
-                .addGap(18, 18, 18)
-                .addComponent(btnBack)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMain)
+                    .addComponent(btnBack))
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -212,13 +223,10 @@ public class ExpenseFormDialog extends javax.swing.JDialog {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            javax.swing.UIManager.setLookAndFeel(
+                javax.swing.UIManager.getSystemLookAndFeelClassName()
+            );
+        } catch (Exception ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>

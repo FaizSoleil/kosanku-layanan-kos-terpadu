@@ -2,7 +2,13 @@ package kosanku.ui.dialog;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+
 import kosanku.model.Payment;
 
 /**
@@ -11,9 +17,32 @@ import kosanku.model.Payment;
  */
 public class PaymentFormDialog extends javax.swing.JDialog {
 
-    public enum PaymentDialogMode { ADD, EDIT }
+    public enum PaymentDialogMode {
+        ADD("Tambah"), EDIT("Edit");
 
+        private final String userFriendlyText;
+
+        PaymentDialogMode(String userFriendlyText) {
+            this.userFriendlyText = userFriendlyText;
+        }
+
+        @Override
+        public String toString() {
+            return userFriendlyText;
+        }
+    }
+
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RoomFormDialog.class.getName());
     private boolean saved = false;
+    private String savedBillId;
+    private String savedPaymentDate;
+    private String savedJumlah;
+    private Payment beingEditedPayment;
+    private PaymentDialogMode mode;
+
+    public PaymentFormDialog(java.awt.Frame parent, boolean modal) {
+        this(parent, modal, PaymentDialogMode.ADD, null);
+    }
 
     public PaymentFormDialog(java.awt.Frame parent, boolean modal, PaymentDialogMode mode) {
         this(parent, modal, mode, null);
@@ -21,20 +50,45 @@ public class PaymentFormDialog extends javax.swing.JDialog {
 
     public PaymentFormDialog(java.awt.Frame parent, boolean modal, PaymentDialogMode mode, Payment payment) {
         super(parent, modal);
+        this.mode = mode;
+        this.beingEditedPayment = payment;
         initComponents();
         setTitle(mode == PaymentDialogMode.ADD ? "Tambah Pembayaran" : "Edit Pembayaran");
-
-        if (mode == PaymentDialogMode.EDIT && payment != null) {
-            txtBillId.setText(String.valueOf(payment.getBillId()));
-            txtPaymentDate.setText(new SimpleDateFormat("yyyy-MM-dd").format(payment.getPaymentDate()));
-            txtJumlah.setText(BigDecimal.valueOf(payment.getJumlah()).toPlainString());
-        } else {
-            txtPaymentDate.setText(LocalDate.now().toString());
-        }
-
+        resetDialog();
         getRootPane().setDefaultButton(btnSimpan);
         setResizable(false);
+        pack();
         setLocationRelativeTo(parent);
+    }
+
+    private void resetDialog() {
+        saved = false;
+        txtBillId.setText("");
+        txtJumlah.setText("");
+        labelTitle.setText(mode == PaymentDialogMode.ADD ? "TAMBAH PEMBAYARAN" : "EDIT PEMBAYARAN");
+
+        if (this.mode == PaymentDialogMode.EDIT && beingEditedPayment != null) {
+            editSetup(
+                beingEditedPayment.getBillId(),
+                beingEditedPayment.getPaymentDate(),
+                beingEditedPayment.getJumlah()
+            );
+            btnSimpan.setText("Simpan");
+        } else {
+            datePicker1.setDate(LocalDate.now());
+            btnSimpan.setText("Tambah");
+        }
+    }
+
+    private void editSetup(int billId, Date paymentDate, double jumlah) {
+        txtBillId.setText(String.valueOf(billId));
+        if (paymentDate != null) {
+            LocalDate localDate = Instant.ofEpochMilli(paymentDate.getTime())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            datePicker1.setDate(localDate);
+        }
+        txtJumlah.setText(BigDecimal.valueOf(jumlah).toPlainString());
     }
 
     public boolean isSaved() {
@@ -42,15 +96,35 @@ public class PaymentFormDialog extends javax.swing.JDialog {
     }
 
     public String getSavedBillId() {
-        return txtBillId.getText().trim();
+        return savedBillId;
     }
 
     public String getSavedPaymentDate() {
-        return txtPaymentDate.getText().trim();
+        return savedPaymentDate;
     }
 
     public String getSavedJumlah() {
-        return txtJumlah.getText().trim();
+        return savedJumlah;
+    }
+
+    public PaymentDialogMode getMode() {
+        return mode;
+    }
+
+    public void setMode(PaymentDialogMode mode) {
+        this.mode = mode;
+    }
+
+    public void save() {
+        saved = true;
+        saveData();
+    }
+
+    public void saveData() {
+        savedBillId = txtBillId.getText().trim();
+        LocalDate pickedDate = datePicker1.getDate();
+        savedPaymentDate = (pickedDate != null) ? pickedDate.toString() : "";
+        savedJumlah = txtJumlah.getText().trim();
     }
 
     /**
@@ -66,16 +140,17 @@ public class PaymentFormDialog extends javax.swing.JDialog {
         labelPaymentDate = new javax.swing.JLabel();
         labelJumlah = new javax.swing.JLabel();
         txtBillId = new javax.swing.JTextField();
-        txtPaymentDate = new javax.swing.JTextField();
         txtJumlah = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
+        labelTitle = new javax.swing.JLabel();
+        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         labelBillId.setText("ID Tagihan");
 
-        labelPaymentDate.setText("Tanggal Bayar (yyyy-MM-dd)");
+        labelPaymentDate.setText("Tanggal Bayar");
 
         labelJumlah.setText("Jumlah");
 
@@ -85,76 +160,123 @@ public class PaymentFormDialog extends javax.swing.JDialog {
         btnBatal.setText("Batal");
         btnBatal.addActionListener(this::btnBatalActionPerformed);
 
+        labelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelTitle.setText("TAMBAH PEMBAYARAN");
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelPaymentDate)
-                    .addComponent(labelJumlah)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(labelBillId)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtBillId, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(labelBillId)
+                            .addComponent(labelJumlah)
+                            .addComponent(txtJumlah)
+                            .addComponent(labelPaymentDate)
+                            .addComponent(txtBillId, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(30, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(labelTitle)
+                .addGap(18, 18, 18)
+                .addComponent(labelBillId)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtBillId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelPaymentDate)
-                            .addComponent(txtPaymentDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelJumlah)
-                            .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSimpan)
-                            .addComponent(btnBatal)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelBillId)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelPaymentDate)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(datePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(labelJumlah)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSimpan)
+                    .addComponent(btnBatal))
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        saved = true;
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        if (datePicker1.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Pilih tanggal terlebih dahulu.");
+            return;
+        }
+        save();
         dispose();
-    }//GEN-LAST:event_btnSimpanActionPerformed
+    }                                         
 
-    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {                                         
         saved = false;
         dispose();
-    }//GEN-LAST:event_btnBatalActionPerformed
+    }
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                PaymentFormDialog dialog = new PaymentFormDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnSimpan;
+    private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private javax.swing.JLabel labelBillId;
     private javax.swing.JLabel labelJumlah;
     private javax.swing.JLabel labelPaymentDate;
+    private javax.swing.JLabel labelTitle;
     private javax.swing.JTextField txtBillId;
     private javax.swing.JTextField txtJumlah;
-    private javax.swing.JTextField txtPaymentDate;
     // End of variables declaration//GEN-END:variables
 }

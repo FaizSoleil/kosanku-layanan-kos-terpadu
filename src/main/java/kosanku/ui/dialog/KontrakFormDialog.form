@@ -23,127 +23,156 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-        <Component id="labelTitle" alignment="1" max="32767" attributes="0"/>
-        <Group type="102" attributes="0">
-          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="0" attributes="0">
-            <Group type="102" attributes="0">
-              <Component id="btnMain" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnBack" min="-2" max="-2" attributes="0"/>
-            </Group>
-            <Component id="labelTenant" min="-2" max="-2" attributes="0"/>
-            <Component id="cmbTenant" min="-2" pref="250" max="-2" attributes="0"/>
-            <Component id="labelRoom" min="-2" max="-2" attributes="0"/>
-            <Component id="cmbRoom" min="-2" pref="250" max="-2" attributes="0"/>
-            <Component id="labelTanggalMasuk" min="-2" max="-2" attributes="0"/>
-            <Component id="dateTanggalMasuk" min="-2" pref="250" max="-2" attributes="0"/>
-            <Component id="labelTanggalKeluar" min="-2" max="-2" attributes="0"/>
-            <Component id="dateTanggalKeluar" min="-2" pref="250" max="-2" attributes="0"/>
-            <Component id="labelDeposit" min="-2" max="-2" attributes="0"/>
-            <Component id="fieldDeposit" min="-2" pref="250" max="-2" attributes="0"/>
-            <Component id="labelTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
-            <Component id="dateTanggalJatuhTempo" min="-2" pref="250" max="-2" attributes="0"/>
-            <Component id="labelStatus" min="-2" max="-2" attributes="0"/>
-            <Component id="cmbStatus" min="-2" pref="250" max="-2" attributes="0"/>
+          <Component id="labelTitle" alignment="1" max="32767" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="cmbRoom" pref="250" max="32767" attributes="0"/>
+                  <Component id="dateTanggalMasuk" pref="250" max="32767" attributes="0"/>
+                  <Component id="dateTanggalKeluar" pref="250" max="32767" attributes="0"/>
+                  <Component id="fieldDeposit" pref="250" max="32767" attributes="0"/>
+                  <Component id="dateTanggalJatuhTempo" pref="250" max="32767" attributes="0"/>
+                  <Component id="cmbStatus" pref="250" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="labelTenant" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelRoom" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelTanggalMasuk" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelTanggalKeluar" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelDeposit" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelStatus" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="btnMain" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnBack" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="cmbTenant" alignment="1" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
           </Group>
-          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-        </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-        <Group type="102" alignment="0" attributes="0">
-          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-          <Component id="labelTitle" min="-2" max="-2" attributes="0"/>
-          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-          <Component id="labelTenant" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="cmbTenant" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-          <Component id="labelRoom" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="cmbRoom" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-          <Component id="labelTanggalMasuk" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="dateTanggalMasuk" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-          <Component id="labelTanggalKeluar" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="dateTanggalKeluar" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-          <Component id="labelDeposit" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="fieldDeposit" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-          <Component id="labelTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="dateTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-          <Component id="labelStatus" min="-2" max="-2" attributes="0"/>
-          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="cmbStatus" min="-2" max="-2" attributes="0"/>
-          <EmptySpace type="separate" max="-2" attributes="0"/>
-          <Group type="103" groupAlignment="3" attributes="0">
-            <Component id="btnMain" alignment="3" min="-2" max="-2" attributes="0"/>
-            <Component id="btnBack" alignment="3" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="labelTitle" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="labelTenant" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="cmbTenant" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <Component id="labelRoom" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="cmbRoom" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <Component id="labelTanggalMasuk" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="dateTanggalMasuk" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <Component id="labelTanggalKeluar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="dateTanggalKeluar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <Component id="labelDeposit" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="fieldDeposit" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <Component id="labelTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="dateTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <Component id="labelStatus" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <Component id="cmbStatus" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnMain" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnBack" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
           </Group>
-          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-        </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JLabel" name="labelTitle">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="TAMBAH KONTRAK"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="18" style="1"/>
         </Property>
-        <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="TAMBAH KONTRAK"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelTenant">
-      <Properties><Property name="text" type="java.lang.String" value="Penyewa"/></Properties>
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Penyewa"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbTenant">
-      <AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Tenant&gt;"/></AuxValues>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Tenant&gt;"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="labelRoom">
-      <Properties><Property name="text" type="java.lang.String" value="Kamar"/></Properties>
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Kamar"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbRoom">
-      <AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Room&gt;"/></AuxValues>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Room&gt;"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="labelTanggalMasuk">
-      <Properties><Property name="text" type="java.lang.String" value="Tanggal Masuk"/></Properties>
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tanggal Masuk"/>
+      </Properties>
     </Component>
-    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalMasuk"/>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalMasuk">
+    </Component>
     <Component class="javax.swing.JLabel" name="labelTanggalKeluar">
-      <Properties><Property name="text" type="java.lang.String" value="Tanggal Keluar"/></Properties>
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tanggal Keluar"/>
+      </Properties>
     </Component>
-    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalKeluar"/>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalKeluar">
+    </Component>
     <Component class="javax.swing.JLabel" name="labelDeposit">
-      <Properties><Property name="text" type="java.lang.String" value="Deposit"/></Properties>
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Deposit"/>
+      </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldDeposit"/>
+    <Component class="javax.swing.JTextField" name="fieldDeposit">
+    </Component>
     <Component class="javax.swing.JLabel" name="labelTanggalJatuhTempo">
-      <Properties><Property name="text" type="java.lang.String" value="Jatuh Tempo"/></Properties>
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Jatuh Tempo"/>
+      </Properties>
     </Component>
-    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalJatuhTempo"/>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalJatuhTempo">
+    </Component>
     <Component class="javax.swing.JLabel" name="labelStatus">
-      <Properties><Property name="text" type="java.lang.String" value="Status"/></Properties>
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Status"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbStatus">
-      <AuxValues><AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ContractStatus&gt;"/></AuxValues>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;ContractStatus&gt;"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnMain">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Tambah"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Tambah"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMainActionPerformed"/>
@@ -151,10 +180,10 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnBack">
       <Properties>
+        <Property name="text" type="java.lang.String" value="Kembali"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial" size="14" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Kembali"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBackActionPerformed"/>
