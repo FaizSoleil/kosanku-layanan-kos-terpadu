@@ -19,6 +19,10 @@ public class TenantService {
         return tenantDAO.findAll();
     }
 
+    public List<Tenant> getAll(boolean includeInvisible) {
+        return tenantDAO.findAll(includeInvisible);
+    }
+
     public Optional<Tenant> getById(int id) {
         validateId(id);
         return tenantDAO.findById(id);
@@ -41,8 +45,13 @@ public class TenantService {
         }
     }
 
-    public void deactivate(int id){
+    public void deactivate(int id) {
         validateId(id);
+        if (tenantDAO.hasVisibleContract(id)) {
+            throw new IllegalStateException(
+                "Penghuni masih memiliki kontrak aktif. Akhiri kontrak terlebih dahulu."
+            );
+        }
         if (!tenantDAO.deactivate(id)) {
             throw new IllegalStateException("Penyewa gagal disembunyikan.");
         }
@@ -57,9 +66,9 @@ public class TenantService {
 
     public void delete(int id) {
         validateId(id);
-        if (tenantDAO.hasVisibleContract(id)) {
+        if (tenantDAO.hasContracts(id)) {
             throw new IllegalStateException(
-                "Penghuni masih memiliki kontrak aktif. Akhiri kontrak terlebih dahulu."
+                "Penghuni masih memiliki riwayat kontrak sehingga tidak dapat dihapus permanen."
             );
         }
 

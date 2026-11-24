@@ -19,6 +19,10 @@ public class TenantController {
         return tenantService.getAll();
     }
 
+    public List<Tenant> loadAll(boolean includeInvisible) {
+        return tenantService.getAll(includeInvisible);
+    }
+
     public Optional<Tenant> findById(int id) {
         return tenantService.getById(id);
     }

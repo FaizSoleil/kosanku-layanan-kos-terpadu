@@ -23,6 +23,8 @@ public class TenantPanel extends javax.swing.JPanel {
 
     private final TenantController tenantController =
         new TenantController(new TenantService(new TenantDAO()));
+    
+    private boolean includeInvisible = false;
 
     /**
      * Creates new form KamarPanel
@@ -30,10 +32,15 @@ public class TenantPanel extends javax.swing.JPanel {
     public TenantPanel() {
         initComponents();
         tableTenant.setModel(new DefaultTableModel(
-            new Object[]{"ID", "NIK", "Nama", "Email", "No. Telp."}, 0) {
+            new Object[]{"ID", "NIK", "Nama", "Email", "No. Telp.", "Status"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
+            }
+        });
+        tableTenant.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                updateVisibilityButton();
             }
         });
         renderTable();
@@ -60,20 +67,22 @@ public class TenantPanel extends javax.swing.JPanel {
         btnTambah = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
+        btnUbahVisible = new javax.swing.JButton();
         labelTitle = new javax.swing.JLabel();
+        Visible = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(153, 153, 153));
         setPreferredSize(new java.awt.Dimension(540, 380));
 
         tableTenant.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "NIK", "Nama", "Email", "No. Telp."
+                "ID", "NIK", "Nama", "Email", "No. Telp.", "Status"
             }
         ));
         jScrollPane1.setViewportView(tableTenant);
@@ -96,37 +105,50 @@ public class TenantPanel extends javax.swing.JPanel {
         labelTitle.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         labelTitle.setText("PENGHUNI");
 
+        Visible.setText("Tampilkan semua (termasuk nonaktif)");
+        Visible.addActionListener(this::VisibleActionPerformed);
+
+        btnUbahVisible.setText("Nonaktifkan");
+        btnUbahVisible.setEnabled(false);
+        btnUbahVisible.addActionListener(this::btnUbahVisibleActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(208, 208, 208)
-                        .addComponent(btnHapus)))
+                        .addComponent(labelTitle)
+                        .addGap(91, 91, 91)
+                        .addComponent(Visible))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnUbahVisible)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnHapus))))
                 .addContainerGap(31, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelTitle)
-                .addGap(206, 206, 206))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(labelTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTitle)
+                    .addComponent(Visible))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTambah)
                     .addComponent(btnEdit)
+                    .addComponent(btnUbahVisible)
                     .addComponent(btnHapus))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
@@ -188,8 +210,9 @@ public class TenantPanel extends javax.swing.JPanel {
         }
         int choice = JOptionPane.showConfirmDialog(
             this,
-            "Hapus/nonaktifkan penghuni " + selected.getName() + "?",
-            "Konfirmasi",
+            "Hapus permanen penghuni " + selected.getName()
+                + "? Data yang sudah dihapus tidak dapat dipulihkan.",
+            "Konfirmasi Hapus Permanen",
             JOptionPane.YES_NO_OPTION
         );
         if (choice != JOptionPane.YES_OPTION) return;
@@ -202,9 +225,45 @@ public class TenantPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnHapusActionPerformed
 
+    private void btnUbahVisibleActionPerformed(java.awt.event.ActionEvent evt) {
+        Tenant selected = getSelectedTenant(tableTenant.getSelectedRow());
+        if (selected == null) {
+            JOptionPane.showMessageDialog(this, "Pilih penghuni dulu.");
+            return;
+        }
+
+        boolean akanDiaktifkan = !selected.isvisible();
+        String tindakan = akanDiaktifkan ? "mengaktifkan kembali" : "menonaktifkan";
+        int choice = JOptionPane.showConfirmDialog(
+            this,
+            "Apakah Anda yakin ingin " + tindakan + " penghuni " + selected.getName() + "?",
+            "Konfirmasi Perubahan Status",
+            JOptionPane.YES_NO_OPTION
+        );
+        if (choice != JOptionPane.YES_OPTION) return;
+
+        try {
+            if (akanDiaktifkan) {
+                tenantController.reactivate(selected.getId());
+            } else {
+                tenantController.deactivate(selected.getId());
+            }
+            renderTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                this, e.getMessage(), "Terjadi kesalahan!", JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    private void VisibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VisibleActionPerformed
+        includeInvisible = Visible.isSelected();
+        renderTable();
+    }//GEN-LAST:event_VisibleActionPerformed
+
     private void renderTable() {
         try {
-            List<Tenant> tenants = tenantController.loadAll();
+            List<Tenant> tenants = tenantController.loadAll(includeInvisible);
             DefaultTableModel tableModel = (DefaultTableModel) tableTenant.getModel();
             tableModel.setRowCount(0);
             for (Tenant tenant : tenants) {
@@ -215,9 +274,11 @@ public class TenantPanel extends javax.swing.JPanel {
                     tenant.getIdNumber(),
                     tenant.getName(),
                     tenant.getEmail(),
-                    tenant.getPhoneNumber()
+                    tenant.getPhoneNumber(),
+                    tenant.isvisible() ? "Aktif" : "Nonaktif"
                 });
             }
+            updateVisibilityButton();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(
                 this, e.getMessage(), "Terjadi kesalahan!", JOptionPane.ERROR_MESSAGE
@@ -225,11 +286,21 @@ public class TenantPanel extends javax.swing.JPanel {
         }
     }
 
+    private void updateVisibilityButton() {
+        Tenant selected = getSelectedTenant(tableTenant.getSelectedRow());
+        btnUbahVisible.setEnabled(selected != null);
+        btnUbahVisible.setText(
+            selected == null || selected.isvisible() ? "Nonaktifkan" : "Aktifkan"
+        );
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox Visible;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnTambah;
+    private javax.swing.JButton btnUbahVisible;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JTable tableTenant;
