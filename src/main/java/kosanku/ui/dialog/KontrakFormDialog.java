@@ -1,11 +1,10 @@
 package kosanku.ui.dialog;
 
 import java.awt.Frame;
+import com.github.lgooddatepicker.components.DatePicker;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import kosanku.dao.RoomDAO;
 import kosanku.dao.TenantDAO;
@@ -51,13 +50,13 @@ public class KontrakFormDialog extends javax.swing.JDialog {
         if (mode == KontrakDialogMode.EDIT && contract != null) {
             selectTenant(contract.getTenantId());
             selectRoom(contract.getRoomId());
-            fieldTanggalMasuk.setText(formatDate(contract.getTanggalMasuk()));
-            fieldTanggalKeluar.setText(formatDate(contract.getTanggalKeluar()));
-            fieldTanggalJatuhTempo.setText(formatDate(contract.getTanggalJatuhTempo()));
+            dateTanggalMasuk.setDate(toLocalDate(contract.getTanggalMasuk()));
+            dateTanggalKeluar.setDate(toLocalDate(contract.getTanggalKeluar()));
+            dateTanggalJatuhTempo.setDate(toLocalDate(contract.getTanggalJatuhTempo()));
             fieldDeposit.setText(BigDecimal.valueOf(contract.getDeposit()).toPlainString());
             cmbStatus.setSelectedItem(contract.getStatus());
         } else {
-            fieldTanggalMasuk.setText(LocalDate.now().toString());
+            dateTanggalMasuk.setDate(LocalDate.now());
             cmbStatus.setSelectedItem(ContractStatus.AKTIF);
         }
 
@@ -95,10 +94,8 @@ public class KontrakFormDialog extends javax.swing.JDialog {
         }
     }
 
-    private String formatDate(java.util.Date date) {
-        return date == null
-            ? ""
-            : new SimpleDateFormat("yyyy-MM-dd").format(date);
+    private LocalDate toLocalDate(java.util.Date date) {
+        return date == null ? null : new java.sql.Date(date.getTime()).toLocalDate();
     }
 
     private void save() {
@@ -110,11 +107,11 @@ public class KontrakFormDialog extends javax.swing.JDialog {
             showValidationError("Kamar wajib dipilih.");
             return;
         }
-        if (fieldTanggalMasuk.getText().trim().isEmpty()) {
+        if (dateTanggalMasuk.getDate() == null) {
             showValidationError("Tanggal masuk wajib diisi.");
             return;
         }
-        if (fieldTanggalKeluar.getText().trim().isEmpty()) {
+        if (dateTanggalKeluar.getDate() == null) {
             showValidationError("Tanggal keluar wajib diisi.");
             return;
         }
@@ -122,7 +119,7 @@ public class KontrakFormDialog extends javax.swing.JDialog {
             showValidationError("Deposit wajib diisi.");
             return;
         }
-        if (fieldTanggalJatuhTempo.getText().trim().isEmpty()) {
+        if (dateTanggalJatuhTempo.getDate() == null) {
             showValidationError("Tanggal jatuh tempo wajib diisi.");
             return;
         }
@@ -159,11 +156,13 @@ public class KontrakFormDialog extends javax.swing.JDialog {
     }
 
     public String getSavedTanggalMasuk() {
-        return fieldTanggalMasuk.getText();
+        return dateTanggalMasuk.getDate() == null
+            ? "" : dateTanggalMasuk.getDate().toString();
     }
 
     public String getSavedTanggalKeluar() {
-        return fieldTanggalKeluar.getText();
+        return dateTanggalKeluar.getDate() == null
+            ? "" : dateTanggalKeluar.getDate().toString();
     }
 
     public String getSavedDeposit() {
@@ -171,7 +170,8 @@ public class KontrakFormDialog extends javax.swing.JDialog {
     }
 
     public String getSavedTanggalJatuhTempo() {
-        return fieldTanggalJatuhTempo.getText();
+        return dateTanggalJatuhTempo.getDate() == null
+            ? "" : dateTanggalJatuhTempo.getDate().toString();
     }
 
     public ContractStatus getSavedStatus() {
@@ -196,10 +196,10 @@ public class KontrakFormDialog extends javax.swing.JDialog {
         cmbTenant = new javax.swing.JComboBox<>();
         cmbRoom = new javax.swing.JComboBox<>();
         cmbStatus = new javax.swing.JComboBox<>();
-        fieldTanggalMasuk = new javax.swing.JTextField();
-        fieldTanggalKeluar = new javax.swing.JTextField();
+        dateTanggalMasuk = new DatePicker();
         fieldDeposit = new javax.swing.JTextField();
-        fieldTanggalJatuhTempo = new javax.swing.JTextField();
+        dateTanggalKeluar = new DatePicker();
+        dateTanggalJatuhTempo = new DatePicker();
         btnMain = new javax.swing.JButton();
         btnBack = new javax.swing.JButton();
 
@@ -260,11 +260,11 @@ public class KontrakFormDialog extends javax.swing.JDialog {
                                       javax.swing.GroupLayout.PREFERRED_SIZE, 250,
                                       javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelTanggalMasuk)
-                        .addComponent(fieldTanggalMasuk,
+                        .addComponent(dateTanggalMasuk,
                                       javax.swing.GroupLayout.PREFERRED_SIZE, 250,
                                       javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelTanggalKeluar)
-                        .addComponent(fieldTanggalKeluar,
+                        .addComponent(dateTanggalKeluar,
                                       javax.swing.GroupLayout.PREFERRED_SIZE, 250,
                                       javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelDeposit)
@@ -272,7 +272,7 @@ public class KontrakFormDialog extends javax.swing.JDialog {
                                       javax.swing.GroupLayout.PREFERRED_SIZE, 250,
                                       javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelTanggalJatuhTempo)
-                        .addComponent(fieldTanggalJatuhTempo,
+                        .addComponent(dateTanggalJatuhTempo,
                                       javax.swing.GroupLayout.PREFERRED_SIZE, 250,
                                       javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(labelStatus)
@@ -302,14 +302,14 @@ public class KontrakFormDialog extends javax.swing.JDialog {
                     .addGap(8, 8, 8)
                     .addComponent(labelTanggalMasuk)
                     .addGap(4, 4, 4)
-                    .addComponent(fieldTanggalMasuk,
+                    .addComponent(dateTanggalMasuk,
                                   javax.swing.GroupLayout.PREFERRED_SIZE,
                                   javax.swing.GroupLayout.DEFAULT_SIZE,
                                   javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(8, 8, 8)
                     .addComponent(labelTanggalKeluar)
                     .addGap(4, 4, 4)
-                    .addComponent(fieldTanggalKeluar,
+                    .addComponent(dateTanggalKeluar,
                                   javax.swing.GroupLayout.PREFERRED_SIZE,
                                   javax.swing.GroupLayout.DEFAULT_SIZE,
                                   javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -323,7 +323,7 @@ public class KontrakFormDialog extends javax.swing.JDialog {
                     .addGap(8, 8, 8)
                     .addComponent(labelTanggalJatuhTempo)
                     .addGap(4, 4, 4)
-                    .addComponent(fieldTanggalJatuhTempo,
+                    .addComponent(dateTanggalJatuhTempo,
                                   javax.swing.GroupLayout.PREFERRED_SIZE,
                                   javax.swing.GroupLayout.DEFAULT_SIZE,
                                   javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -358,10 +358,10 @@ public class KontrakFormDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox<Tenant> cmbTenant;
     private javax.swing.JComboBox<Room> cmbRoom;
     private javax.swing.JComboBox<ContractStatus> cmbStatus;
-    private javax.swing.JTextField fieldTanggalMasuk;
-    private javax.swing.JTextField fieldTanggalKeluar;
     private javax.swing.JTextField fieldDeposit;
-    private javax.swing.JTextField fieldTanggalJatuhTempo;
+    private DatePicker dateTanggalMasuk;
+    private DatePicker dateTanggalKeluar;
+    private DatePicker dateTanggalJatuhTempo;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JLabel labelTenant;
     private javax.swing.JLabel labelRoom;

@@ -37,13 +37,13 @@
             <Component id="labelRoom" min="-2" max="-2" attributes="0"/>
             <Component id="cmbRoom" min="-2" pref="250" max="-2" attributes="0"/>
             <Component id="labelTanggalMasuk" min="-2" max="-2" attributes="0"/>
-            <Component id="fieldTanggalMasuk" min="-2" pref="250" max="-2" attributes="0"/>
+            <Component id="dateTanggalMasuk" min="-2" pref="250" max="-2" attributes="0"/>
             <Component id="labelTanggalKeluar" min="-2" max="-2" attributes="0"/>
-            <Component id="fieldTanggalKeluar" min="-2" pref="250" max="-2" attributes="0"/>
+            <Component id="dateTanggalKeluar" min="-2" pref="250" max="-2" attributes="0"/>
             <Component id="labelDeposit" min="-2" max="-2" attributes="0"/>
             <Component id="fieldDeposit" min="-2" pref="250" max="-2" attributes="0"/>
             <Component id="labelTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
-            <Component id="fieldTanggalJatuhTempo" min="-2" pref="250" max="-2" attributes="0"/>
+            <Component id="dateTanggalJatuhTempo" min="-2" pref="250" max="-2" attributes="0"/>
             <Component id="labelStatus" min="-2" max="-2" attributes="0"/>
             <Component id="cmbStatus" min="-2" pref="250" max="-2" attributes="0"/>
           </Group>
@@ -67,11 +67,11 @@
           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
           <Component id="labelTanggalMasuk" min="-2" max="-2" attributes="0"/>
           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="fieldTanggalMasuk" min="-2" max="-2" attributes="0"/>
+          <Component id="dateTanggalMasuk" min="-2" max="-2" attributes="0"/>
           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
           <Component id="labelTanggalKeluar" min="-2" max="-2" attributes="0"/>
           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="fieldTanggalKeluar" min="-2" max="-2" attributes="0"/>
+          <Component id="dateTanggalKeluar" min="-2" max="-2" attributes="0"/>
           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
           <Component id="labelDeposit" min="-2" max="-2" attributes="0"/>
           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
@@ -79,7 +79,7 @@
           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
           <Component id="labelTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-          <Component id="fieldTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
+          <Component id="dateTanggalJatuhTempo" min="-2" max="-2" attributes="0"/>
           <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
           <Component id="labelStatus" min="-2" max="-2" attributes="0"/>
           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
@@ -119,11 +119,11 @@
     <Component class="javax.swing.JLabel" name="labelTanggalMasuk">
       <Properties><Property name="text" type="java.lang.String" value="Tanggal Masuk"/></Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldTanggalMasuk"/>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalMasuk"/>
     <Component class="javax.swing.JLabel" name="labelTanggalKeluar">
       <Properties><Property name="text" type="java.lang.String" value="Tanggal Keluar"/></Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldTanggalKeluar"/>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalKeluar"/>
     <Component class="javax.swing.JLabel" name="labelDeposit">
       <Properties><Property name="text" type="java.lang.String" value="Deposit"/></Properties>
     </Component>
@@ -131,7 +131,7 @@
     <Component class="javax.swing.JLabel" name="labelTanggalJatuhTempo">
       <Properties><Property name="text" type="java.lang.String" value="Jatuh Tempo"/></Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldTanggalJatuhTempo"/>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="dateTanggalJatuhTempo"/>
     <Component class="javax.swing.JLabel" name="labelStatus">
       <Properties><Property name="text" type="java.lang.String" value="Status"/></Properties>
     </Component>
