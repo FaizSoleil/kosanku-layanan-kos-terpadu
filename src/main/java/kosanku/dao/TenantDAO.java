@@ -160,21 +160,16 @@ public class TenantDAO {
         }
     }
 
-    /** Soft delete: hides the tenant but keeps their history. Refused while they have an visible contract. */
+    /** Soft delete: only changes is_visible without touching tenant or contract data. */
     public boolean deactivate(int id) {
-        if (hasVisibleContract(id)) {
-            throw new IllegalStateException(
-                "Penyewa masih memiliki kontrak aktif. Akhiri kontrak terlebih dahulu."
-            );
-        }
-        return setvisible(id, false);
+        return setVisible(id, false);
     }
 
     public boolean reactivate(int id) {
-        return setvisible(id, true);
+        return setVisible(id, true);
     }
 
-    private boolean setvisible(int id, boolean visible) {
+    private boolean setVisible(int id, boolean visible) {
         String sql = "UPDATE tenants SET is_visible = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {

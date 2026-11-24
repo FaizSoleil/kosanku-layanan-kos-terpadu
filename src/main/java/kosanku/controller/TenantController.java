@@ -31,6 +31,14 @@ public class TenantController {
         tenantService.edit(buildTenant(id, idNumber, name, email, phoneNumber));
     }
 
+    public void deactivate(int id) {
+        tenantService.deactivate(id);
+    }
+
+    public void reactivate(int id) {
+        tenantService.reactivate(id);
+    }
+
     public void delete(int id) {
         tenantService.delete(id);
     }

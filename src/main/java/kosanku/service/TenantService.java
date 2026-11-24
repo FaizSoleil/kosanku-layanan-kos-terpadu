@@ -41,6 +41,20 @@ public class TenantService {
         }
     }
 
+    public void deactivate(int id){
+        validateId(id);
+        if (!tenantDAO.deactivate(id)) {
+            throw new IllegalStateException("Penyewa gagal disembunyikan.");
+        }
+    }
+
+    public void reactivate(int id) {
+        validateId(id);
+        if (!tenantDAO.reactivate(id)) {
+            throw new IllegalStateException("Penyewa gagal diaktifkan kembali.");
+        }
+    }
+
     public void delete(int id) {
         validateId(id);
         if (tenantDAO.hasVisibleContract(id)) {
@@ -49,11 +63,8 @@ public class TenantService {
             );
         }
 
-        boolean deleted = tenantDAO.hasContracts(id)
-            ? tenantDAO.deactivate(id)
-            : tenantDAO.delete(id);
-        if (!deleted) {
-            throw new IllegalStateException("Penghuni tidak ditemukan atau gagal dihapus.");
+        if (!tenantDAO.delete(id)) {
+            throw new IllegalStateException("Penghuni gagal dihapus.");
         }
     }
 
@@ -117,4 +128,5 @@ public class TenantService {
             throw new IllegalArgumentException("ID penghuni tidak valid.");
         }
     }
+
 }
