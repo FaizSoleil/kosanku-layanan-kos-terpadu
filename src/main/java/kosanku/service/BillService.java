@@ -2,8 +2,11 @@ package kosanku.service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import kosanku.dao.BillDAO;
+import kosanku.dao.PaymentDAO;
 import kosanku.model.Bill;
 import kosanku.model.BillStatus;
 
@@ -12,9 +15,40 @@ public class BillService {
     private static final double MAX_TOTAL = 9_999_999_999.99;
 
     private final BillDAO billDAO;
+    private final PaymentDAO paymentDAO;
+
+    public BillService(){
+        this(new BillDAO());
+    }
 
     public BillService(BillDAO billDAO) {
+        PaymentDAO paymentDAO = new PaymentDAO();
+        this(billDAO, paymentDAO);
+    }
+
+    public BillService(BillDAO billDAO, PaymentDAO paymentDAO) {
         this.billDAO = billDAO;
+        this.paymentDAO = paymentDAO;
+    }
+
+    public void recalculateStatus(int billId) {
+        Bill bill = billDAO.findById(billId).orElse(null);
+        if (bill == null) return;
+        try {
+            BigDecimal paid = paymentDAO.sumByBillId(billId, 0);
+            BigDecimal total = BigDecimal.valueOf(bill.getTotalTagihan());
+            billDAO.updateStatus(billId, determineStatus(paid, total));
+        } catch (SQLException e) {
+            throw new IllegalStateException("Status tagihan gagal diperbarui.", e);
+        }
+    }
+
+    static BillStatus determineStatus(BigDecimal paid, BigDecimal total) {
+        if (paid.signum() == 0) return BillStatus.BELUM_DIBAYAR;
+        int cmp = paid.compareTo(total);
+        if (cmp < 0)  return BillStatus.SEBAGIAN;
+        if (cmp == 0) return BillStatus.LUNAS;
+        return BillStatus.KELEBIHAN;
     }
 
     public void create(Bill bill) {
@@ -26,6 +60,7 @@ public class BillService {
         if (!billDAO.insert(bill)) {
             throw new IllegalStateException("Tagihan gagal disimpan. Pastikan ID kontrak ada.");
         }
+        
     }
 
     public void update(Bill bill) {
@@ -47,6 +82,7 @@ public class BillService {
         if (!billDAO.update(bill)) {
             throw new IllegalStateException("Tagihan gagal diperbarui. Pastikan ID kontrak ada.");
         }
+        recalculateStatus(bill.getId());   // total may have changed
     }
 
     public void delete(int id) {

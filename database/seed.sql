@@ -69,6 +69,7 @@ INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposi
 -- ---------------------------------------------------------------------
 -- 5. Bills  (id 1..11)  UNIQUE (contract_id, bulan_tagihan)
 -- Konsistensi status vs total pembayaran:
+--   Kelebihan     -> SUM(payments) > total_tagihan
 --   Lunas         -> SUM(payments) = total_tagihan
 --   Sebagian      -> 0 < SUM(payments) < total_tagihan
 --   Belum Dibayar -> tidak ada payment
@@ -76,7 +77,7 @@ INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposi
 INSERT INTO bills (contract_id, bulan_tagihan, total_tagihan, status) VALUES
 (1, '2025-12-01', 1500000.00, 'Lunas'),          -- id 1:  Andi, kontrak lama
 (2, '2026-10-01', 1500000.00, 'Lunas'),          -- id 2:  Andi
-(2, '2026-11-01', 1500000.00, 'Lunas'),          -- id 3:  Andi
+(2, '2026-11-01', 1500000.00, 'Kelebihan'),      -- id 3:  Andi, kelebihan bayar 250rb (total bayar 1.750.000)
 (3, '2026-09-01', 1500000.00, 'Lunas'),          -- id 4:  Rina
 (3, '2026-10-01', 1500000.00, 'Sebagian'),       -- id 5:  Rina, baru bayar 700rb (lewat jatuh tempo)
 (3, '2026-11-01', 1500000.00, 'Belum Dibayar'),  -- id 6:  Rina, belum bayar sama sekali
@@ -92,7 +93,7 @@ INSERT INTO bills (contract_id, bulan_tagihan, total_tagihan, status) VALUES
 INSERT INTO payments (bill_id, payment_date, jumlah) VALUES
 (1,  '2025-12-04', 1500000.00),
 (2,  '2026-10-02', 1500000.00),
-(3,  '2026-11-03', 1500000.00),
+(3,  '2026-11-03', 1750000.00),   -- kelebihan bayar Rp 250.000 (tagihan 1.500.000)
 (4,  '2026-09-08', 1500000.00),
 (5,  '2026-10-15',  700000.00),   -- pembayaran sebagian
 (7,  '2026-10-10', 3000000.00),

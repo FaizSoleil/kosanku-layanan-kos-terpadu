@@ -21,7 +21,7 @@ import kosanku.ui.dialog.PaymentFormDialog.PaymentDialogMode;
  *
  * @author LENOVO
  */
-public class PembayaranPanel extends javax.swing.JPanel {
+public class PembayaranPanel extends javax.swing.JPanel implements Refreshable {
 
     private final PaymentDAO paymentDAO = new PaymentDAO();
     private final PaymentController paymentController;
@@ -45,6 +45,12 @@ public class PembayaranPanel extends javax.swing.JPanel {
         });
         renderTable();
     }
+
+    @Override
+    public void refresh() {
+        renderTable();
+    }
+    
 
     private Payment selectedRowToPayment(int selectedRow) {
         if (selectedRow == -1) return null;

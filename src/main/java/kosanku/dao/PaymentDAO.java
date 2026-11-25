@@ -81,4 +81,16 @@ public class PaymentDAO {
             }
         }
     }
+
+    // PaymentDAO
+    public BigDecimal sumByBillId(Connection conn, int billId) throws SQLException {
+        String sql = "SELECT COALESCE(SUM(jumlah), 0) FROM payments WHERE bill_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, billId);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getBigDecimal(1);
+            }
+        }
+    }
 }

@@ -24,11 +24,16 @@ import kosanku.ui.dialog.BillFormDialog.BillDialogMode;
  *
  * @author LENOVO
  */
-public class TagihanPanel extends javax.swing.JPanel {
+public class TagihanPanel extends javax.swing.JPanel implements Refreshable {
 
     private final BillDAO billDAO = new BillDAO();
     private final BillController billController;
 
+    @Override
+    public void refresh() {
+        renderTable();
+    }
+    
     /**
      * Creates new form TagihanPanel
      */
@@ -105,6 +110,11 @@ public class TagihanPanel extends javax.swing.JPanel {
                 "ID", "ID Kontrak", "Bulan Tagihan", "Total Tagihan", "Status"
             }
         ));
+        tableBills.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                tableBillsComponentShown(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableBills);
         if (tableBills.getColumnModel().getColumnCount() > 0) {
             tableBills.getColumnModel().getColumn(0).setMinWidth(30);
@@ -223,6 +233,10 @@ public class TagihanPanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void tableBillsComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tableBillsComponentShown
+        renderTable();
+    }//GEN-LAST:event_tableBillsComponentShown
 
     private void renderTable() {
         try {

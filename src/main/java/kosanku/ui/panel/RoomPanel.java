@@ -5,6 +5,7 @@
 package kosanku.ui.panel;
 
 import java.awt.Frame;
+import java.sql.Ref;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -22,7 +23,7 @@ import kosanku.ui.dialog.RoomFormDialog.RoomDialogMode;
  *
  * @author LENOVO
  */
-public class RoomPanel extends javax.swing.JPanel {
+public class RoomPanel extends javax.swing.JPanel implements Refreshable {
 
     private final RoomDAO roomsDAO = new RoomDAO();
     private final RoomController roomController;
@@ -46,6 +47,11 @@ public class RoomPanel extends javax.swing.JPanel {
         });
         renderTable();
         this.roomController = roomController;
+    }
+
+    @Override
+    public void refresh() {
+        renderTable();
     }
 
     private Room selectedRowToRoom(int selectedRow, JTable selectedTable) {

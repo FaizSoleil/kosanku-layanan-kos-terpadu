@@ -8,6 +8,7 @@ import kosanku.ui.panel.ExpensePanel;
 import kosanku.ui.panel.TenantPanel;
 import kosanku.ui.panel.TagihanPanel;
 import kosanku.ui.panel.PembayaranPanel;
+import kosanku.ui.panel.Refreshable;
 import kosanku.ui.panel.KontrakPanel;
 import kosanku.ui.panel.RoomPanel;
 import kosanku.model.User;
@@ -51,11 +52,16 @@ public class DashboardForm extends javax.swing.JFrame {
         }
     }
 
-    private void  showPage(String panelName) {
+    private void showPage(String panelName) {
         CardLayout cl = (CardLayout) contentPanel.getLayout();
         cl.show(contentPanel, panelName);
-    }
 
+        for (java.awt.Component c : contentPanel.getComponents()) {
+            if (c.isVisible() && c instanceof Refreshable r) {
+                r.refresh();
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

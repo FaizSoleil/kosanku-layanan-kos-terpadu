@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.dsig.Reference;
 
 import kosanku.controller.ContractController;
 import kosanku.dao.ContractDAO;
@@ -16,7 +17,7 @@ import kosanku.service.ContractService;
 import kosanku.ui.dialog.KontrakFormDialog;
 import kosanku.ui.dialog.KontrakFormDialog.KontrakDialogMode;
 
-public class KontrakPanel extends javax.swing.JPanel {
+public class KontrakPanel extends javax.swing.JPanel implements Refreshable {
 
     private static final String[] COLUMNS = {
         "ID", "ID Penyewa", "ID Kamar", "Masuk", "Keluar", "Deposit", "Jatuh Tempo", "Status"
@@ -36,6 +37,11 @@ public class KontrakPanel extends javax.swing.JPanel {
         initComponents();
         setupTable();
         setupEndButton();
+        renderTable();
+    }
+
+    @Override
+    public void refresh() {
         renderTable();
     }
 

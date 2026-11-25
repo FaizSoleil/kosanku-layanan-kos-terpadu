@@ -11,14 +11,24 @@ import kosanku.model.BillStatus;
 
 public class PaymentService {
 
-    private static final int MYSQL_FK_VIOLATION = 1452;
     private static final double MAX_JUMLAH = 9_999_999_999.99; // DECIMAL(12, 2)
 
     private final PaymentDAO paymentDAO;
-    private final BillDAO billDAO = new BillDAO();
+    private final BillDAO billDAO;
+    private final BillService billService;
 
     public PaymentService(PaymentDAO paymentDAO) {
+        this(paymentDAO, new BillDAO(), new BillService());
+    }
+
+    public PaymentService(PaymentDAO paymentDAO, BillDAO billDAO, BillService billService) {
         this.paymentDAO = paymentDAO;
+        this.billDAO = billDAO;
+        this.billService = billService;
+    }
+
+    private void checkBill(Payment payment) {
+        billDAO.findById(payment.getBillId()).orElseThrow(() -> new IllegalArgumentException("Tagihan dengan ID " + payment.getBillId() + " tidak ditemukan."));
     }
 
     public void create(Payment payment) throws SQLException {
@@ -27,7 +37,7 @@ public class PaymentService {
         if (!paymentDAO.insert(payment)) {
             throw new IllegalStateException("Pembayaran gagal disimpan.");
         }
-        refreshBillStatus(payment.getBillId());
+        billService.recalculateStatus(payment.getBillId());
     }
 
     public void update(Payment payment) throws SQLException {
@@ -41,9 +51,9 @@ public class PaymentService {
         if (!paymentDAO.update(payment)) {
             throw new IllegalStateException("Pembayaran gagal diperbarui.");
         }
-        refreshBillStatus(payment.getBillId());
+        billService.recalculateStatus(payment.getBillId());
         if (old.getBillId() != payment.getBillId()) {
-            refreshBillStatus(old.getBillId());   // payment moved to another bill
+            billService.recalculateStatus(old.getBillId());   // payment moved to another bill
         }
     }
 
@@ -51,23 +61,22 @@ public class PaymentService {
         if (id <= 0) {
             throw new IllegalArgumentException("ID pembayaran tidak valid.");
         }
-        Payment old = paymentDAO.findById(id)
-            .orElseThrow(() -> new IllegalStateException("Pembayaran tidak ditemukan."));
+        Payment old = paymentDAO.findById(id).orElseThrow(() -> new IllegalStateException("Pembayaran tidak ditemukan."));
         if (!paymentDAO.delete(id)) {
             throw new IllegalStateException("Pembayaran gagal dihapus.");
         }
-        refreshBillStatus(old.getBillId());
+        billService.recalculateStatus(old.getBillId());
     }
 
-    private void checkBill(Payment payment) throws SQLException {
-        Bill bill = billDAO.findById(payment.getBillId())
-            .orElseThrow(() -> new IllegalArgumentException("Tagihan dengan ID " + payment.getBillId() + " tidak ditemukan."));
-        BigDecimal total = BigDecimal.valueOf(bill.getTotalTagihan());
-        BigDecimal paidByOthers = paymentDAO.sumByBillId(payment.getBillId(), payment.getId());
-        if (paidByOthers.add(BigDecimal.valueOf(payment.getJumlah())).compareTo(total) > 0) {
-            throw new IllegalArgumentException("Jumlah melebihi sisa tagihan (" + total.subtract(paidByOthers).toPlainString() + ").");
-        }
-    }
+    // private void checkBill(Payment payment) throws SQLException {
+    //     Bill bill = billDAO.findById(payment.getBillId())
+    //         .orElseThrow(() -> new IllegalArgumentException("Tagihan dengan ID " + payment.getBillId() + " tidak ditemukan."));
+    //     BigDecimal total = BigDecimal.valueOf(bill.getTotalTagihan());
+    //     BigDecimal paidByOthers = paymentDAO.sumByBillId(payment.getBillId(), payment.getId());
+    //     if (paidByOthers.add(BigDecimal.valueOf(payment.getJumlah())).compareTo(total) > 0) {
+    //         throw new IllegalArgumentException("Jumlah melebihi sisa tagihan (" + total.subtract(paidByOthers).toPlainString() + ").");
+    //     }
+    // }
 
     private void refreshBillStatus(int billId) throws SQLException {
         Bill bill = billDAO.findById(billId).orElse(null);
@@ -103,12 +112,5 @@ public class PaymentService {
             throw new IllegalArgumentException("Jumlah terlalu besar.");
         }
         payment.setJumlah(jumlah);
-    }
-
-    private SQLException translate(SQLException e, Payment payment) {
-        if (e.getErrorCode() == MYSQL_FK_VIOLATION) {
-            throw new IllegalArgumentException("Tagihan dengan ID " + payment.getBillId() + " tidak ditemukan.", e);
-        }
-        return e;
     }
 }
