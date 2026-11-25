@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
-import kosanku.dao.BillDAO;
+import kosanku.dao.ContractDAO;
 import kosanku.model.Bill;
 import kosanku.model.Contract;
 import kosanku.ui.dialog.PaymentFormDialog.PaymentDialogMode;
@@ -68,8 +68,8 @@ public class BillFormDialog extends javax.swing.JDialog {
     }
 
     private void loadComboBoxes() {
-        List<Bill> bills = new BillDAO().findAll();
-        cmbContract.setModel(new DefaultComboBoxModel<>(bills.toArray(new Contract[0])));
+        List<Contract> contract = new ContractDAO().findAll();
+        cmbContract.setModel(new DefaultComboBoxModel<>(contract.toArray(new Contract[0])));
     }
 
     private void resetDialog() {
