@@ -3,7 +3,7 @@ package kosanku.model;
 import java.util.Date;
 
 public class Bill {
-    private int id;
+    private Integer id;
     private int contractId;
     private Date bulanTagihan;
     private double totalTagihan;
@@ -39,4 +39,10 @@ public class Bill {
     public void setBulanTagihan(Date bulanTagihan) {this.bulanTagihan = bulanTagihan;}
     public void setTotalTagihan(double totalTagihan) {this.totalTagihan = totalTagihan;}
     public void setStatus(BillStatus status) {this.status = status;}
+
+    //Needed for combo box dropdown so the program doesn't show mem address like: kosanku.model.Bill@1a2b3c 
+    @Override
+    public String toString() {
+        return id.toString();
+    }
 }

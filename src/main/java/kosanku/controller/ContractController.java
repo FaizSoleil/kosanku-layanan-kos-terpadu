@@ -118,4 +118,8 @@ public class ContractController {
             );
         }
     }
+
+    public void end(int id, ContractStatus finalStatus) {
+        contractService.endContract(id, finalStatus);
+    }
 }

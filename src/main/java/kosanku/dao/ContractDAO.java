@@ -10,28 +10,6 @@ import java.util.Optional;
 
 public class ContractDAO {
 
-    public boolean insert(Contract contract) {
-        String sql = "INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setInt(1, contract.getTenantId());
-            pstmt.setInt(2, contract.getRoomId());
-            pstmt.setDate(3, new java.sql.Date(contract.getTanggalMasuk().getTime()));
-            pstmt.setDate(4, contract.getTanggalKeluar() != null ? new java.sql.Date(contract.getTanggalKeluar().getTime()) : null);
-            pstmt.setDouble(5, contract.getDeposit());
-            pstmt.setDate(6, new java.sql.Date(contract.getTanggalJatuhTempo().getTime()));
-            pstmt.setString(7, contract.getStatus().getDbEnumValue());
-
-            int affected = pstmt.executeUpdate();
-            if (affected > 0) {
-                try (ResultSet keys = pstmt.getGeneratedKeys()) {
-                    if (keys.next()) contract.setId(keys.getInt(1));
-                }
-                return true;
-            }
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
-    }
-
     public Optional<Contract> findById(int id) {
         String sql = "SELECT * FROM contracts WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -105,5 +83,59 @@ public class ContractDAO {
             ContractStatus.fromDbToJavaConstant(rs.getString("status"))
         );
         // Note: Remember to call setId using the setter if your constructor doesn't set it.
+    }
+
+    public boolean insert(Connection conn, Contract contract) throws SQLException {
+        String sql = "INSERT INTO contracts (tenant_id, room_id, tanggal_masuk, tanggal_keluar, deposit, tanggal_jatuh_tempo, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setInt(1, contract.getTenantId());
+            pstmt.setInt(2, contract.getRoomId());
+            pstmt.setDate(3, new java.sql.Date(contract.getTanggalMasuk().getTime()));
+            pstmt.setDate(4, new java.sql.Date(contract.getTanggalKeluar().getTime()));
+            pstmt.setDouble(5, contract.getDeposit());
+            pstmt.setDate(6, new java.sql.Date(contract.getTanggalJatuhTempo().getTime()));
+            pstmt.setString(7, contract.getStatus().getDbEnumValue());
+            if (pstmt.executeUpdate() > 0) {
+                try (ResultSet keys = pstmt.getGeneratedKeys()) {
+                    if (keys.next()) contract.setId(keys.getInt(1));
+                }
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public boolean insert(Contract contract) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            return insert(conn, contract);
+        } catch (SQLException e) { e.printStackTrace(); return false; }
+    }
+
+    public Optional<Contract> findById(Connection conn, int id) throws SQLException {
+        try (PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM contracts WHERE id = ?")) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next() ? Optional.of(mapRow(rs)) : Optional.empty();
+            }
+        }
+    }
+
+    public boolean hasActiveContractForRoom(Connection conn, int roomId, int excludedContractId) throws SQLException {
+        String sql = "SELECT 1 FROM contracts WHERE room_id = ? AND status = 'Aktif' AND id <> ? LIMIT 1";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, roomId);
+            pstmt.setInt(2, excludedContractId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    public boolean updateStatus(Connection conn, int id, ContractStatus status) throws SQLException {
+        try (PreparedStatement pstmt = conn.prepareStatement("UPDATE contracts SET status = ? WHERE id = ?")) {
+            pstmt.setString(1, status.getDbEnumValue());
+            pstmt.setInt(2, id);
+            return pstmt.executeUpdate() > 0;
+        }
     }
 }

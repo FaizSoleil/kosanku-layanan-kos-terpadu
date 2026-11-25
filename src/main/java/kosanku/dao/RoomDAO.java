@@ -106,4 +106,23 @@ public class RoomDAO {
             RoomStatus.fromDbToJavaConstant(rs.getString("status"))
         );
     }
+
+    /** Locking read: a second transaction on the same room waits here until the first commits. */
+    public Optional<RoomStatus> findStatusForUpdate(Connection conn, int roomId) throws SQLException {
+        String sql = "SELECT status FROM rooms WHERE id = ? FOR UPDATE";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, roomId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next() ? Optional.of(RoomStatus.fromDbToJavaConstant(rs.getString("status"))) : Optional.empty();
+            }
+        }
+    }
+
+    public boolean updateStatus(Connection conn, int roomId, RoomStatus status) throws SQLException {
+        try (PreparedStatement pstmt = conn.prepareStatement("UPDATE rooms SET status = ? WHERE id = ?")) {
+            pstmt.setString(1, status.getDbEnumValue());
+            pstmt.setInt(2, roomId);
+            return pstmt.executeUpdate() > 0;
+        }
+    }
 }

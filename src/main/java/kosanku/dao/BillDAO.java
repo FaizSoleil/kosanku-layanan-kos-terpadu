@@ -191,4 +191,14 @@ public class BillDAO {
                 e.printStackTrace();
         }
     }
+
+    public boolean hasUnsettledBills(Connection conn, int contractId) throws SQLException {
+        String sql = "SELECT 1 FROM bills WHERE contract_id = ? AND status <> 'Lunas' LIMIT 1";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, contractId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
 }

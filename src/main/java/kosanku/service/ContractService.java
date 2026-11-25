@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import kosanku.dao.BillDAO;
 import kosanku.dao.ContractDAO;
 import kosanku.dao.RoomDAO;
 import kosanku.dao.TenantDAO;
@@ -12,6 +13,7 @@ import kosanku.model.ContractStatus;
 import kosanku.model.Room;
 import kosanku.model.RoomStatus;
 import kosanku.model.Tenant;
+import kosanku.util.Tx;
 
 public class ContractService {
     private static final double MAX_DEPOSIT = 9_999_999_999.99;
@@ -19,6 +21,7 @@ public class ContractService {
     private final ContractDAO contractDAO;
     private final TenantDAO tenantDAO;
     private final RoomDAO roomDAO;
+    private final BillDAO billDAO;
 
     public ContractService(ContractDAO contractDAO) {
         if (contractDAO == null) {
@@ -27,15 +30,17 @@ public class ContractService {
         this.contractDAO = contractDAO;
         this.tenantDAO = new TenantDAO();
         this.roomDAO = new RoomDAO();
+        this.billDAO = new BillDAO();
     }
 
-    ContractService(ContractDAO contractDAO, TenantDAO tenantDAO, RoomDAO roomDAO) {
-        if (contractDAO == null || tenantDAO == null || roomDAO == null) {
-            throw new IllegalArgumentException("DAO kontrak, penyewa, dan kamar wajib diisi.");
+    ContractService(ContractDAO contractDAO, TenantDAO tenantDAO, RoomDAO roomDAO, BillDAO billDAO) {
+        if (contractDAO == null || tenantDAO == null || roomDAO == null || billDAO == null) {
+            throw new IllegalArgumentException("Semua DAO wajib diisi.");
         }
         this.contractDAO = contractDAO;
         this.tenantDAO = tenantDAO;
         this.roomDAO = roomDAO;
+        this.billDAO = billDAO;
     }
 
     public List<Contract> getAll() {
@@ -44,33 +49,71 @@ public class ContractService {
 
     public void create(Contract contract) {
         validate(contract);
+        boolean active = contract.getStatus() == ContractStatus.AKTIF;
 
-        Tenant tenant = tenantDAO.findById(contract.getTenantId())
-            .orElseThrow(() -> new IllegalArgumentException("Penyewa tidak ditemukan."));
+        // Read-only check, done outside the transaction because TenantDAO has no Connection overload.
+        Tenant tenant = tenantDAO.findById(contract.getTenantId()).orElseThrow(() -> new IllegalArgumentException("Penyewa tidak ditemukan."));
         if (!tenant.isvisible()) {
             throw new IllegalArgumentException("Penyewa tidak aktif.");
         }
 
-        Room room = roomDAO.findById(contract.getRoomId())
-            .orElseThrow(() -> new IllegalArgumentException("Kamar tidak ditemukan."));
-        if (room.getStatus() == RoomStatus.PERBAIKAN
-                && contract.getStatus() == ContractStatus.AKTIF) {
-            throw new IllegalArgumentException("Kamar sedang dalam perbaikan.");
+        Tx.run(conn -> {
+            // Lock the room row FIRST so two simultaneous contracts for one room are serialized.
+            RoomStatus roomStatus = roomDAO.findStatusForUpdate(conn, contract.getRoomId())
+                .orElseThrow(() -> new IllegalArgumentException("Kamar tidak ditemukan."));
+
+            if (active) {
+                if (roomStatus == RoomStatus.PERBAIKAN) {
+                    throw new IllegalArgumentException("Kamar sedang dalam perbaikan.");
+                }
+                if (roomStatus == RoomStatus.TERISI) {
+                    throw new IllegalArgumentException("Kamar sedang terisi.");
+                }
+                // Guard against drift: status says free, but an active contract exists.
+                if (contractDAO.hasActiveContractForRoom(conn, contract.getRoomId(), 0)) {
+                    throw new IllegalArgumentException("Kamar ini masih memiliki kontrak aktif.");
+                }
+            }
+
+            if (!contractDAO.insert(conn, contract)) {
+                throw new IllegalStateException("Gagal menyimpan kontrak.");
+            }
+            if (active && !roomDAO.updateStatus(conn, contract.getRoomId(), RoomStatus.TERISI)) {
+                throw new IllegalStateException("Status kamar gagal diperbarui."); // rolls back the insert too
+            }
+        });
+    }
+
+    public void endContract(int contractId, ContractStatus finalStatus) {
+        if (contractId <= 0) {
+            throw new IllegalArgumentException("ID kontrak tidak valid.");
         }
-        if (contract.getStatus() == ContractStatus.AKTIF
-                && contractDAO.hasActiveContractForRoom(contract.getRoomId(), 0)) {
-            throw new IllegalArgumentException("Kamar ini masih memiliki kontrak aktif.");
+        if (finalStatus != ContractStatus.SELESAI && finalStatus != ContractStatus.DIBATALKAN) {
+            throw new IllegalArgumentException("Kontrak hanya dapat diakhiri dengan status Selesai atau Dibatalkan.");
         }
 
-        if (!contractDAO.insert(contract)) {
-            throw new IllegalStateException("Gagal menyimpan kontrak.");
-        }
-        if (contract.getStatus() == ContractStatus.AKTIF) {
-            room.setStatus(RoomStatus.TERISI);
-            if (!roomDAO.update(room)) {
-                throw new IllegalStateException("Kontrak tersimpan, tetapi status kamar gagal diperbarui.");
+        Tx.run(conn -> {
+            Contract existing = contractDAO.findById(conn, contractId)
+                .orElseThrow(() -> new IllegalArgumentException("Kontrak tidak ditemukan."));
+            if (existing.getStatus() != ContractStatus.AKTIF) {
+                throw new IllegalArgumentException("Hanya kontrak aktif yang dapat diakhiri.");
             }
-        }
+            if (finalStatus == ContractStatus.SELESAI
+                    && billDAO.hasUnsettledBills(conn, contractId)) {
+                throw new IllegalArgumentException("Kontrak masih memiliki tagihan yang belum lunas.");
+            }
+
+            if (!contractDAO.updateStatus(conn, contractId, finalStatus)) {
+                throw new IllegalStateException("Gagal mengakhiri kontrak.");
+            }
+
+            // Free the room, but only if it is TERISI. Never overwrite PERBAIKAN.
+            RoomStatus roomStatus = roomDAO.findStatusForUpdate(conn, existing.getRoomId()).orElse(null);
+            if (roomStatus == RoomStatus.TERISI
+                    && !contractDAO.hasActiveContractForRoom(conn, existing.getRoomId(), contractId)) {
+                roomDAO.updateStatus(conn, existing.getRoomId(), RoomStatus.TERSEDIA);
+            }
+        });
     }
 
     public void edit(Contract contract) {
