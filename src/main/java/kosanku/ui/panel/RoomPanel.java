@@ -90,24 +90,15 @@ public class RoomPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelTitle = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        btnHapus = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableRooms = new javax.swing.JTable();
         btnTambah = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        labelTitle = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(153, 153, 153));
         setPreferredSize(new java.awt.Dimension(540, 380));
-
-        labelTitle.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        labelTitle.setText("KAMAR");
-
-        btnHapus.setBackground(new java.awt.Color(210, 0, 0));
-        btnHapus.setForeground(new java.awt.Color(220, 220, 220));
-        btnHapus.setText("Hapus");
-        btnHapus.addActionListener(this::btnHapusActionPerformed);
 
         tableRooms.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,34 +119,13 @@ public class RoomPanel extends javax.swing.JPanel {
         btnEdit.setText("Edit");
         btnEdit.addActionListener(this::btnEditActionPerformed);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(208, 208, 208)
-                        .addComponent(btnHapus)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTambah)
-                    .addComponent(btnEdit)
-                    .addComponent(btnHapus))
-                .addContainerGap())
-        );
+        btnHapus.setBackground(new java.awt.Color(210, 0, 0));
+        btnHapus.setForeground(new java.awt.Color(220, 220, 220));
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
+
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        labelTitle.setText("KAMAR");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -164,11 +134,18 @@ public class RoomPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(219, 219, 219)
                 .addComponent(labelTitle)
-                .addContainerGap(232, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(208, 208, 208)
+                        .addComponent(btnHapus)))
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,7 +153,12 @@ public class RoomPanel extends javax.swing.JPanel {
                 .addGap(27, 27, 27)
                 .addComponent(labelTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTambah)
+                    .addComponent(btnEdit)
+                    .addComponent(btnHapus))
                 .addGap(25, 25, 25))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -267,7 +249,6 @@ public class RoomPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnTambah;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JTable tableRooms;

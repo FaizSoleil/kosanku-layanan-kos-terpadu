@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS bills (
     contract_id         INT NOT NULL,
     bulan_tagihan       DATE NOT NULL,
     total_tagihan       DECIMAL(12, 2) NOT NULL,
-    status              ENUM('Belum Dibayar','Sebagian','Lunas') NOT NULL DEFAULT 'Belum Dibayar',
+    status              ENUM('Belum Dibayar','Sebagian','Lunas','Kelebihan') NOT NULL DEFAULT 'Belum Dibayar',
     FOREIGN KEY (contract_id) REFERENCES contracts(id) ON DELETE RESTRICT,
     UNIQUE (contract_id, bulan_tagihan),            -- no duplicate bill for the same month
     CONSTRAINT chk_bill_total CHECK (total_tagihan >= 0)

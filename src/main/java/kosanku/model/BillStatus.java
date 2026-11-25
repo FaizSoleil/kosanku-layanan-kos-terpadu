@@ -3,7 +3,8 @@ package kosanku.model;
 public enum BillStatus {
     BELUM_DIBAYAR("Belum Dibayar"),
     SEBAGIAN("Sebagian"),
-    LUNAS("Lunas");
+    LUNAS("Lunas"),
+    KELEBIHAN("Kelebihan");
 
     private final String dbValue;
 
