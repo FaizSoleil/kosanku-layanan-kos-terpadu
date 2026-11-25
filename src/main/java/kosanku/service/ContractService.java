@@ -160,7 +160,7 @@ public class ContractService {
             .orElseThrow(() -> new IllegalStateException("Kontrak tidak ditemukan."));
         if (!contractDAO.delete(id)) {
             throw new IllegalStateException(
-                "Kontrak tidak dapat dihapus. Kemungkinan masih memiliki tagihan.");
+                "Kontrak tidak dapat dihapus. Kemungkinan masih memiliki referensi tagihan.");
         }
         if (existing.getStatus() == ContractStatus.AKTIF) {
             setRoomAvailableIfNoActiveContract(existing.getRoomId());
