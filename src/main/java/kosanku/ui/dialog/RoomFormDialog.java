@@ -8,7 +8,6 @@ import javax.swing.DefaultComboBoxModel;
 
 import kosanku.model.Room;
 import kosanku.model.RoomStatus;
-import kosanku.ui.dialog.PaymentFormDialog.PaymentDialogMode;
 
 /**
  *
