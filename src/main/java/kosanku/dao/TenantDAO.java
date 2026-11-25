@@ -90,7 +90,7 @@ public class TenantDAO {
         List<Tenant> list = new ArrayList<>();
         String sql = "SELECT " + COLUMNS + " FROM tenants"
                    + (includeInvisible ? "" : " WHERE is_visible = TRUE")
-                   + " ORDER BY name";
+                   + " ORDER BY Id";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {

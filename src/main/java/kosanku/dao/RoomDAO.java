@@ -70,7 +70,7 @@ public class RoomDAO {
 
     public List<Room> findAll() {
         List<Room> list = new ArrayList<>();
-        String sql = "SELECT * FROM rooms";
+        String sql = "SELECT * FROM rooms ORDER BY id ASC";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) { e.printStackTrace(); }

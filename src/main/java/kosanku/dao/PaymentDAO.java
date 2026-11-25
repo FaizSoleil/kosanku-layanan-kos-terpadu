@@ -41,7 +41,7 @@ public class PaymentDAO {
 
     public List<Payment> findAll() throws SQLException {
         List<Payment> list = new ArrayList<>();
-        String sql = "SELECT * FROM payments";
+        String sql = "SELECT * FROM payments ORDER BY id ASC";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 list.add(mapRow(rs));

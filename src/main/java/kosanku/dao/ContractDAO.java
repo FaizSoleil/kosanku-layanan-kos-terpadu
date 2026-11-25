@@ -23,7 +23,7 @@ public class ContractDAO {
 
     public List<Contract> findAll() {
         List<Contract> list = new ArrayList<>();
-        String sql = "SELECT * FROM contracts";
+        String sql = "SELECT * FROM contracts ORDER BY id ASC";
         try (Connection conn = DatabaseConnection.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) list.add(mapRow(rs));
         } catch (SQLException e) { e.printStackTrace(); }
