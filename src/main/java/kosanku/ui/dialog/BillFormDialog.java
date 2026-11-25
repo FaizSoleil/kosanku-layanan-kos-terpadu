@@ -7,10 +7,15 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
+import kosanku.dao.BillDAO;
 import kosanku.model.Bill;
+import kosanku.model.Contract;
+import kosanku.ui.dialog.PaymentFormDialog.PaymentDialogMode;
 
 /**
  *
@@ -53,6 +58,7 @@ public class BillFormDialog extends javax.swing.JDialog {
         this.mode = mode;
         this.beingEditedBill = bill;
         initComponents();
+        loadComboBoxes();
         setTitle(mode == BillDialogMode.ADD ? "Tambah Tagihan" : "Edit Tagihan");
         resetDialog();
         getRootPane().setDefaultButton(btnSimpan);
@@ -61,9 +67,16 @@ public class BillFormDialog extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
     }
 
+    private void loadComboBoxes() {
+        List<Bill> bills = new BillDAO().findAll();
+        cmbContract.setModel(new DefaultComboBoxModel<>(bills.toArray(new Contract[0])));
+    }
+
     private void resetDialog() {
         saved = false;
-        txtContractId.setText("");
+        if (cmbContract.getItemCount() > 0) {
+            cmbContract.setSelectedIndex(0);
+        }
         txtTotalTagihan.setText("");
         labelTitle.setText(mode == BillDialogMode.ADD ? "TAMBAH TAGIHAN" : "EDIT TAGIHAN");
 
@@ -81,7 +94,14 @@ public class BillFormDialog extends javax.swing.JDialog {
     }
 
     private void editSetup(int contractId, Date bulanTagihan, double totalTagihan) {
-        txtContractId.setText(String.valueOf(contractId));
+        for (int i = 0; i < cmbContract.getItemCount(); i++) {
+            Contract b = cmbContract.getItemAt(i);
+            if (b != null && b.getId() == contractId) {
+                cmbContract.setSelectedIndex(i);
+                break;
+            }
+        }
+        
         if (bulanTagihan != null) {
             LocalDate localDate = Instant.ofEpochMilli(bulanTagihan.getTime())
                     .atZone(ZoneId.systemDefault())
@@ -121,7 +141,9 @@ public class BillFormDialog extends javax.swing.JDialog {
     }
 
     public void saveData() {
-        savedContractId = txtContractId.getText().trim();
+        Contract selectedContract = (Contract) cmbContract.getSelectedItem();
+        savedContractId = (selectedContract != null) ? String.valueOf(selectedContract.getId()) : "";
+
         LocalDate pickedDate = datePicker1.getDate();
         savedBulanTagihan = (pickedDate != null) ? YearMonth.from(pickedDate).toString() : "";
         savedTotalTagihan = txtTotalTagihan.getText().trim();
@@ -139,12 +161,12 @@ public class BillFormDialog extends javax.swing.JDialog {
         labelContractId = new javax.swing.JLabel();
         labelBulanTagihan = new javax.swing.JLabel();
         labelTotalTagihan = new javax.swing.JLabel();
-        txtContractId = new javax.swing.JTextField();
         txtTotalTagihan = new javax.swing.JTextField();
         btnSimpan = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
         labelTitle = new javax.swing.JLabel();
         datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
+        cmbContract = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -179,9 +201,9 @@ public class BillFormDialog extends javax.swing.JDialog {
                         .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                         .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtContractId)
                     .addComponent(txtTotalTagihan)
-                    .addComponent(datePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(datePicker1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbContract, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -192,7 +214,7 @@ public class BillFormDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(labelContractId)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtContractId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbContract, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelBulanTagihan)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -229,12 +251,12 @@ public class BillFormDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnSimpan;
+    private javax.swing.JComboBox<Contract> cmbContract;
     private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private javax.swing.JLabel labelBulanTagihan;
     private javax.swing.JLabel labelContractId;
     private javax.swing.JLabel labelTitle;
     private javax.swing.JLabel labelTotalTagihan;
-    private javax.swing.JTextField txtContractId;
     private javax.swing.JTextField txtTotalTagihan;
     // End of variables declaration//GEN-END:variables
 }

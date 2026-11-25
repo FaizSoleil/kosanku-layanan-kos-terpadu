@@ -35,9 +35,9 @@
                       <EmptySpace pref="80" max="32767" attributes="0"/>
                       <Component id="btnBatal" min="-2" pref="85" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="txtContractId" alignment="0" max="32767" attributes="0"/>
                   <Component id="txtTotalTagihan" alignment="0" max="32767" attributes="0"/>
                   <Component id="datePicker1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="cmbContract" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="30" max="32767" attributes="0"/>
           </Group>
@@ -51,7 +51,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="labelContractId" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="txtContractId" min="-2" max="-2" attributes="0"/>
+              <Component id="cmbContract" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="labelBulanTagihan" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -86,8 +86,6 @@
         <Property name="text" type="java.lang.String" value="Total Tagihan"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtContractId">
-    </Component>
     <Component class="javax.swing.JTextField" name="txtTotalTagihan">
     </Component>
     <Component class="javax.swing.JButton" name="btnSimpan">
@@ -116,6 +114,11 @@
       </Properties>
     </Component>
     <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker1">
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cmbContract">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Contract&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
